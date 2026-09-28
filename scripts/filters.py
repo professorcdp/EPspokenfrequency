@@ -95,6 +95,62 @@ def proper_noun_decisions(cfg: dict[str, Any]) -> tuple[set[str], set[str]]:
     return keep, drop
 
 
+def reading_cap_ratios(
+    joint_splits: Mapping[str, Any],
+    cap_counts: Mapping[str, int],
+    noninitial_counts: Mapping[str, int],
+    min_votes: int = 3,
+    min_share: float = 0.10,
+) -> dict[str, float]:
+    """Capitalisation measured over a lemma's proper-noun reading alone.
+
+    The plain ratio is the share of a *surface's* non-line-initial
+    occurrences that are capitalized, across all of its readings, and for a
+    surface that is both a common word and a name it is dominated by the
+    common word: `são` is the third person plural of *ser* a million times
+    and the São of São Paulo a few thousand, so it reads 0.02 and no
+    capitalisation threshold can ever see the name in it.
+
+    Where the per-occurrence splitter has divided a surface between readings,
+    the name reading can be measured on its own: the capitalized occurrences
+    over the occurrences the PROPN votes claim.
+
+    Three conditions, because the statistic is worthless without them. The
+    PROPN reading must have at least ``min_votes`` votes and ``min_share`` of
+    the surface's votes, and the capitals must *fit inside* it. Without those
+    a single stray PROPN tag collapses the denominator and the ratio saturates
+    at 1.0: `dado`, `estado`, `soldado`, `espada` and `fora` all came out at
+    1.00 and were dropped as names. When the capitals do not fit, they belong
+    to some other reading, which means capitalisation is not diagnostic here
+    and the plain ratio stands.
+
+        são   0.02 over everything -> 0.21 for the name reading
+        nova  0.40 over everything -> 0.76
+
+    Both are short of a name (john and maria sit at 1.00), which is the
+    answer: what is left of `são` and `nova` after the split is mostly the
+    common word the tagger mislabelled, not the place.
+    """
+    caps: dict[str, float] = {}
+    claimed: dict[str, float] = {}
+    votes_for: dict[str, int] = {}
+    for surface, votes in joint_splits.items():
+        total = sum(votes.values())
+        if not total:
+            continue
+        propn = {lemma: n for (lemma, upos), n in votes.items() if upos == "PROPN"}
+        noninitial = noninitial_counts.get(surface, 0)
+        for lemma, n in propn.items():
+            if n < min_votes or n / total < min_share:
+                continue
+            claimed[lemma] = claimed.get(lemma, 0.0) + noninitial * (n / total)
+            caps[lemma] = caps.get(lemma, 0.0) + cap_counts.get(surface, 0)
+            votes_for[lemma] = votes_for.get(lemma, 0) + n
+    return {lemma: caps[lemma] / claimed[lemma]
+            for lemma in claimed
+            if claimed[lemma] > 0 and caps[lemma] <= claimed[lemma]}
+
+
 def is_proper_noun(
     lemma: str,
     count: int,

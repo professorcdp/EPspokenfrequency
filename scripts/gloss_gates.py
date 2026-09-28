@@ -98,7 +98,7 @@ def run(results: Sequence[dict[str, Any]], rows: Sequence[dict[str, Any]],
             gates["coverage"].hit(row, "no gloss")
 
     for r in results:
-        if r.get("source") == "override":
+        if r.get("source", "model") != "model":
             gates["override"].hit(r, r.get("override_note", "") or "overridden")
             if r["example_pt"] and r["example_pt"] not in r["sentences"]:
                 gates["override_off_corpus"].hit(r, r["example_pt"])
@@ -128,7 +128,7 @@ def run(results: Sequence[dict[str, Any]], rows: Sequence[dict[str, Any]],
             gates["no_example"].hit(r, "no sentence fitted"
                                     if r["sentences"] else "no sentence available")
             continue
-        if ex not in r["sentences"] and r.get("source") != "override":
+        if ex not in r["sentences"] and r.get("source", "model") == "model":
             gates["verbatim"].hit(r, ex)
         if not r["example_en"].strip():
             gates["translated"].hit(r, ex)
@@ -139,7 +139,7 @@ def run(results: Sequence[dict[str, Any]], rows: Sequence[dict[str, Any]],
                      for i in range(len(toks) - len(parts) + 1))
         else:
             ok = bool(set(toks) & surfaces_of(r))
-        if not ok and r.get("source") != "override":
+        if not ok and r.get("source", "model") == "model":
             gates["contains_entry"].hit(r, ex)
 
     # An entry with nothing to illustrate it is allowed, up to a share.
@@ -156,7 +156,8 @@ def run(results: Sequence[dict[str, Any]], rows: Sequence[dict[str, Any]],
             "rows": len(results),
             "entries": len({r["lemma"] for r in results}),
             "with_example": sum(1 for r in results if r["example_pt"]),
-            "overridden": sum(1 for r in results if r.get("source") == "override"),
+            "overridden": sum(1 for r in results if r.get("source", "model") != "model"),
+            "sources": Counter(r.get("source", "model") for r in results),
             "no_example_share": share,
             "senses": Counter(len([s for s in r["gloss"].split(";") if s.strip()])
                            for r in results),
@@ -203,6 +204,15 @@ def render(res: dict[str, Any], cfg: dict[str, Any], usage_lines: Iterable[str])
         out.append(f"| `{flag}` | {n:,} | {n / max(res['rows'], 1):.2%} |")
     out += [f"| _no flag_ | {res['unflagged']:,} | "
             f"{res['unflagged'] / max(res['rows'], 1):.2%} |", ""]
+
+    out += ["## Where each row comes from", "",
+            "`source` in `out/glosses.tsv`; the deck publishes it as "
+            "`Gloss_Source`.", "",
+            "| source | rows | reads on a card as |", "|---|---:|---|"]
+    labels = cfg["gloss"].get("source_labels", {})
+    for name, n in res["sources"].most_common():
+        out.append(f"| `{name}` | {n:,} | {labels.get(name, '—')} |")
+    out += [""]
 
     out += ["## Senses per gloss", "", "| senses | rows |", "|---:|---:|"]
     for n in sorted(res["senses"]):

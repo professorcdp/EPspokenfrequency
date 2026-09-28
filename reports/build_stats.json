@@ -74,10 +74,156 @@
   "lemma_closure_redirects": 7668,
   "mwes_retained": 657,
   "diacritic_folded": 30047,
+  "cap_ratio_by_reading": {
+    "aberto": [
+      0.026,
+      0.216
+    ],
+    "adormecida": [
+      0.399,
+      0.665
+    ],
+    "antártida": [
+      0.997,
+      0.998
+    ],
+    "assombrado": [
+      0.044,
+      0.073
+    ],
+    "brigar": [
+      0.001,
+      0.49
+    ],
+    "bushido": [
+      0.729,
+      0.911
+    ],
+    "cagada": [
+      0.016,
+      0.026
+    ],
+    "debandada": [
+      0.015,
+      0.025
+    ],
+    "desoladas": [
+      0.467,
+      0.583
+    ],
+    "dourado": [
+      0.268,
+      0.447
+    ],
+    "druida": [
+      0.296,
+      0.37
+    ],
+    "encantado": [
+      0.296,
+      0.302
+    ],
+    "engravatado": [
+      0.513,
+      0.641
+    ],
+    "fada": [
+      0.357,
+      0.446
+    ],
+    "flácido": [
+      0.025,
+      0.042
+    ],
+    "graduado": [
+      0.052,
+      0.087
+    ],
+    "iluminado": [
+      0.067,
+      0.112
+    ],
+    "invertido": [
+      0.099,
+      0.164
+    ],
+    "janados": [
+      0.006,
+      0.007
+    ],
+    "manchada": [
+      0.021,
+      0.026
+    ],
+    "marmelada": [
+      0.05,
+      0.083
+    ],
+    "morado": [
+      0.071,
+      0.118
+    ],
+    "namorado": [
+      0.005,
+      0.021
+    ],
+    "nova": [
+      0.395,
+      0.759
+    ],
+    "partido": [
+      0.123,
+      0.616
+    ],
+    "pelada": [
+      0.056,
+      0.093
+    ],
+    "perder": [
+      0.002,
+      0.57
+    ],
+    "perdido": [
+      0.027,
+      0.625
+    ],
+    "pintado": [
+      0.019,
+      0.031
+    ],
+    "prado": [
+      0.563,
+      0.939
+    ],
+    "prelado": [
+      0.568,
+      0.947
+    ],
+    "rápido": [
+      0.005,
+      0.131
+    ],
+    "são": [
+      0.021,
+      0.207
+    ],
+    "tornado": [
+      0.086,
+      0.144
+    ],
+    "unidas": [
+      0.684,
+      0.855
+    ],
+    "vestida": [
+      0.008,
+      0.013
+    ]
+  },
   "foreign_dropped": 11154,
   "short_dropped": 717,
   "bp_excluded": 16,
-  "proper_nouns_dropped": 251294,
+  "proper_nouns_dropped": 251300,
   "pos_votes_counted": 444913,
   "pos_votes_inconsistent": 13861,
   "contraction_pos": {
@@ -119,5 +265,5 @@
   "gold": {
     "pipeline, stage 2 (gated)": 0.9849397590361446
   },
-  "elapsed_s": 80.3
+  "elapsed_s": 59.3
 }

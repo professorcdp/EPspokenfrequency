@@ -176,7 +176,8 @@ def load_overrides(cfg: dict[str, Any],
         if key in out:
             raise SystemExit(f"{path}: {key[0]} ({key[1]}) is listed twice")
         out[key] = {k: (row.get(k) or "").strip()
-                    for k in ("gloss", "example_pt", "example_en", "note")}
+                    for k in ("gloss", "example_pt", "example_en", "note", "source")}
+        out[key]["source"] = out[key]["source"] or "override"
     if rows is not None:
         published = {(r["lemma"], r["pos"]) for r in rows}
         unknown = sorted(k for k in out if k not in published)
@@ -877,7 +878,7 @@ def gloss_rows(cfg: dict[str, Any], rows: Sequence[dict[str, Any]],
             parsed = apply_override(parsed, over)
         results.append({**row, **parsed, "sentences": got, "repaired": repaired,
                         "attempts": blob.get("attempts", 1),
-                        "source": "override" if over else "model",
+                        "source": over["source"] if over else "model",
                         "override_note": over["note"] if over else "",
                         "problem": verify(parsed, got, overridden=bool(over))})
     return results, usage
@@ -1020,7 +1021,7 @@ def from_cache(cfg: dict[str, Any], rows: Sequence[dict[str, Any]], sents: Sente
             parsed = apply_override(parsed, over)
         results.append({**row, **parsed, "sentences": blob["sentences"],
                         "repaired": repaired, "attempts": blob.get("attempts", 1),
-                        "source": "override" if over else "model",
+                        "source": over["source"] if over else "model",
                         "override_note": over["note"] if over else "",
                         "problem": verify(parsed, blob["sentences"],
                                           overridden=bool(over))})
@@ -1034,7 +1035,31 @@ def from_cache(cfg: dict[str, Any], rows: Sequence[dict[str, Any]], sents: Sente
 
 def write_tsv(path: Path, results: Sequence[dict[str, Any]],
               show_sentences: bool = False) -> None:
+    """Write the gloss rows. The review file *merges*: any column a reviewer
+    has added to it is carried over, matched on lemma and POS.
+
+    Without that, regenerating the review file silently destroys the work it
+    exists to collect -- it wiped 257 native-speaker verdicts once. Every
+    other generated file in eval/ merges rather than overwrites for the same
+    reason (see scripts/make_proper_noun_review.py).
+    """
     cols = list(REVIEW_COLUMNS if show_sentences else GLOSS_COLUMNS)
+    prior: dict[tuple[str, str], dict[str, str]] = {}
+    if show_sentences and path.is_file():
+        with path.open(encoding="utf-8", newline="") as fh:
+            reader = csv.DictReader(fh, delimiter="\t")
+            extra = [c for c in (reader.fieldnames or []) if c not in cols]
+            for row in reader:
+                prior[(row["lemma"], row["pos"])] = row
+        if extra:
+            cols += extra
+            keys = {(r["lemma"], r["pos"]) for r in results}
+            lost = [k for k, row in prior.items()
+                    if k not in keys and any((row.get(c) or "").strip() for c in extra)]
+            if lost:
+                _log(f"  warning: {len(lost)} reviewed row(s) are no longer in the "
+                     f"sample and their {', '.join(extra)} would be dropped: "
+                     + ", ".join(f"{l} ({p})" for l, p in sorted(lost)[:8]))
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8", newline="\n") as fh:
         # csv defaults, as everywhere else in the pipeline: a sentence that
@@ -1053,6 +1078,9 @@ def write_tsv(path: Path, results: Sequence[dict[str, Any]],
                         " | ".join(r["sentences"])]
             else:
                 out.append(r.get("source", "model"))
+            if len(out) < len(cols):
+                kept = prior.get((r["lemma"], r["pos"]), {})
+                out += [kept.get(c, "") for c in cols[len(out):]]
             w.writerow(["" if v is None else " ".join(str(v).split()) for v in out])
 
 

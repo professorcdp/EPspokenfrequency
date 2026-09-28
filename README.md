@@ -263,10 +263,13 @@ probably mostly a name) and `uncertain` (the model was not confident).
 Slang and vulgarities are glossed plainly: this is a record of how people
 speak, not a teaching aid. See [the caveat below](#the-glosses-are-a-model-snapshot).
 
-`source` is `model` for every row but one. It reads `override` where a
-reviewer overruled the model in
-[eval/gloss_overrides.tsv](eval/gloss_overrides.tsv) — at present only
-*caseiro*, which the model declines to gloss at all.
+`source` says where the row came from, and the deck publishes it as
+`Gloss_Source`. It is `model` for 9,985 rows. The other 15 are in
+[eval/gloss_overrides.tsv](eval/gloss_overrides.tsv), where a reviewer
+overruled the model: `override-edited` (6) for a corpus line a native speaker
+edited, `override-chosen` (7) for a different corpus line she chose, and
+`override` (2) for a gloss written by hand — *caseiro*, which the model
+declines to gloss at all, and *largo*.
 
 ### Quality-control files
 

@@ -513,3 +513,50 @@ def test_the_same_row_cannot_be_overridden_twice(release_cfg, tmp_path):
 def test_comments_and_blank_lines_are_ignored(release_cfg, tmp_path):
     cfg = _overrides(tmp_path, release_cfg, "\n# another comment\ncasa\tnoun\thouse\t\t\t\n")
     assert set(gloss.load_overrides(cfg)) == {("casa", "noun")}
+
+
+# -- the review file is an input as well as an output -------------------------
+
+
+def test_regenerating_the_review_file_keeps_a_reviewer_s_columns(release_cfg, tmp_path):
+    """It wiped 257 native-speaker verdicts once. Every generated file in
+    eval/ merges rather than overwrites, and this one is no exception."""
+    path = tmp_path / "gloss_review.tsv"
+    rows = [_result(rank=1, lemma="casa"), _result(rank=2, lemma="livro")]
+    gloss.write_tsv(path, rows, show_sentences=True)
+
+    # a reviewer adds columns and fills one in
+    text = path.read_text(encoding="utf-8").splitlines()
+    head, body = text[0], text[1:]
+    path.write_text("\n".join(
+        [head + "\ttutor_verdict\ttutor_note"]
+        + [body[0] + "\tgood\tfine as it is", body[1] + "\t\t"]) + "\n",
+        encoding="utf-8")
+
+    gloss.write_tsv(path, rows, show_sentences=True)      # regenerate
+    import csv
+
+    back = list(csv.DictReader(path.open(encoding="utf-8", newline=""), delimiter="\t"))
+    assert [r["lemma"] for r in back] == ["casa", "livro"]
+    assert back[0]["tutor_verdict"] == "good"
+    assert back[0]["tutor_note"] == "fine as it is"
+    assert back[1]["tutor_verdict"] == ""
+
+
+def test_a_reviewed_row_leaving_the_sample_is_reported(release_cfg, tmp_path, capsys):
+    path = tmp_path / "gloss_review.tsv"
+    gloss.write_tsv(path, [_result(rank=1, lemma="casa")], show_sentences=True)
+    text = path.read_text(encoding="utf-8").splitlines()
+    path.write_text("\n".join([text[0] + "\ttutor_verdict", text[1] + "\tgood"]) + "\n",
+                    encoding="utf-8")
+    gloss.write_tsv(path, [_result(rank=1, lemma="livro")], show_sentences=True)
+    assert "no longer in the sample" in capsys.readouterr().err
+
+
+def test_the_gloss_file_has_no_reviewer_columns(release_cfg, tmp_path):
+    """out/glosses.tsv is published output; only the review file merges."""
+    path = tmp_path / "glosses.tsv"
+    gloss.write_tsv(path, [_result()], show_sentences=False)
+    header = path.read_text(encoding="utf-8").splitlines()[0].split("\t")
+    assert header == list(gloss.GLOSS_COLUMNS)
+    assert "source" in header and "tutor_verdict" not in header

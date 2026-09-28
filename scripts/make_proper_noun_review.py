@@ -25,7 +25,8 @@ import argparse
 import csv
 from pathlib import Path
 
-COLUMNS = ["lemma", "count", "cap_ratio", "cap_ratio_before", "filter_drops", "decision"]
+COLUMNS = ["lemma", "count", "cap_ratio", "cap_ratio_before", "filter_drops",
+           "decision", "note"]
 
 
 def main() -> None:
@@ -55,11 +56,13 @@ def main() -> None:
             "cap_ratio_before": before,
             "filter_drops": a.get("filter_drops", ""),
             "decision": (r.get("decision") or "").strip(),
+            "note": (r.get("note") or "").strip(),
         })
     new = [a for lemma, a in audit.items() if lemma not in known and a["filter_drops"] == "yes"]
     for a in sorted(new, key=lambda a: (-int(a["count"]), a["lemma"])):
         rows.append({"lemma": a["lemma"], "count": a["count"], "cap_ratio": a["cap_ratio"],
-                     "cap_ratio_before": "", "filter_drops": "yes", "decision": ""})
+                     "cap_ratio_before": "", "filter_drops": "yes", "decision": "",
+                     "note": ""})
 
     with out.open("w", encoding="utf-8", newline="\n") as fh:
         fh.write("\t".join(COLUMNS) + "\n")

@@ -1,6 +1,6 @@
 # Lemmas filtered out by the proper-noun/OOV heuristic.
 # Sorted desc by raw count -- review to rescue any false positives.
-# Truncated to entries with >= 100 occurrences: 18,532 of 251,294. The full list is written next to
+# Truncated to entries with >= 100 occurrences: 18,538 of 251,300. The full list is written next to
 # this file as *_full.txt and is not committed.
 # count	lemma	cap_ratio	reason
 132092	john	0.998	review_decision
@@ -518,6 +518,7 @@
 7141	april	0.998	cap_ratio=1.00, oov
 7129	graham	0.999	cap_ratio=1.00, oov
 7126	israel	0.996	review_decision
+7119	lorque	0.000	review_decision
 7117	virginia	0.996	cap_ratio=1.00, oov
 7114	bell	0.985	cap_ratio=0.98, oov
 7104	helena	0.994	review_decision
@@ -1136,6 +1137,7 @@
 3341	trey	0.999	cap_ratio=1.00, oov
 3340	stargate	0.968	cap_ratio=0.97, oov
 3334	nigel	0.999	cap_ratio=1.00, oov
+3330	unidas	0.855	cap_ratio=0.86
 3329	buzz	0.978	cap_ratio=0.98, oov
 3325	rabbit	0.995	cap_ratio=0.99, oov
 3324	eminência	0.936	cap_ratio=0.94
@@ -1512,6 +1514,7 @@
 2460	lizzy	0.999	cap_ratio=1.00, oov
 2458	ming	0.993	cap_ratio=0.99
 2458	tito	0.992	cap_ratio=0.99
+2457	prado	0.939	cap_ratio=0.94
 2456	everett	0.999	cap_ratio=1.00, oov
 2450	oak	0.989	cap_ratio=0.99, oov
 2449	missouri	0.994	cap_ratio=0.99, oov
@@ -3039,7 +3042,7 @@
 1128	verne	0.995	cap_ratio=0.99, oov
 1127	taj	0.985	cap_ratio=0.98, oov
 1127	warrick	1.000	cap_ratio=1.00, oov
-1126	antártida	0.997	cap_ratio=1.00
+1126	antártida	0.998	cap_ratio=1.00
 1126	bartlett	0.998	cap_ratio=1.00, oov
 1126	talia	0.999	cap_ratio=1.00, oov
 1125	annette	1.000	cap_ratio=1.00, oov
@@ -4309,6 +4312,7 @@
 732	waverly	1.000	cap_ratio=1.00, oov
 731	blaster	0.928	cap_ratio=0.93, oov
 731	haqqani	1.000	cap_ratio=1.00, oov
+731	lolaus	0.000	review_decision
 731	niners	0.999	cap_ratio=1.00, oov
 731	norah	1.000	cap_ratio=1.00, oov
 731	vanger	0.992	cap_ratio=0.99, oov
@@ -6486,6 +6490,7 @@
 430	nasser	1.000	cap_ratio=1.00, oov
 430	nix	0.978	cap_ratio=0.98, oov
 430	orton	1.000	cap_ratio=1.00, oov
+430	prelado	0.947	cap_ratio=0.95
 430	rcp	1.000	cap_ratio=1.00, oov
 430	roach	0.997	cap_ratio=1.00, oov
 429	abaddon	1.000	cap_ratio=1.00, oov
@@ -13438,6 +13443,7 @@
 157	bartolo	1.000	cap_ratio=1.00, oov
 157	biocyte	1.000	cap_ratio=1.00, oov
 157	botha	1.000	cap_ratio=1.00, oov
+157	bushido	0.911	cap_ratio=0.91, oov
 157	byamba	1.000	cap_ratio=1.00, oov
 157	carfax	1.000	cap_ratio=1.00, oov
 157	cassavetes	1.000	cap_ratio=1.00, oov

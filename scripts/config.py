@@ -52,6 +52,7 @@ _FIX_FLAGS = (
     "proper_noun_review",
     "contraction_pos",
     "repair_glued_enclitics",
+    "split_aware_proper_nouns",
 )
 
 

@@ -203,6 +203,13 @@ filters:
     # dictionary happens to contain, such as `cristina`.
     stage2_cap_ratio_threshold: 0.85
     min_count: 1
+    # fixes.split_aware_proper_nouns: a surface divided across readings is
+    # judged on its PROPN reading alone, but only where that reading is real.
+    # Below these a single stray PROPN tag collapses the denominator and the
+    # ratio saturates at 1.00 -- which dropped dado, estado, soldado, espada
+    # and fora as names.
+    reading_min_propn_votes: 3
+    reading_min_propn_share: 0.10
 
 # Stage 2 fixes. Each is independently switchable so its effect on the
 # output can be measured in isolation.
@@ -273,6 +280,11 @@ fixes:
   # Apply the human decisions in filters.proper_nouns.keep_file: `keep`
   # words are never dropped as proper nouns, `drop` words always are.
   proper_noun_review: true
+  # Judge a surface that the per-occurrence splitter divided across readings
+  # on its proper-noun reading alone. The plain capitalisation ratio mixes
+  # every reading together, so a name hiding inside a common word (the São of
+  # São Paulo inside the verb form `são`) can never reach the threshold.
+  split_aware_proper_nouns: true
   # Split a glued enclitic cluster (conheçoa, fazêlo) as if its hyphen were
   # there, from the table in tokenizer.glue_repair. Off in stage 1, which has
   # to keep reproducing the April output.
@@ -690,6 +702,15 @@ gloss:
   # model's answer for the fields it fills in. Seeded with the one word the
   # model refuses to gloss at all.
   overrides_file: gloss_overrides.tsv   # read from paths.eval_dir
+  # What each `source` value reads as on a card. The deck publishes this as
+  # Gloss_Source, so a learner can see where a gloss and its example came
+  # from; out/glosses.tsv carries the bare value. The field itself arrives
+  # with the glossed deck.
+  source_labels:
+    model: "Claude; example taken verbatim from the corpus"
+    override: "written by hand"
+    override-chosen: "corpus line chosen by a native speaker"
+    override-edited: "corpus line, edited by a native speaker"
   # What the machine can check about a finished run (scripts/gloss_gates.py).
   # Provenance and shape only: whether a gloss is right is a question for the
   # reader, which is what the review file is for.

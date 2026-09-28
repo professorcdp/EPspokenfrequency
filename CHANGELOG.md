@@ -115,6 +115,73 @@ when the glosses have been reviewed.
   `efeitos colaterais` took its place; the other 51 replacements are new
   entries at the bottom of the list, ranks 9,904–10,000.
 
+- **A native speaker's first-pass gloss review is applied**
+  (`eval/gloss_review.tsv`, from the advisor's commit `6edc345`). 257 of the
+  top 500 rows carry a verdict. Seven of them say "verdict given on the
+  earlier gloss text", and by decision those do not count as reviewed, so the
+  reviewed total is **250: 236 good, 13 fix, 1 wrong** — not the 257/243 the
+  raw tally shows.
+
+  Her example changes are accepted as overrides, in two kinds. Six are
+  sentences she edited, and those are published with `source =
+  override-edited`; seven are different corpus lines she chose from the ones
+  the model was shown, published as `override-chosen`. An eighth chose the
+  line already there, so there was nothing to apply. The English for all
+  thirteen was written here to match her Portuguese — she supplied the
+  Portuguese only — and every row says so in its `note`.
+
+  `out/glosses.tsv` gains a `source` column and `config.yaml` a
+  `gloss.source_labels` table, so the deck's `Gloss_Source` field can read
+  "corpus line, edited by a native speaker" for those six. The field itself
+  arrives with the glossed deck; the column is there now.
+
+- **Regenerating the review file no longer destroys the review.**
+  `write_tsv` overwrote `eval/gloss_review.tsv` with the columns it knows
+  about, which wiped all 257 verdicts the first time the file was rebuilt
+  after the advisor filled them in (recovered from git). It now merges,
+  carrying over any column a reviewer has added, matched on lemma and POS,
+  and warns when a reviewed row has left the sample. Every other generated
+  file in `eval/` already worked this way.
+
+- **`lorque` is dropped**: *Iorque* with its capital I read as a lowercase l,
+  7,119 occurrences at rank 3,885, invisible to the proper-noun filter
+  because it is never capitalized. It and `lolaus` (*Iolaus*, 731) are in
+  `eval/proper_noun_drops_review.tsv`, which gains a `note` column. A scan
+  for siblings — an l where a capital I belongs, never capitalized, whose
+  I-form is a frequent dropped name — finds 121 in the corpus, but every one
+  apart from these two occurs 74 times or fewer, far below the list. The two
+  worth knowing about that the scan cannot see are `lgreja` (595) and
+  `lnglês` (141), whose I-forms are ordinary words rather than dropped names.
+
+- **The proper-noun filter measures capitalisation per reading**
+  (`fixes.split_aware_proper_nouns`). The plain ratio mixes every reading of a
+  surface together, so a name hiding inside a common word can never reach the
+  threshold. Where the per-occurrence splitter has divided a surface, the
+  name reading is now measured on its own.
+
+  **This needs three guards, and without them it is worse than useless.** The
+  PROPN reading must have at least 3 votes and 10% of the surface's votes, and
+  the capitals must fit inside it. Without them a single stray PROPN tag
+  collapses the denominator and the ratio saturates at 1.00: the first run
+  dropped `fora`, `tratar`, `estado`, `soldado`, `dado`, `espada`, `privado`,
+  `sagrado`, `gelado`, `temporada`, `embaixada`, `condado` and `deputado` as
+  names. With the guards, 36 lemmas are re-measured and five cross the
+  threshold: `antártida`, `prelado`, `prado`, `bushido` and `unidas` (as in
+  *Nações Unidas*). Three entries leave the list — `lorque`, `unidas` (3,330)
+  and `prado` (2,457) — three enter at the bottom, and **no count changes at
+  all**.
+
+  **The `são` and `nova` residues survive, and that is the right answer.**
+  Measured on their PROPN reading alone `são` reads 0.21 and `nova` 0.76,
+  against a threshold of 0.85 and the 1.00 that names like *john* and *maria*
+  sit at. What is left of them after the tag split is mostly the common word
+  the tagger mislabelled, not the place — so the remedy for `nova` is a better
+  vote share, not the filter.
+
+- **`largo` has a gloss override**: "wide, broad; (noun) square, plaza", since
+  the noun sense lost its own row when `larga`'s adjectival occurrences pushed
+  the noun share below the POS-split threshold.
+
 - **`são` was published as a noun at rank 86, with 1,117,272 occurrences.**
   It is the third person plural of *ser* — "they are" — and Stanza says so in
   45 of its 50 sampled sentences. It was capitalized in only 2% of its

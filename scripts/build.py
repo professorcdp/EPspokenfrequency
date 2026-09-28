@@ -385,6 +385,19 @@ def run(cfg: dict[str, Any]) -> dict[str, Any]:
         _log(f"  folded {len(fold_log):,} accent variants")
 
     cap_ratios = {w: bg.cap_ratio(w) for w in lemma_counts}
+    if cfg["run"]["stage"] >= 2 and cfg["fixes"].get("split_aware_proper_nouns"):
+        # A surface split across readings is judged on its PROPN reading only.
+        pn = cfg["filters"]["proper_nouns"]
+        by_reading = filters_mod.reading_cap_ratios(
+            joint_splits, bg.cap_counts, bg.noninitial_counts,
+            min_votes=pn.get("reading_min_propn_votes", 3),
+            min_share=pn.get("reading_min_propn_share", 0.10))
+        moved = {l: (cap_ratios[l], r) for l, r in by_reading.items()
+                 if l in cap_ratios and abs(cap_ratios[l] - r) > 1e-9}
+        cap_ratios.update({l: r for l, r in by_reading.items() if l in cap_ratios})
+        stats["cap_ratio_by_reading"] = {l: [round(a, 3), round(b, 3)]
+                                        for l, (a, b) in sorted(moved.items())}
+        _log(f"  proper nouns: {len(moved)} lemmas re-measured on their PROPN reading")
     kept, flog = filters_mod.apply(
         lemma_counts, cap_ratios, cfg, lemmas_mod.in_dictionary, lemmas_mod.in_english
     )
