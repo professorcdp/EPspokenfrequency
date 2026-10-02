@@ -403,7 +403,7 @@ models and PyTorch). The first build takes about an hour on an 8-core
 machine; later builds reuse cached passes and take a minute.
 
 ```bash
-git clone https://github.com/jamminalley/EPspokenfrequency.git
+git clone https://github.com/professorcdp/EPspokenfrequency.git
 cd EPspokenfrequency
 python3 -m venv .venv
 ./.venv/bin/pip install -r requirements.txt
