@@ -77,3 +77,11 @@ build/
 # out/glosses.tsv, which is committed.
 cache/
 _to_delete/
+
+# Certificates and key files, and anything in a secrets folder. None of these
+# are used by this project today; the lines are here so they can never be
+# committed by accident.
+*.pem
+*.p12
+*.p8
+secrets/
