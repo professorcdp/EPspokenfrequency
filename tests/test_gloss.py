@@ -560,3 +560,25 @@ def test_the_gloss_file_has_no_reviewer_columns(release_cfg, tmp_path):
     header = path.read_text(encoding="utf-8").splitlines()[0].split("\t")
     assert header == list(gloss.GLOSS_COLUMNS)
     assert "source" in header and "tutor_verdict" not in header
+
+
+def test_an_override_can_correct_the_english_alone():
+    """A reviewer corrects a translation more often than she replaces the
+    sentence. The Portuguese stays the corpus line, so the row keeps its claim
+    to be verbatim and only the English changes."""
+    model = {"gloss": "to make", "example_pt": "Não a torna real.",
+             "example_en": "It doesn't make it real.", "flags": []}
+    out = gloss.apply_override(model, {"gloss": "", "example_pt": "",
+                                       "example_en": "It doesn't make her real.",
+                                       "note": "", "source": "override-english"})
+    assert out["example_pt"] == "Não a torna real."
+    assert out["example_en"] == "It doesn't make her real."
+
+
+def test_every_source_in_the_overrides_file_has_a_label(release_cfg):
+    """Gloss_Source shows these words to a learner, so a value with no wording
+    would publish a bare slug."""
+    labels = release_cfg["gloss"]["source_labels"]
+    used = {o["source"] for o in gloss.load_overrides(release_cfg).values()}
+    assert used <= set(labels), f"no label for {used - set(labels)}"
+    assert "model" in labels

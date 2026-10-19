@@ -711,6 +711,7 @@ gloss:
     override: "written by hand"
     override-chosen: "corpus line chosen by a native speaker"
     override-edited: "corpus line, edited by a native speaker"
+    override-english: "corpus line; English corrected by a native speaker"
   # What the machine can check about a finished run (scripts/gloss_gates.py).
   # Provenance and shape only: whether a gloss is right is a question for the
   # reader, which is what the review file is for.

@@ -3,6 +3,31 @@
 Newest first. One entry per working session: what changed, which issues it touched,
 and what comes next. The CHANGELOG records what shipped; this records what happened.
 
+## 2026-10-18 — Round two merged; the top 500 is reviewed (#7, #8, #9, #10)
+
+Her round-two answers arrived and are saved verbatim in
+`eval/gloss_review_round2_raw.txt`, committed on its own before anything parsed
+them. 512 lines, all parsing: 498 verdicts (476 good, 21 fix, 1 wrong) and 13
+confirm answers (12 ok, 1 corrected). Nothing in the optional band below rank 500.
+
+**The top 500 is now reviewed in full: 500 of 500 — 478 good, 21 fix, 1 wrong.**
+The two rows without a round-two line already carried a round-one verdict and
+correctly showed as done on the page.
+
+Her `note` field carried three different things, settled with Jim before merging
+rather than guessed at. Six "fix" lines were round-one state resurfacing — the
+page sets the verdict to "fix" when a sentence is clicked, and her browser still
+held the old answers — so those recorded a verdict and changed nothing else. Four
+notes were corrected English, which the merge rules did not cover; they became a
+new kind of override that replaces the translation while the Portuguese stays the
+corpus line (`override-english`, and `apply_override` had to learn to do that).
+Five notes were corrected Portuguese and became `override-edited`, including
+`trás`, where she put back the accent the subtitle had dropped, and `dever`, which
+had no example at all until she supplied one.
+
+Overrides are now 29 rows. Gates pass, 294 tests pass, nothing regenerated through
+the API.
+
 ## 2026-10-15 — Her first-round answers carried in the page (#7)
 
 The review page no longer depends on her opening it in the same browser. Each row

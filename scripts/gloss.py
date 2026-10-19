@@ -197,6 +197,11 @@ def apply_override(parsed: dict[str, Any], over: dict[str, str]) -> dict[str, An
     if over.get("example_pt"):
         out["example_pt"] = over["example_pt"]
         out["example_en"] = over.get("example_en", "")
+    elif over.get("example_en"):
+        # The Portuguese is still the corpus line; only its translation is
+        # being corrected, which a reviewer does more often than replacing
+        # the sentence itself.
+        out["example_en"] = over["example_en"]
     out["flags"] = [f for f in out.get("flags", ()) if f != "uncertain"]
     return out
 

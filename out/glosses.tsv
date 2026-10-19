@@ -3,11 +3,11 @@ rank	lemma	pos	is_mwe	freq_per_million	pos_share	gloss	example_pt	example_en	fla
 2	ser	verb	0	35092.856		to be (permanent, identity)	Sim, sou o Ray.	Yes, I'm Ray.		model
 3	não	adv	0	28255.678		no; not	Eu não penso assim..	I don't think so..		model
 4	que	conj	0	25961.670	0.740	that; than	Acho que foi tudo uma vigarice.	I think it was all a scam.		model
-5	de	prep	0	24172.507		of; from; by	Estávamos à espera de ti.	We were waiting for you.		model
+5	de	prep	0	24172.507		of; from; by; for	Estávamos à espera de ti.	We were waiting for you.		override
 6	estar	verb	0	22177.734		to be (state, location)	B, estás aí?	B, are you there?		model
-7	um	det	0	21898.144		a, an; one; some (pl.)	Um bom dia, Dot.	Good morning, Dot.		override-chosen
+7	um	det	0	21898.144		a, an; one; some (pl.)	Um bom dia, Dot.	A good morning, Dot.		override-chosen
 8	a	det	0	19738.690	0.549	the (feminine singular)	Despache a sua mala.	Check in your suitcase.		override-edited
-9	a	prep	0	16236.298	0.451	to; at; (with infinitive) -ing	Vem até á minha mesa.	Come over to my table.		model
+9	a	prep	0	16236.298	0.451	to; at; (with infinitive) -ing	Mas devo a ela.	But I owe it to her.		override-chosen
 10	e	conj	0	16191.270		and	Grande, moderna e arrojada.	Big, modern and bold.		model
 11	ter	verb	0	14995.111		to have; to have to (ter de/que); there to be	Mas tens amigos.	But you have friends.		model
 12	ir	verb	0	14174.533		to go; to be going to (future)	Ok, nós podemos ir?	Okay, can we go?		model
@@ -45,7 +45,7 @@ rank	lemma	pos	is_mwe	freq_per_million	pos_share	gloss	example_pt	example_en	fla
 44	aqui	adv	0	3710.240		here	Não pode fumar aqui, querido.	You can't smoke here, dear.		model
 45	haver	verb	0	3356.551		there to be; to have (auxiliary); to exist	Há aqui um canteiro.	There's a flower bed here.		model
 46	isto	pron	0	3243.572		this	Isto é a origem?	Is this the origin?		model
-47	ela	pron	0	3214.769		she; her	Ela é do Connecticut.	She's from Connecticut.		model
+47	ela	pron	0	3214.769		she; her	Ela é de Connecticut.	She's from Connecticut.		override-edited
 48	já	adv	0	2931.048		already; now, right away; ever (in questions)	Já é tarde, Marty.	It's late already, Marty.		model
 49	coisa	noun	0	2845.138		thing; stuff	Porque não as duas coisas?	Why not both things?		model
 50	à	det	0	2735.787		to the; at the (fem.)	O destino bate à porta.	Destiny knocks at the door.		model
@@ -66,7 +66,7 @@ rank	lemma	pos	is_mwe	freq_per_million	pos_share	gloss	example_pt	example_en	fla
 65	lá	adv	0	2331.160		there; (emphatic particle)	Eles foram para lá?	Did they go there?		model
 66	é que	mwe	1	2297.697		is it that (emphatic filler in questions); it's ... that	O que é que se passa com ela agora?	What's going on with her now?		model
 67	todo	det	0	2240.739	0.688	all; every; whole	Considerei todas as possibilidades.	I considered all the possibilities.		model
-68	dever	noun	0	2219.888		duty; obligation			uncertain	model
+68	dever	noun	0	2219.888		duty; obligation	Tens o dever de respeitar as regras da estrada.	You have a duty to obey the rules of the road.		override-edited
 69	precisar	verb	0	2195.558		to need	Eu preciso de um doutor.	I need a doctor.		model
 70	deixar	verb	0	2153.019		to leave; to let, allow	Não nos deixe aqui!	Don't leave us here!		model
 71	não é	mwe	1	2120.976		it isn't; isn't it?, right?	Não é um sítio mau para negociar.	It's not a bad place to do business.		model
@@ -78,7 +78,7 @@ rank	lemma	pos	is_mwe	freq_per_million	pos_share	gloss	example_pt	example_en	fla
 77	então	adv	0	2021.136		so; then; well	Então, vou mudar o plano.	So, I'm going to change the plan.		model
 78	nada	pron	0	1987.067		nothing; anything (in negatives)	Se não precisa de mais nada, vou andando.	If you don't need anything else, I'll be off.		model
 79	é o	mwe	1	1951.104		it's the; he's the	É o melhor que vais arranjar.	It's the best you're going to get.		model
-80	mesmo	pron	0	1947.510		same; -self (oneself)	Tu terias feito o mesmo.	You would have done the same.		model
+80	mesmo	pron	0	1947.510		same; -self (oneself)	E com vocês mesmos.	And with yourselves.		override-chosen
 81	ou	conj	0	1867.414		or	Ele ou ela.	Him or her.		model
 82	esperar	verb	0	1836.408		to wait; to hope; to expect	Esperei todo o dia.	I waited all day.		model
 83	conseguir	verb	0	1834.482		to manage to; to be able to; to get	Acho que o consigo ler.	I think I can read it.		override-edited
@@ -119,12 +119,12 @@ rank	lemma	pos	is_mwe	freq_per_million	pos_share	gloss	example_pt	example_en	fla
 118	pessoa	noun	0	1254.584		person; people (pl.)	E ela é uma boa pessoa.	And she's a good person.		model
 119	levar	verb	0	1250.034		to take; to carry; to take (someone) somewhere	Eu levo a vodka.	I'll bring the vodka.		model
 120	matar	verb	0	1248.415		to kill	Quem matou a Amber?	Who killed Amber?		model
-121	favor	noun	0	1243.922		"favor; please (in ""por favor"")"	Julie, ouve-me, por favor.	Julie, listen to me, please.		model
+121	favor	noun	0	1243.922		"favor; please (in ""por favor"")"	Não devo favores a você.	I don't owe you any favors.		override-chosen
 122	certo	adj	0	1223.397		right, correct; certain, some; okay? right?	Não, é a decisão certa.	No, it's the right decision.		model
 123	olhar	verb	0	1214.807		to look; to look at; look! (hey)	Não olhes para lá.	Don't look over there.		model
 124	sobre	prep	0	1210.382		about; on; over	Bem, já falámos sobre isso.	Well, we've already talked about that.		model
-125	este	pron	0	1180.785	0.321	this; this one; these	Que restaurante é este?	Which restaurant is this?		model
-126	acontecer	verb	0	1175.362		to happen; to occur	Já vi acontecer antes!	I've seen it happen before!		model
+125	este	pron	0	1180.785	0.321	this; this one; these	Que restaurante é este?	What restaurant is this?		override-english
+126	acontecer	verb	0	1175.362		to happen; to occur	Já o vi acontecer antes!	I've seen it happen before!		override-edited
 127	chegar	verb	0	1158.247		to arrive; to be enough	Ele chegou tarde.	He arrived late.		model
 128	tão	adv	0	1157.424		so; as (in comparisons)	Isso foi tão inteligente.	That was so clever.		model
 129	ti	pron	0	1153.759		you (after prepositions)	Também precisamos de ti.	We need you too.		model
@@ -171,7 +171,7 @@ rank	lemma	pos	is_mwe	freq_per_million	pos_share	gloss	example_pt	example_en	fla
 170	trabalho	noun	0	793.924		work; job; homework (trabalhos de casa)	Ele precisa deste trabalho.	He needs this job.		model
 171	entrar	verb	0	792.119		to enter, to come in; to join; to get into	Não entres nesse quarto.	Don't go into that room.		override-chosen
 172	hora	noun	0	791.946		hour; time (of day)	Saio dentro de uma hora.	I'm leaving in an hour.		model
-173	apenas	adv	0	778.692		only; just	é apenas um exercício.	It's just an exercise.		model
+173	apenas	adv	0	778.692		only; just	É apenas um exercício.	It's just an exercise.		override-edited
 174	obrigar	verb	0	774.448		to force; to make (someone do sth)	Obrigaram-me a usar isto.	They made me wear this.		model
 175	novo	adj	0	771.674		new; young	És novo aqui certo?	You're new here, right?		model
 176	acreditar	verb	0	770.335		to believe	Acredito que é possível.	I believe it's possible.		model
@@ -292,7 +292,7 @@ rank	lemma	pos	is_mwe	freq_per_million	pos_share	gloss	example_pt	example_en	fla
 291	onde está	mwe	1	409.180		where is	Então onde está o Chance?	So where's Chance?		model
 292	forma	noun	0	408.258		way, manner; shape, form	Há alguma forma de o contactar?	Is there any way to contact him?		model
 293	atrás	adv	0	406.186		behind; back; ago	Vamos, estarei bem atrás de ti.	Come on, I'll be right behind you.		model
-294	cidade	noun	0	400.730		city; town	Não entendo essa cidade.	I don't understand this city.		model
+294	cidade	noun	0	400.730		city; town	Não entendo essa cidade.	I don't understand that city.		override-english
 295	pequeno	adj	0	399.508		small; little	Essas são pequenas partículas.	Those are small particles.		model
 296	olho	noun	0	398.965		eye	Mantem-no debaixo de olho.	Keep an eye on him.		model
 297	importar	verb	0	398.019		to matter; to mind, to care; to import	Os nomes não importam.	Names don't matter.		model
@@ -318,7 +318,7 @@ rank	lemma	pos	is_mwe	freq_per_million	pos_share	gloss	example_pt	example_en	fla
 317	tarde	adv	0	358.998		late	Hoje já é muito tarde.	It's too late today.		model
 318	os meus	mwe	1	358.450		my (masculine plural)	Por favor, encontras os meus filhos?	Please, can you find my children?		model
 319	procurar	verb	0	356.501		to look for; to seek; to try to	Procuro a sala 310.	I'm looking for room 310.		model
-320	tornar	verb	0	353.893		to make; to become (tornar-se)	Não a torna real.	It doesn't make it real.		model
+320	tornar	verb	0	353.893		to make; to become (tornar-se)	Não a torna real.	It doesn't make her real.		override-english
 321	criança	noun	0	352.693		child; kid	Desde que era criança.	Ever since I was a child.		model
 322	morte	noun	0	350.976		death	Não, não tenho medo da morte.	No, I'm not afraid of death.		model
 323	lhes	pron	0	349.618		them (to them); you (formal plural)	Alguém lhes disse onde e quando.	Someone told them where and when.		model
@@ -374,7 +374,7 @@ rank	lemma	pos	is_mwe	freq_per_million	pos_share	gloss	example_pt	example_en	fla
 373	quarto	adj	0	292.936		room; fourth	Foi para o quarto.	He went to the bedroom.		model
 374	roubar	verb	0	290.941		to steal; to rob	Roubaste um telemóvel?	You stole a cellphone?		model
 375	morto	adj	0	290.087	0.673	dead	Agora ela está morta	Now she's dead		model
-376	número	noun	0	289.973		number	Ela perguntou o meu número.	She asked for my number.		model
+376	número	noun	0	289.973		number	Não sei, número três.	I don't know, number three.		override-chosen
 377	pois	adv	0	289.611	0.400	yeah, right; well then; (pois não) right?, isn't it?	Não és um rapaz, pois não?	You're not a boy, are you?		model
 378	beber	verb	0	289.523		to drink	Bebe um copo, pago eu.	Have a drink, I'm paying.		model
 379	água	noun	0	287.067		water	Estamos sem água também.	We're out of water too.		model
@@ -389,7 +389,7 @@ rank	lemma	pos	is_mwe	freq_per_million	pos_share	gloss	example_pt	example_en	fla
 388	seguro	adj	0	278.825		safe; secure; sure	A rua está segura?	Is the street safe?		model
 389	guerra	noun	0	275.782		war	A guerra acabou, mulher.	The war is over, woman.		model
 390	lindo	adj	0	275.322		beautiful; lovely	Tu estás linda hoje.	You look beautiful today.		model
-391	rápido	adj	0	275.254		fast, quick; quickly	Isto foi rápido!	That was quick!		model
+391	rápido	adj	0	275.254		fast, quick; quickly	Isto foi rápido!	This was quick!		override-english
 392	manhã	noun	0	275.238		morning	Não é todas as manhãs.	It's not every morning.		model
 393	tocar	verb	0	274.458		to touch; to play (music); to ring	Toca no meu peito!	Touch my chest!		model
 394	plano	noun	0	273.883		plan; shot (camera)	Tenho um plano fantástico.	I have a fantastic plan.		model
@@ -410,7 +410,7 @@ rank	lemma	pos	is_mwe	freq_per_million	pos_share	gloss	example_pt	example_en	fla
 409	enviar	verb	0	256.737		to send	Ele enviou-me uma mensagem.	He sent me a message.		model
 410	aparecer	verb	0	256.735		to appear; to show up; to turn up	O Chandler já apareceu?	Has Chandler shown up yet?		model
 411	equipa	noun	0	256.693		team	Faço parte de uma equipa.	I'm part of a team.		model
-412	colocar	verb	0	256.680		to put; to place; to put on	Coloque o seu casaco.	Put on your coat.		model
+412	colocar	verb	0	256.680		to put; to place; to put on	Coloque o dedo ali.	Place your finger there.		override-chosen
 413	procura	noun	0	256.218		search (mostly in à procura de: looking for); demand	Estou à procura de uma coisa.	I'm looking for something.		model
 414	outra vez	mwe	1	255.001		again	Experimenta outra vez, Greg.	Try again, Greg.		model
 415	dólar	noun	0	253.805		dollar	É só 1 dolar!	It's only 1 dollar!		override-chosen
@@ -480,7 +480,7 @@ rank	lemma	pos	is_mwe	freq_per_million	pos_share	gloss	example_pt	example_en	fla
 479	pena	noun	0	211.823		pity, shame; (to be) worth it; sentence (prison)	Vale a pena ter amigos.	It's worth having friends.		model
 480	decidir	verb	0	211.707		to decide	Ela decide, não nós.	She decides, not us.		model
 481	esta noite	mwe	1	211.668		tonight; last night	Vou sobreviver a esta noite?	Will I survive tonight?		model
-482	trás	adv	0	210.675		back, behind (para/de trás)	Temos de voltar para tras.	We have to go back.		override-chosen
+482	trás	adv	0	210.675		back, behind (para/de trás)	Temos de voltar para trás.	We have to go back.		override-edited
 483	depressa	adv	0	209.635		quickly; hurry up	Está bem, vem depressa!	All right, come quickly!		model
 484	aprender	verb	0	209.593		to learn	Já aprendi muito hoje.	I've already learned a lot today.		model
 485	valer	verb	0	208.631		to be worth; to be valid; to be worthwhile (valer a pena)	Não vale a pena, Conan.	It's not worth it, Conan.		model

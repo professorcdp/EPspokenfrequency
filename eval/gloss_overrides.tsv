@@ -18,18 +18,32 @@
 # Gloss_Source field; gloss.source_labels in config.yaml turns each value
 # into the wording a card shows. Leave it empty for a plain override.
 lemma	pos	gloss	example_pt	example_en	source	note
+a	det		Despache a sua mala.	Check in your suitcase.	override-edited	native-speaker edit of the corpus line (first-pass review, rank 8); English written to match, not hers; English confirmed by the reviewer
+a	prep		Mas devo a ela.	But I owe it to her.	override-chosen	corpus line chosen by a native speaker (round-two review); English hers
+acontecer	verb		Já o vi acontecer antes!	I've seen it happen before!	override-edited	native-speaker edit of the corpus line (round-two review); English written to match, not hers
+algo	pron		Possivelmente poderiamos fazer algo.	We could possibly do something.	override-edited	native-speaker edit of the corpus line (first-pass review, rank 159); English written to match, not hers; English confirmed by the reviewer
+aos	det		Estava a dizer aqui aos teus amigos para terem cuidado.	I was just telling your friends here to be careful.	override-chosen	corpus line chosen by a native speaker (first-pass review, rank 257); English written to match, not hers; English confirmed by the reviewer
+apenas	adv		É apenas um exercício.	It's just an exercise.	override-edited	native-speaker edit of the corpus line (round-two review); English written to match, not hers
 caseiro	adj	homemade; home-loving; caretaker (noun)			override	the model refuses this word on every attempt (stop_reason refusal, category general_harms); gloss written by hand
-um	det		- Um bom dia, Dot.	Good morning, Dot.	override-chosen	corpus line chosen by a native speaker (first-pass review, rank 7); English written to match, not hers
-a	det		Despache a sua mala.	Check in your suitcase.	override-edited	native-speaker edit of the corpus line (first-pass review, rank 8); English written to match, not hers
-dizer	verb		E não vais dizer nada?	And you're not going to say anything?	override-edited	native-speaker edit of the corpus line (first-pass review, rank 23); English written to match, not hers
-da	det		Era o efeito da cerveja, ok?	It was the effect of the beer, okay?	override-edited	native-speaker edit of the corpus line (first-pass review, rank 33); English written to match, not hers
-na	det		Ela estava na cozinha quando saí.	She was in the kitchen when I left.	override-edited	native-speaker edit of the corpus line (first-pass review, rank 40); English written to match, not hers
-conseguir	verb		Acho que o consigo ler.	I think I can read it.	override-edited	native-speaker edit of the corpus line (first-pass review, rank 83); English written to match, not hers
-algo	pron		Possivelmente poderiamos fazer algo.	We could possibly do something.	override-edited	native-speaker edit of the corpus line (first-pass review, rank 159); English written to match, not hers
-entrar	verb		-Não entres nesse quarto.	Don't go into that room.	override-chosen	corpus line chosen by a native speaker (first-pass review, rank 171); English written to match, not hers
-aos	det		Estava a dizer aqui aos teus amigos para terem cuidado.	I was just telling your friends here to be careful.	override-chosen	corpus line chosen by a native speaker (first-pass review, rank 257); English written to match, not hers
-neste	det		- No seu mundo, neste não.	In your world, not in this one.	override-chosen	corpus line chosen by a native speaker (first-pass review, rank 356); English written to match, not hers
-terra	noun		Smallville é a minha terra.	Smallville is my home town.	override-chosen	corpus line chosen by a native speaker (first-pass review, rank 398); English written to match, not hers
-dólar	noun		É só 1 dolar!	It's only 1 dollar!	override-chosen	corpus line chosen by a native speaker (first-pass review, rank 415); English written to match, not hers
-trás	adv		Temos de voltar para tras.	We have to go back.	override-chosen	corpus line chosen by a native speaker (first-pass review, rank 482); English written to match, not hers
+cidade	noun			I don't understand that city.	override-english	the Portuguese is the corpus line; the English is the reviewer's correction (round-two review)
+colocar	verb		Coloque o dedo ali.	Place your finger there.	override-chosen	corpus line chosen by a native speaker (round-two review); English hers
+conseguir	verb		Acho que o consigo ler.	I think I can read it.	override-edited	native-speaker edit of the corpus line (first-pass review, rank 83); English written to match, not hers; English confirmed by the reviewer
+da	det		Era o efeito da cerveja, ok?	It was the effect of the beer, okay?	override-edited	native-speaker edit of the corpus line (first-pass review, rank 33); English written to match, not hers; English confirmed by the reviewer
+de	prep	of; from; by; for			override	gloss corrected by the reviewer (round-two review)
+dever	noun		Tens o dever de respeitar as regras da estrada.	You have a duty to obey the rules of the road.	override-edited	native-speaker edit of the corpus line (round-two review); English written to match, not hers
+dizer	verb		E não vais dizer nada?	And you're not going to say anything?	override-edited	native-speaker edit of the corpus line (first-pass review, rank 23); English written to match, not hers; English confirmed by the reviewer
+dólar	noun		É só 1 dolar!	It's only 1 dollar!	override-chosen	corpus line chosen by a native speaker (first-pass review, rank 415); English written to match, not hers; English confirmed by the reviewer
+ela	pron		Ela é de Connecticut.	She's from Connecticut.	override-edited	native-speaker edit of the corpus line (round-two review); English written to match, not hers
+entrar	verb		-Não entres nesse quarto.	Don't go into that room.	override-chosen	corpus line chosen by a native speaker (first-pass review, rank 171); English written to match, not hers; English confirmed by the reviewer
+este	pron			What restaurant is this?	override-english	the Portuguese is the corpus line; the English is the reviewer's correction (round-two review)
+favor	noun		Não devo favores a você.	I don't owe you any favors.	override-chosen	corpus line chosen by a native speaker (round-two review); English hers
 largo	adj	wide, broad; (noun) square, plaza			override	the noun sense (o largo, a square) lost its own row when larga's adjectival occurrences pushed the noun share below the POS-split threshold; the gloss carries both senses instead
+mesmo	pron		E com vocês mesmos.	And with yourselves.	override-chosen	corpus line chosen by a native speaker (round-two review); English hers
+na	det		Ela estava na cozinha quando saí.	She was in the kitchen when I left.	override-edited	native-speaker edit of the corpus line (first-pass review, rank 40); English written to match, not hers; English confirmed by the reviewer
+neste	det		- No seu mundo, neste não.	In your world, not in this one.	override-chosen	corpus line chosen by a native speaker (first-pass review, rank 356); English written to match, not hers; English confirmed by the reviewer
+número	noun		Não sei, número três.	I don't know, number three.	override-chosen	corpus line chosen by a native speaker (round-two review); English hers
+rápido	adj			This was quick!	override-english	the Portuguese is the corpus line; the English is the reviewer's correction (round-two review)
+terra	noun		Smallville é a minha terra.	Smallville is my home town.	override-chosen	corpus line chosen by a native speaker (first-pass review, rank 398); English written to match, not hers; English confirmed by the reviewer
+tornar	verb			It doesn't make her real.	override-english	the Portuguese is the corpus line; the English is the reviewer's correction (round-two review)
+trás	adv		Temos de voltar para trás.	We have to go back.	override-edited	native-speaker edit of the corpus line (round-two review); English written to match, not hers; English confirmed by the reviewer
+um	det		- Um bom dia, Dot.	A good morning, Dot.	override-chosen	corpus line chosen by a native speaker (first-pass review, rank 7); English written to match, not hers; English is the reviewer's

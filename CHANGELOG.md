@@ -115,12 +115,21 @@ when the glosses have been reviewed.
   `efeitos colaterais` took its place; the other 51 replacements are new
   entries at the bottom of the list, ranks 9,904–10,000.
 
-- **A native speaker's first-pass gloss review is applied**
-  (`eval/gloss_review.tsv`, from the advisor's commit `6edc345`). 257 of the
-  top 500 rows carry a verdict. Seven of them say "verdict given on the
-  earlier gloss text", and by decision those do not count as reviewed, so the
-  reviewed total is **250: 236 good, 13 fix, 1 wrong** — not the 257/243 the
-  raw tally shows.
+- **A native speaker has reviewed the top 500 glosses, over two rounds**
+  (`eval/gloss_review.tsv`). **500 of 500 reviewed: 478 good, 21 fix, 1 wrong,
+  none junk.** Round two's answers are kept exactly as she sent them in
+  `eval/gloss_review_round2_raw.txt`; round one's raw text was not kept, which
+  is why round two's was committed before anything parsed it.
+
+  Round one covered 257 rows, of which seven had been judged against gloss text
+  that changed afterwards and so did not count. Round two covered the 243 rows a
+  paging bug had hidden, plus the ten whose text had changed, and she went back
+  over the rest as well — 498 lines in all, every one parsing, none in the
+  optional band below rank 500. The two rows with no round-two line already
+  carried a round-one verdict and correctly showed as done.
+
+  The 200 sampled rows below rank 500 are still unreviewed and the README says
+  so.
 
   Her example changes are accepted as overrides, in two kinds. Six are
   sentences she edited, and those are published with `source =
