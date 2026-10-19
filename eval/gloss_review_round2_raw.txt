@@ -1,0 +1,512 @@
+GLOSS CHECK — answers
+g001 o good
+g002 ser good
+g003 não good
+g004 que good
+g005 de fix | gloss: of; from; by; for
+g006 estar good
+g007 um good | ex: - Um bom dia, Dot.
+g008 a good | note: Despache a sua mala.
+g010 a wrong | ex: Mas devo a ela. | note: But I owe it to her.
+g009 e good
+g011 ter good
+g012 ir good
+g013 para good
+g014 eu good
+g015 que good
+g016 me good
+g017 fazer good
+g018 meu good
+g019 com good
+g020 do good
+g021 poder good
+g022 saber good
+g023 dizer good | note: E não vais dizer nada?
+g024 por good
+g025 te good
+g026 o que good
+g027 ele good
+g028 querer good
+g029 bem good
+g030 em good
+g031 mas good
+g032 se good
+g033 da good | note: Era o efeito da cerveja, ok?
+g034 isso good
+g035 como good
+g036 sim good
+g037 no good
+g038 se good
+g039 mais good
+g040 na good | note: Ela estava na cozinha quando saí.
+g041 muito good
+g042 seu good
+g043 ver good
+g044 aqui good
+g045 haver good
+g046 isto good
+g047 ela fix | note: Ela é de Connecticut.
+g048 já good
+g049 coisa good
+g050 à good
+g051 só good
+g052 nos good
+g053 ao good
+g054 bom good
+g055 tudo good
+g056 tu good
+g058 dar good
+g057 ficar good
+g059 vir good
+g060 achar good
+g061 este good
+g062 porque good
+g063 falar good
+g064 agora good
+g065 lá good
+g066 é que good
+g067 todo good
+g068 dever fix | note: Tens o dever de respeitar as regras da estrada.
+g069 precisar good
+g071 deixar good
+g070 não é good
+g072 lhe good
+g073 onde good
+g074 algum good
+g075 quem good
+g076 pensar good
+g077 então good
+g078 nada good
+g079 é o good
+g080 mesmo fix | ex: E com vocês mesmos. | note: And with yourselves.
+g081 ou good
+g082 esperar good
+g083 conseguir fix | note: Acho que o consigo ler.
+g084 teu good
+g085 que não good
+g087 o meu good
+g088 vez good
+g089 tua good
+g090 nosso good
+g091 quando good
+g092 eles good
+g093 nós good
+g094 dos good
+g095 ouvir good
+g096 mim good
+g097 casa good
+g098 está bem good
+g099 pai good
+g100 dia good
+g101 passar good
+g102 nunca good
+g103 tempo good
+g104 gostar good
+g105 parecer good
+g106 homem good
+g107 assim good
+g108 ainda good
+g109 encontrar good
+g110 é um good
+g111 sair good
+g112 outro good
+g113 ano good
+g114 dois good
+g115 melhor good
+g116 esse good
+g117 também good
+g118 quê good
+g119 pessoa good
+g123 levar good
+g121 matar good
+g120 favor fix | ex: Não devo favores a você. | note: I don't owe you any favors.
+g122 certo good
+g124 olhar good
+g125 sobre good
+g126 este fix | note: What restaurant is this?
+g127 acontecer fix | note: Já o vi acontecer antes!
+g128 chegar good
+g129 tão good
+g130 ti good
+g131 mãe good
+g132 noite good
+g133 depois good
+g134 vida good
+g135 tentar good
+g136 andar good
+g137 voltar good
+g138 talvez good
+g139 olá good
+g140 sentir good
+g141 por favor good
+g142 é uma good
+g143 sempre good
+g144 conhecer good
+g145 alguém good
+g146 até good
+g701 dele good
+g148 acabar good
+g149 sem good
+g151 chamar good
+g150 todo good
+g152 aquele good
+g153 morrer good
+g154 senhor good
+g155 das good
+g156 tipo good
+g157 pelo good
+g159 ajudar good
+g158 amigo good
+g160 algo fix | note: Possivelmente poderiamos fazer algo.
+g161 sr good
+g162 parar good
+g163 filho good
+g164 começar good
+g165 verdade good
+g166 antes good
+g167 mulher good
+g168 grande good
+g169 deus good
+g170 ninguém good
+g171 trabalho good
+g172 entrar fix | ex: -Não entres nesse quarto.
+g173 hora good
+g174 apenas fix | note: É apenas um exercício.
+g175 obrigar good
+g213 novo good
+g176 acreditar good
+g177 aí good
+g178 pouco good
+g179 problema good
+g181 pedir good
+g180 quando good
+g183 quanto good
+g184 perder good
+g185 desculpa good
+g186 por isso good
+g187 qual good
+g188 eu sei good
+g189 usar good
+g190 tudo bem good
+g191 qualquer good
+g192 dinheiro good
+g193 pela good
+g194 lembrar good
+g195 obrigado good
+g196 cá good
+g197 querido good
+g198 nome good
+g199 merda good
+g200 num good
+g703 disso good
+g203 tirar good
+g704 daqui good
+g204 trabalhar good
+g205 nem good
+g206 ligar good
+g207 sério good
+g209 pôr good
+g208 alguma coisa good
+g210 fora good
+g211 hoje good
+g214 trazer good
+g705 dela good
+g215 muito bem good
+g216 volta good
+g217 perceber good
+g218 vosso good
+g219 nenhum good
+g220 continuar good
+g221 primeiro good
+g226 apanhar good
+g222 carro good
+g223 certeza good
+g224 claro good
+g225 às good
+g227 pronto good
+g228 contar good
+g229 mal good
+g230 último good
+g231 mundo good
+g232 lado good
+g233 tomar good
+g234 oh good
+g706 contigo good
+g236 três good
+g237 ideia good
+g238 meu deus good
+g239 embora good
+g240 rapaz good
+g241 mão good
+g242 porquê good
+g243 nas good
+g244 numa good
+g246 parte good
+g245 menos good
+g247 todos os good
+g248 outro good
+g253 amar good
+g249 arma good
+g250 lugar good
+g251 tanto good
+g252 tratar good
+g254 vos good
+g255 uma coisa good
+g256 família good
+g257 desculpar good
+g258 aos fix
+g259 entender good
+g260 viver good
+g261 dentro good
+g262 razão good
+g263 ótimo good
+g264 minuto good
+g265 esquecer good
+g267 mudar good
+g266 único good
+g268 polícia good
+g269 ali good
+g271 manter good
+g270 esse good
+g272 abrir good
+g273 descobrir good
+g274 seguir good
+g275 ele está good
+g277 pagar good
+g276 pois good
+g278 segundo good
+g279 correr good
+g281 comer good
+g280 nem good
+g285 mandar good
+g282 caso good
+g283 cabeça good
+g284 si good
+g286 irmão good
+g288 ajuda good
+g287 semana good
+g289 raio good
+g290 momento good
+g291 aquilo good
+g292 onde está good
+g293 forma good
+g294 atrás good
+g295 cidade fix | note: I don't understand that city.
+g296 pequeno good
+g297 olho good
+g298 importar good
+g299 mostrar good
+g300 conta good
+g301 história good
+g302 porta good
+g303 adorar good
+g304 perguntar good
+g707 deles good
+g306 entre good
+g308 arranjar good
+g307 preocupar good
+g309 amor good
+g310 com ele good
+g311 frente good
+g312 senhora good
+g313 ganhar good
+g314 vivo good
+g315 até good
+g316 desde good
+g317 ok good
+g318 tarde good
+g319 os meus good
+g320 procurar good
+g322 tornar fix | note: It doesn't make her real.
+g321 criança good
+g323 morte good
+g324 lhes good
+g325 maneira good
+g326 deus good
+g327 vá lá good
+g328 próximo good
+g329 feliz good
+g330 dormir good
+g331 cima good
+g332 salvar good
+g333 sozinho good
+g334 pergunta good
+g336 junto good
+g337 durante good
+g338 velho good
+g340 receber good
+g339 amanhã good
+g341 quase good
+g342 caminho good
+g343 todas as good
+g344 medo good
+g345 contra good
+g346 partir good
+g347 as pessoas good
+g348 cara good
+g349 mês good
+g350 agente good
+g351 da minha good
+g352 pode ser good
+g353 claro good
+g354 meu pai good
+g355 desta good
+g356 pessoal good
+g357 filha good
+g358 neste fix | ex: - No seu mundo, neste não.
+g359 rapariga good
+g360 sentar good
+g361 importante good
+g362 difícil good
+g363 cada good
+g364 sorte good
+g365 palavra good
+g366 causa good
+g367 as coisas good
+g368 significar good
+g369 buscar good
+g370 jogo good
+g708 disto good
+g372 tal good
+g373 fugir good
+g375 comprar good
+g374 quarto good
+g380 roubar good
+g376 morto good
+g377 número fix | ex: Não sei, número três. | note: I don't know, number three.
+g378 pois good
+g379 beber good
+g381 água good
+g382 estranho good
+g383 desaparecer good
+g384 corpo good
+g385 cuidado good
+g386 sangue good
+g387 existir good
+g388 força good
+g389 escrever good
+g390 seguro good
+g391 guerra good
+g392 lindo good
+g393 rápido fix | note: This was quick!
+g394 manhã good
+g396 tocar good
+g395 plano good
+g397 maior good
+g398 adeus good
+g399 cair good
+g400 terra fix
+g401 ei good
+g402 perto good
+g403 bonito good
+g404 confiar good
+g405 mau good
+g406 miúdo good
+g407 calar good
+g408 cinco good
+g409 altura good
+g410 segurança good
+g415 enviar good
+g411 aparecer good
+g412 equipa good
+g423 colocar fix | ex: Coloque o dedo ali. | note: Place your finger there.
+g413 procura good
+g414 outra vez good
+g416 dólar fix
+g419 aceitar good
+g417 dr good
+g418 calma good
+g420 deste good
+g421 mexer good
+g422 quer dizer good
+g424 chefe good
+g425 prometer good
+g426 obrigado good
+g427 funcionar good
+g428 fim good
+g429 coração good
+g430 brincar good
+g431 primeiro good
+g433 menina good
+g434 meio good
+g435 diferente good
+g436 preparar good
+g438 levantar good
+g437 estado good
+g441 meter good
+g439 pegar good
+g440 pé good
+g442 vamos lá good
+g443 lamentar good
+g444 exatamente good
+g454 escolher good
+g445 livro good
+g449 proteger good
+g446 escola good
+g447 capitão good
+g448 festa good
+g450 quatro good
+g451 bater good
+g459 fechar good
+g452 irmã good
+g453 baixo good
+g455 possível good
+g456 minha mãe good
+g457 bebé good
+g458 enquanto good
+g460 ar good
+g466 esconder good
+g461 ontem good
+g464 jogar good
+g462 presidente good
+g463 logo good
+g465 acordo good
+g467 negócio good
+g468 vai ser good
+g469 marido good
+g470 na verdade good
+g471 alto good
+g473 afastar good
+g472 ordem good
+g474 lutar good
+g475 realmente good
+g477 criar good
+g476 compreender good
+g479 imaginar good
+g478 mentir good
+g480 ler good
+g481 pena good
+g482 decidir good
+g483 esta noite good
+g484 trás fix | note: Temos de voltar para trás.
+g485 depressa good
+g486 aprender good
+g487 valer good
+g488 mil good
+g489 à noite good
+g491 prova good
+g490 nesta good
+g492 prazer good
+g493 na minha good
+g494 rei good
+g495 fácil good
+g496 luz good
+g498 servir good
+g710 atirar good
+g497 miúda good
+g499 responder good
+g711 acordar good
+g712 escutar good
+c01 um fix: A good morning, Dot.
+c02 a ok
+c03 dizer ok
+c04 da ok
+c05 na ok
+c06 conseguir ok
+c07 algo ok
+c08 entrar ok
+c09 aos ok
+c10 neste ok
+c11 terra ok
+c12 dólar ok
+c13 trás ok
