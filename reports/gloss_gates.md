@@ -25,6 +25,7 @@ Written by `python -m scripts.gloss` with model `claude-opus-5`, effort `low`, t
 | `rewritten` | examples the model edited, so dropped | — | 23 | noted |
 | `off_target` | examples that did not contain the entry, so dropped | — | 0 | ok |
 | `override` | rows a reviewer overruled (eval/gloss_overrides.tsv) | — | 29 | noted |
+| `override_pair` | rows where a reviewer's English is pinned to a sentence the example no longer is | 0 | 0 | ok |
 | `override_off_corpus` | overridden examples that are not one of the corpus lines the model was shown | — | 13 | noted |
 
 **Every fatal gate passed.**

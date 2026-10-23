@@ -90,7 +90,10 @@ The native-speaker review of the top 500 is **complete across both rounds: 500 o
 other than `model`. The 200 sampled rows below rank 500 remain unreviewed, which is
 open question 2.
 
-The deck is built and glossed: 10,000 notes, 20,000 cards, `My_Notes` and
-`Gloss_Source` added and the note type's field list frozen from 1.1.0. What
-remains before the release is Jim importing it on Windows to check it (#12) and
-the README and tag (#13).
+The deck is built and glossed: 10,000 notes, 20,000 cards, `Gloss_Source`
+added and the note type's field list frozen from 1.1.0. It ships no field for a
+learner's own notes, because Anki cannot merge fields on import and any field
+the package ships can be erased by a later release; the CHANGELOG says how to
+add one yourself and what that costs. What remains before the release is Jim
+importing it on Windows to check it (#12) and the README and tag (#13) — the
+README needs the import guidance the CHANGELOG now carries.

@@ -194,13 +194,26 @@ def apply_override(parsed: dict[str, Any], over: dict[str, str]) -> dict[str, An
     if over.get("gloss"):
         out["gloss"] = over["gloss"]
         out.pop("error", None)
-    if over.get("example_pt"):
+    if over.get("source") == "override-english":
+        # Only the translation is the reviewer's; the Portuguese stays the
+        # corpus line. Her English was written against one particular
+        # sentence, so the row records it, and if the example has moved since
+        # -- a rebuild choosing a different line -- the two are not paired
+        # quietly. A caption on the wrong sentence is worse than none.
+        # Compared after tidying, because the override file records the
+        # sentence as a reader sees it on a card while the pipeline still has
+        # the subtitle's dash on it. The question is whether it is the same
+        # sentence, not whether it is the same string.
+        if over.get("example_pt") and tidy(out.get("example_pt") or "") != tidy(over["example_pt"]):
+            out["override_mismatch"] = (
+                f"the English is pinned to {over['example_pt']!r}, but the "
+                f"example is now {out.get('example_pt') or '(none)'!r}")
+        elif over.get("example_en"):
+            out["example_en"] = over["example_en"]
+    elif over.get("example_pt"):
         out["example_pt"] = over["example_pt"]
         out["example_en"] = over.get("example_en", "")
     elif over.get("example_en"):
-        # The Portuguese is still the corpus line; only its translation is
-        # being corrected, which a reviewer does more often than replacing
-        # the sentence itself.
         out["example_en"] = over["example_en"]
     out["flags"] = [f for f in out.get("flags", ()) if f != "uncertain"]
     return out

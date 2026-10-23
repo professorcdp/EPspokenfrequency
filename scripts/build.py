@@ -585,8 +585,18 @@ def run(cfg: dict[str, Any]) -> dict[str, Any]:
         json.dumps(stats, indent=2, ensure_ascii=False), encoding="utf-8"
     )
 
-    # The gate runs last so that the reports are always written first: a
+    # The gates run last so that the reports are always written first: a
     # failing build must still leave the evidence behind.
+    if emit_mod.MISSING_GLOSSES:
+        n = len(emit_mod.MISSING_GLOSSES)
+        raise SystemExit(
+            f"{n} published row(s) have no gloss, so the enrichable files are "
+            "incomplete: "
+            + ", ".join(f"{l} ({p})" for l, p in emit_mod.MISSING_GLOSSES[:8])
+            + ".\nAn entry that has never been glossed needs python -m "
+            "scripts.gloss --retry, which calls the API and costs money. If "
+            "these were glossed before and a rebuild moved their lemma or part "
+            "of speech, --report alone may be enough.")
     quality_mod.enforce(suspects, cfg)
     return stats
 

@@ -49,6 +49,12 @@ def band_label(rank: int, size: int) -> str:
     return f"{lo:04d}-{lo + size - 1:04d}"
 
 
+# Published rows found to have no gloss while writing the enrichable files.
+# Appended to rather than raised on, so one missing row cannot stop the build
+# before it has written its reports; scripts/build.py fails on it at the end.
+MISSING_GLOSSES: list[tuple[str, str]] = []
+
+
 def build_tags(rank: int, pos: str, cfg: dict[str, Any],
                flags: Sequence[str] = (), reviewed: bool = False) -> str:
     """Tag string for one Anki note, in the original's field order.
@@ -171,15 +177,19 @@ def write_anki(
             if enrichable:
                 g = glosses.get((e.lemma, e.pos))
                 if g is None:
-                    raise SystemExit(
-                        f"{e.lemma} ({e.pos}) has no gloss, so {path.name} was not "
-                        "written -- run python -m scripts.gloss --report")
+                    # Collected, not raised: exiting here would leave the
+                    # later lists, the deck and every report unwritten, and a
+                    # failing build must still leave its evidence behind. The
+                    # build reports these at the end, as the quality gate does.
+                    MISSING_GLOSSES.append((e.lemma, e.pos))
+                    g = {"gloss": "", "example_pt": "", "example_en": "",
+                         "flags": "", "source": ""}
                 flags = g["flags"].split() if g["flags"] else []
                 writer.writerow(
                     [e.rank, e.lemma, e.pos,
                      g["gloss"], g["example_pt"], g["example_en"],
                      "1" if e.is_mwe else "0", e.raw_freq,
-                     f"{e.freq_per_million:.3f}", "",
+                     f"{e.freq_per_million:.3f}",
                      labels.get(g["source"], g["source"]),
                      build_tags(e.rank, e.pos, cfg, flags=flags,
                                 reviewed=(e.lemma, e.pos) in reviewed)]

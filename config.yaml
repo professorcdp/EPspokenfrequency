@@ -576,7 +576,7 @@ output:
     # 1.1: the enrichable file ships with the glosses filled in and carries the
     # note type's two new fields. The minimal file is unchanged, for anyone who
     # would rather write their own glosses.
-    enrichable_columns: [Rank, Lemma_PT, POS, Gloss_EN, Example_PT, Example_EN, Is_MWE, Raw_Freq, Freq_per_million, My_Notes, Gloss_Source, Tags]
+    enrichable_columns: [Rank, Lemma_PT, POS, Gloss_EN, Example_PT, Example_EN, Is_MWE, Raw_Freq, Freq_per_million, Gloss_Source, Tags]
     # The .apkg (scripts/build_apkg.py). The ids were generated once, on
     # 2026-09-22, and must NEVER be regenerated: Anki recognises the note
     # type and decks by these numbers, and notes by a GUID derived from
@@ -669,8 +669,14 @@ output:
           id: 1890686391
           lo: 9501
           hi: 10000
-      # Fixed package timestamp, so the same lists give the same .apkg bytes.
-      timestamp: 1790035200     # 2026-09-22T00:00:00Z
+      # One pinned timestamp per release, so a build stays byte-reproducible
+      # while each release is genuinely newer than the last. genanki writes it
+      # as every note's `mod`, and Anki's "Update notes: If newer" compares
+      # that against the copy already in the collection -- so a timestamp that
+      # never moves makes "If newer" a no-op and no correction ever reaches
+      # anyone. Bump this on every release, and never reuse a value.
+      timestamp: 1792713600     # 1.1.0, 2026-10-23T00:00:00Z
+      previous_timestamps: [1790035200]   # 1.0.0, 2026-09-22
     tags:
       band500: 500
       band1000: 1000
@@ -711,7 +717,7 @@ gloss:
   # with the glossed deck.
   source_labels:
     model: "Claude; example taken verbatim from the corpus"
-    override: "written by hand"
+    override: "gloss settled by hand"
     override-chosen: "corpus line chosen by a native speaker"
     override-edited: "corpus line, edited by a native speaker"
     override-english: "corpus line; English corrected by a native speaker"

@@ -28,12 +28,18 @@ from typing import Any
 
 # FROZEN FROM 1.1.0. Anki matches a note's fields by position, so adding,
 # removing or reordering any of these breaks a re-import for everyone who has
-# already studied the deck: their notes keep the old shape and the new file no
-# longer lines up with it. My_Notes and Gloss_Source were the last two added,
-# in 1.1.0, and the list does not change again. Anything further goes in a new
-# note type, not this one.
+# already studied the deck. Gloss_Source was the last field added, in 1.1.0,
+# and the list does not change again; anything further goes in a new note type.
+#
+# There is deliberately no field here for the learner's own writing. Anki
+# cannot merge fields on import: "Always" overwrites every field, and "If
+# newer" overwrites every field of each note it updates. So any field this
+# package ships can be erased by a later release, and a field the learner adds
+# themselves cannot be -- because a changed note type stops Anki updating those
+# notes at all. A place to write that we would overwrite is worse than no
+# place, so the deck ships none and the README says how to add one.
 FIELDS = ["Rank", "Lemma_PT", "POS", "Gloss_EN", "Example_PT", "Example_EN",
-          "Is_MWE", "Raw_Freq", "Freq_per_million", "My_Notes", "Gloss_Source"]
+          "Is_MWE", "Raw_Freq", "Freq_per_million", "Gloss_Source"]
 
 FRONT_PT = """<div class="lemma">{{Lemma_PT}}</div>
 <div class="pos">{{POS}}</div>"""
@@ -43,7 +49,6 @@ BACK_PT = """{{FrontSide}}
 {{#Gloss_EN}}<div class="gloss">{{Gloss_EN}}</div>{{/Gloss_EN}}
 {{#Example_PT}}<div class="example pt">{{Example_PT}}</div>{{/Example_PT}}
 {{#Example_EN}}<div class="example en">{{Example_EN}}</div>{{/Example_EN}}
-{{#My_Notes}}<div class="notes">{{My_Notes}}</div>{{/My_Notes}}
 <div class="footer">#{{Rank}} · {{Freq_per_million}} per million words{{#Gloss_Source}} · {{Gloss_Source}}{{/Gloss_Source}}</div>"""
 
 # The whole front sits inside the Gloss_EN conditional: with no gloss the
@@ -58,7 +63,6 @@ BACK_EN = """{{FrontSide}}
 <div class="lemma">{{Lemma_PT}}</div>
 {{#Example_PT}}<div class="example pt">{{Example_PT}}</div>{{/Example_PT}}
 {{#Example_EN}}<div class="example en">{{Example_EN}}</div>{{/Example_EN}}
-{{#My_Notes}}<div class="notes">{{My_Notes}}</div>{{/My_Notes}}
 <div class="footer">#{{Rank}} · {{Freq_per_million}} per million words{{#Gloss_Source}} · {{Gloss_Source}}{{/Gloss_Source}}</div>"""
 
 CSS = """.card {
@@ -76,14 +80,11 @@ CSS = """.card {
 .gloss.prompt { font-size: 1.6em; }
 .example { font-size: 0.95em; margin: 0.4em auto; max-width: 32em; }
 .example.en { color: #57606a; font-style: italic; }
-.notes { font-size: 0.95em; margin: 0.8em auto 0; max-width: 32em; text-align: left;
-  padding: 0.5em 0.7em; border-left: 2px solid #d0d7de; color: #39414a; }
 .footer { margin-top: 1.4em; font-size: 0.7em; color: #8c959f; }
 hr#answer { border: none; border-top: 1px solid #d0d7de; margin: 0.9em 0; }
 .nightMode .card, .night_mode .card { color: #e6edf3; background: #0d1117; }
 .nightMode .pos, .night_mode .pos, .nightMode .footer, .night_mode .footer { color: #8b949e; }
 .nightMode .example.en, .night_mode .example.en { color: #a8b1bb; }
-.nightMode .notes, .night_mode .notes { color: #c9d1d9; border-left-color: #30363d; }
 @media (max-width: 480px) { .card { font-size: 18px; } .lemma { font-size: 2em; } }
 """
 
@@ -124,8 +125,8 @@ def published_glosses(cfg: dict[str, Any], out_dir: Path) -> dict[tuple[str, str
     path = out_dir / cfg["gloss"]["out_file"]
     if not path.is_file():
         raise SystemExit(
-            f"{path} not found: run python -m scripts.gloss --report before building "
-            "the deck")
+            f"{path} not found. Build it with python -m scripts.gloss --report, "
+            "which writes it from cache/gloss/ without calling the API.")
     with path.open(encoding="utf-8", newline="") as fh:
         return {(r["lemma"], r["pos"]): r for r in csv.DictReader(fh, delimiter="\t")}
 
@@ -189,7 +190,7 @@ def build(cfg: dict[str, Any], out_dir: Path) -> dict[str, Any]:
                     fields=[row["rank"], row["lemma"], row["pos"],
                             g["gloss"], g["example_pt"], g["example_en"],
                             row["is_mwe"], row["raw_freq"], row["freq_per_million"],
-                            "", labels.get(g["source"], g["source"])],
+                            labels.get(g["source"], g["source"])],
                     tags=build_tags(rank, row["pos"], cfg, flags=flags,
                                     reviewed=is_reviewed).split(),
                     guid=guid,
@@ -199,8 +200,11 @@ def build(cfg: dict[str, Any], out_dir: Path) -> dict[str, Any]:
     if missing:
         raise SystemExit(
             f"{len(missing)} published row(s) have no gloss, so the deck was not "
-            f"written: " + ", ".join(f"{l} ({p})" for l, p in missing[:8])
-            + " -- run python -m scripts.gloss --report")
+            f"written: " + ", ".join(f"{l} ({p})" for l, p in missing[:8]) + ".\n"
+            "An entry that has never been glossed needs python -m scripts.gloss "
+            "--retry, which calls the API and costs money. If these were glossed "
+            "before and a rebuild moved their lemma or part of speech, "
+            "--report alone may be enough.")
 
     path = out_dir / pcfg["file"]
     genanki.Package(decks).write_to_file(str(path), timestamp=pcfg["timestamp"])

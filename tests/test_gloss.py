@@ -582,3 +582,36 @@ def test_every_source_in_the_overrides_file_has_a_label(release_cfg):
     used = {o["source"] for o in gloss.load_overrides(release_cfg).values()}
     assert used <= set(labels), f"no label for {used - set(labels)}"
     assert "model" in labels
+
+
+def test_an_english_override_must_match_the_sentence_it_was_written_for():
+    """Her English was written against one sentence. If the example has moved,
+    pairing them would caption a different line, so the row is flagged."""
+    over = {"gloss": "", "example_pt": "Não a torna real.",
+            "example_en": "It doesn't make her real.", "note": "",
+            "source": "override-english"}
+    same = gloss.apply_override(
+        {"gloss": "to make", "example_pt": "Não a torna real.",
+         "example_en": "It doesn't make it real.", "flags": []}, over)
+    assert same["example_en"] == "It doesn't make her real."
+    assert "override_mismatch" not in same
+
+    # the subtitle dash is not a different sentence
+    dashed = gloss.apply_override(
+        {"gloss": "to make", "example_pt": "- Não a torna real.",
+         "example_en": "x", "flags": []}, over)
+    assert dashed["example_en"] == "It doesn't make her real."
+    assert "override_mismatch" not in dashed
+
+    moved = gloss.apply_override(
+        {"gloss": "to make", "example_pt": "Torna-se tarde.",
+         "example_en": "It's getting late.", "flags": []}, over)
+    assert moved["override_mismatch"]
+    assert moved["example_en"] == "It's getting late.", "her English is not pinned on"
+
+
+def test_every_english_override_records_its_sentence(release_cfg):
+    """Without the Portuguese on the row there is nothing to check against."""
+    for (lemma, pos), o in gloss.load_overrides(release_cfg).items():
+        if o["source"] == "override-english":
+            assert o["example_pt"], f"{lemma} ({pos}) records no sentence"

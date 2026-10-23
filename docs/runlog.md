@@ -3,6 +3,64 @@
 Newest first. One entry per working session: what changed, which issues it touched,
 and what comes next. The CHANGELOG records what shipped; this records what happened.
 
+## 2026-10-23 (review)
+
+**Reviewed:** 9257dff..464adf0
+
+**Verdict:** one must-fix, and it was right. The deck shipped a `My_Notes`
+field for the learner's own writing together with a package timestamp frozen
+at 2026-09-22. Anki writes that timestamp as every note's modification time
+and "Update notes: If newer" compares against it, so the frozen value made
+"If newer" a no-op — no correction could ever reach anyone — while "Always"
+would erase whatever a learner had typed. The field could not be kept safe
+either way.
+
+**Findings:**
+
+1. (must) `My_Notes` plus the frozen timestamp — a field we invite people to
+   write in that a later release silently overwrites, and a deck that cannot
+   be corrected at all. The 1.0.0 CHANGELOG had deferred exactly this to 1.1.
+2. (should) `emit.py` exited mid-build on a missing gloss, leaving the later
+   lists, the deck and every report unwritten.
+3. (should) `scripts/README.md` still said the build neither reads nor writes
+   `out/glosses.tsv`; it reads it, and `eval/gloss_review.tsv` too.
+4. (should) `override-english` rows carried no Portuguese, so the reviewer's
+   English was paired with whatever the cache happened to hold.
+5. (could) The `de` override read "written by hand" though its example is the
+   model's corpus line, and `eval/README.md` said such rows have no example.
+6. (could) A test used `tempfile.mkdtemp()` and never cleaned up.
+7. (could) The "no gloss" errors told the reader to run `--report`, which
+   cannot help an entry that has never been glossed.
+
+**Fixed:** all seven.
+
+1. Checked Anki's documented import rules first. Because Anki cannot merge
+   fields, and because a note type the learner has changed stops being
+   updated at all, there is no arrangement in which a shipped field is safe
+   for their writing. `My_Notes` is removed, and the CHANGELOG says how to add
+   your own field and what it costs. The timestamp is now one per release
+   (1.1.0 = 2026-10-23), pinned in config so the build stays reproducible,
+   with `previous_timestamps` and a test that a release never reuses one.
+2. Missing glosses are collected in `emit.MISSING_GLOSSES` and `build.py`
+   fails on them at the end, beside the quality gate, so the reports are
+   written first.
+3. Corrected.
+4. The four rows now record their Portuguese, `apply_override` checks the pair
+   matches (after tidying, since the file holds the sentence as a reader sees
+   it), and a new fatal gate `override_pair` counts any that do not. It caught
+   two on its first run — both the subtitle dash, which is what showed the
+   comparison needed tidying rather than the data needing changing.
+5. The label is now "gloss settled by hand" and `eval/README.md` says these
+   rows leave the example alone, whatever it is, including none (`caseiro`).
+6. Uses `tmp_path`.
+7. The messages now say that a never-glossed entry needs `--retry` and an API
+   call, and that `--report` is enough only when a rebuild moved an entry.
+
+**Deferred:** nothing.
+
+Deck rebuilt: 10 fields, 10,000 notes, 20,000 cards, 5.9 MB. Every list, count
+and rank byte-identical to before the review. 306 tests pass. Closes #11.
+
 ## 2026-10-23 — The glossed deck (#11)
 
 All 10,000 notes carry their gloss, so every one now has a reverse card: 20,000

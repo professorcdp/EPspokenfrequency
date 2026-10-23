@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import sqlite3
-import tempfile
 import zipfile
 from pathlib import Path
 
@@ -57,7 +56,27 @@ def test_the_note_type_fields_are_frozen(release_cfg):
     for anyone already studying the deck. Frozen from 1.1.0."""
     assert build_apkg.FIELDS == [
         "Rank", "Lemma_PT", "POS", "Gloss_EN", "Example_PT", "Example_EN",
-        "Is_MWE", "Raw_Freq", "Freq_per_million", "My_Notes", "Gloss_Source"]
+        "Is_MWE", "Raw_Freq", "Freq_per_million", "Gloss_Source"]
+
+
+def test_no_field_invites_the_learner_to_write_in_it(release_cfg):
+    """Anki cannot merge fields on import: "Always" overwrites every field and
+    "If newer" overwrites every field of each note it updates. So a field this
+    package ships cannot be kept safe for a learner's own writing, and the deck
+    ships none. See the comment above FIELDS."""
+    assert not any("note" in f.lower() for f in build_apkg.FIELDS)
+
+
+def test_each_release_has_its_own_package_timestamp(release_cfg):
+    """genanki writes this as every note's `mod`, and Anki's "If newer"
+    compares that with the copy already in the collection. A timestamp that
+    never moves makes "If newer" a no-op, so no correction ever reaches
+    anyone."""
+    a = release_cfg["output"]["anki"]["apkg"]
+    previous = a["previous_timestamps"]
+    assert 1790035200 in previous, "1.0.0's timestamp must stay on the record"
+    assert a["timestamp"] not in previous, "this release reuses an old timestamp"
+    assert a["timestamp"] > max(previous), "a release must be newer than the last"
 
 
 GLOSS_HEADER = ("rank\tlemma\tpos\tis_mwe\tfreq_per_million\tpos_share"
@@ -118,13 +137,16 @@ def test_the_gloss_fills_the_fields(tmp_path):
     db = sqlite3.connect(tmp_path / "collection.anki2")
     flds = {f.split("\x1f")[1] + "/" + f.split("\x1f")[2]: f.split("\x1f")
             for (f,) in db.execute("select flds from notes")}
+    F = {name: i for i, name in enumerate(build_apkg.FIELDS)}
     o = flds["o/det"]
     assert len(o) == len(build_apkg.FIELDS)
-    assert o[3] == "the" and o[4] == "O cão." and o[5] == "The dog."
-    assert o[9] == ""                                   # My_Notes is the learner's
-    assert o[10] == cfg["gloss"]["source_labels"]["model"]
-    assert flds["a/prep"][10] == cfg["gloss"]["source_labels"]["override-chosen"]
-    assert flds["a/prep"][4] == "" and flds["a/prep"][5] == ""   # no example
+    assert o[F["Gloss_EN"]] == "the"
+    assert o[F["Example_PT"]] == "O cão." and o[F["Example_EN"]] == "The dog."
+    assert o[F["Gloss_Source"]] == cfg["gloss"]["source_labels"]["model"]
+    assert (flds["a/prep"][F["Gloss_Source"]]
+            == cfg["gloss"]["source_labels"]["override-chosen"])
+    assert flds["a/prep"][F["Example_PT"]] == ""                 # no example
+    assert flds["a/prep"][F["Example_EN"]] == ""
 
 
 def test_flag_and_reviewed_tags(tmp_path):
@@ -161,14 +183,17 @@ def test_a_published_row_without_a_gloss_stops_the_build(tmp_path):
 OUT = Path(__file__).resolve().parents[1] / "out"
 
 
-def _shipped_notes():
-    """(fields, tags) for every note in out/EP_Spoken_Frequency.apkg."""
+def _shipped_notes(tmp):
+    """(fields, tags) for every note in out/EP_Spoken_Frequency.apkg.
+
+    `tmp` is pytest's tmp_path, so the extracted collection is cleaned up with
+    the rest of the test run rather than left in the system temp directory.
+    """
     import pytest
 
     apkg = OUT / "EP_Spoken_Frequency.apkg"
     if not apkg.is_file():
         pytest.skip("the deck has not been built")
-    tmp = Path(tempfile.mkdtemp())
     with zipfile.ZipFile(apkg) as z:
         z.extract("collection.anki2", tmp)
     db = sqlite3.connect(tmp / "collection.anki2")
@@ -178,27 +203,27 @@ def _shipped_notes():
     return notes, cards
 
 
-def test_every_shipped_note_is_glossed():
-    notes, cards = _shipped_notes()
+def test_every_shipped_note_is_glossed(tmp_path):
+    notes, cards = _shipped_notes(tmp_path)
+    F = {name: i for i, name in enumerate(build_apkg.FIELDS)}
     assert len(notes) == 10_000
     assert all(len(f) == len(build_apkg.FIELDS) for f, _ in notes)
-    assert all(f[3].strip() for f, _ in notes), "a note with no gloss"
-    assert all(f[10].strip() for f, _ in notes), "a note with no Gloss_Source"
-    assert not any(f[9].strip() for f, _ in notes), "My_Notes is the learner's space"
+    assert all(f[F["Gloss_EN"]].strip() for f, _ in notes), "a note with no gloss"
+    assert all(f[F["Gloss_Source"]].strip() for f, _ in notes), "no Gloss_Source"
 
 
-def test_every_shipped_note_has_a_reverse_card():
+def test_every_shipped_note_has_a_reverse_card(tmp_path):
     """Card 2 exists exactly where Gloss_EN is filled, which is now everywhere."""
-    notes, cards = _shipped_notes()
-    glossed = sum(1 for f, _ in notes if f[3].strip())
+    notes, cards = _shipped_notes(tmp_path)
+    glossed = sum(1 for f, _ in notes if f[build_apkg.FIELDS.index("Gloss_EN")].strip())
     assert cards == len(notes) + glossed == 20_000
 
 
-def test_shipped_tags_match_the_glosses_and_the_review():
+def test_shipped_tags_match_the_glosses_and_the_review(tmp_path):
     import csv as _csv
     from collections import Counter
 
-    notes, _ = _shipped_notes()
+    notes, _ = _shipped_notes(tmp_path)
     tags = Counter(t for _, ts in notes for t in ts if t.startswith(("flag::", "gloss::")))
     with (OUT / "glosses.tsv").open(encoding="utf-8", newline="") as fh:
         want = Counter(f"flag::{f}" for r in _csv.DictReader(fh, delimiter="\t")
@@ -210,9 +235,9 @@ def test_shipped_tags_match_the_glosses_and_the_review():
     assert tags["gloss::reviewed"] == reviewed == 500
 
 
-def test_shipped_notes_keep_the_original_tags():
+def test_shipped_notes_keep_the_original_tags(tmp_path):
     """1.1 adds tags; it removes none, or a learner's saved searches break."""
-    notes, _ = _shipped_notes()
+    notes, _ = _shipped_notes(tmp_path)
     for fields, tags in notes[:50]:
         assert any(t.startswith("freq::") for t in tags)
         assert any(t.startswith("freq500::") for t in tags)

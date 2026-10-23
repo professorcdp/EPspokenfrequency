@@ -34,7 +34,7 @@ deck publishes the matching wording from `gloss.source_labels` as its
 | `override-chosen` | A corpus line the reviewer picked from the ones the model was shown. Still verbatim. |
 | `override-edited` | A sentence she corrected, so no longer a verbatim corpus line. |
 | `override-english` | Only the translation is hers; the Portuguese is still the corpus line the model chose, untouched. Use this when she corrects the English and leaves the sentence alone. |
-| `override` | A gloss written by hand, with no example sentence. |
+| `override` | The gloss was settled by hand — written here, or corrected by the reviewer. These rows say nothing about the example: they leave whatever the model produced, which may be a verbatim corpus line (*de*, *largo*) or nothing at all (*caseiro*). |
 
 An overridden example is exempt from the gate that every example be one of the
 lines the model was shown, since a reviewer's sentence has a different

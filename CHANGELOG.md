@@ -122,19 +122,38 @@ when the glosses have been reviewed.
   Portuguese → English one: 20,000 cards, where 1.0.0 had 10,000. The package
   is 5.9 MB, up from 3.5 MB.
 
-  Two fields are added at the end of the note type. **`My_Notes`** ships empty
-  and is the learner's own space; it shows on the back of both cards when
-  filled. **`Gloss_Source`** says where the row came from, in small print
-  beside the rank and frequency — "Claude; example taken verbatim from the
-  corpus" for 9,971 of them, and for the other 29 the wording that says a
-  native speaker chose the sentence, edited it, corrected the English, or that
-  the gloss was written by hand.
+  One field is added at the end of the note type. **`Gloss_Source`** says
+  where the row came from, in small print beside the rank and frequency —
+  "Claude; example taken verbatim from the corpus" for 9,971 of them, and for
+  the other 29 the wording that says a native speaker chose the sentence,
+  edited it, corrected the English, or that the gloss was settled by hand.
 
   **The note type's field list is frozen from 1.1.0.** Anki matches fields by
   position, so adding, removing or reordering one breaks a re-import for
   anyone already studying the deck. Anything further goes in a new note type.
   The note type id, the twenty deck ids and names, and the GUID rule (lemma
   plus part of speech) are unchanged, as they have been since 1.0.0.
+
+- **The deck deliberately ships no field for your own notes**, which answers
+  the re-import problem 1.0.0 left open. Anki cannot merge fields on import:
+  "Always" overwrites every field, and "If newer" overwrites every field of
+  each note it updates. So any field this package ships can be erased by a
+  later release, and a field *you* add cannot be — because once the note type
+  differs, Anki stops updating those notes at all. A place to write that we
+  would overwrite is worse than no place.
+
+  **To keep your own notes:** add a field to the note type yourself (Tools →
+  Manage Note Types → Fields). Understand the trade — from then on Anki will
+  not update these notes, so a later release will add new words but leave your
+  existing ones as they are.
+
+- **Each release now has its own package timestamp.** 1.0.0's was frozen, and
+  because genanki writes it as every note's modification time, Anki's "If
+  newer" could never see a newer copy: no correction could reach anyone,
+  whether they had edited a note or not. 1.1.0 is stamped 2026-10-23 and every
+  release will carry its own, so "If newer" works as it reads. The build is
+  still byte-reproducible, because the value is pinned in `config.yaml` rather
+  than taken from the clock.
 
 - **New tags.** Every tag 1.0.0 set is still set. Added: one `flag::` tag per
   gloss flag — `flag::vulgar` (89 notes), `flag::bp-leaning` (115),
@@ -151,7 +170,8 @@ when the glosses have been reviewed.
   on a deck that had no English side.
 
 - **`ep_spoken_anki_enrichable.tsv` and its 5001–10000 twin now ship filled
-  in**, with the glosses, the examples, the two new columns and the new tags.
+  in**, with the glosses, the examples, the `Gloss_Source` column and the new
+  tags.
   The *minimal* files are unchanged, for anyone who would rather write their
   own glosses from the bare list.
 

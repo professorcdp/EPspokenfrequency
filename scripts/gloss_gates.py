@@ -82,6 +82,9 @@ def run(results: Sequence[dict[str, Any]], rows: Sequence[dict[str, Any]],
                                         "so dropped", limit=""),
         "override": Gate("override", "rows a reviewer overruled "
                                     "(eval/gloss_overrides.tsv)", limit=""),
+        "override_pair": Gate("override_pair",
+                              "rows where a reviewer's English is pinned to a "
+                              "sentence the example no longer is", fatal=True),
         "override_off_corpus": Gate("override_off_corpus",
                                     "overridden examples that are not one of the "
                                     "corpus lines the model was shown", limit=""),
@@ -98,6 +101,8 @@ def run(results: Sequence[dict[str, Any]], rows: Sequence[dict[str, Any]],
             gates["coverage"].hit(row, "no gloss")
 
     for r in results:
+        if r.get("override_mismatch"):
+            gates["override_pair"].hit(r, r["override_mismatch"])
         if r.get("source", "model") != "model":
             gates["override"].hit(r, r.get("override_note", "") or "overridden")
             if r["example_pt"] and r["example_pt"] not in r["sentences"]:

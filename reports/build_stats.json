@@ -237,7 +237,7 @@
   "pos_heuristic_in_list": 97,
   "entries": 10000,
   "apkg": {
-    "bytes": 5947610,
+    "bytes": 5923034,
     "notes": {
       "Portuguese::European Portuguese - Spoken::01 · 1–500": 500,
       "Portuguese::European Portuguese - Spoken::02 · 501–1000": 500,
@@ -265,5 +265,5 @@
   "gold": {
     "pipeline, stage 2 (gated)": 0.9849397590361446
   },
-  "elapsed_s": 57.9
+  "elapsed_s": 66.6
 }
