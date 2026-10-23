@@ -90,6 +90,7 @@ The native-speaker review of the top 500 is **complete across both rounds: 500 o
 other than `model`. The 200 sampled rows below rank 500 remain unreviewed, which is
 open question 2.
 
-Not yet done: the glossed deck. The deck in `out/` is still the v1.0 one with empty
-gloss fields. With the review finished, the next step is to build it with the
-glosses, `My_Notes` and `Gloss_Source`, then tag v1.1.0.
+The deck is built and glossed: 10,000 notes, 20,000 cards, `My_Notes` and
+`Gloss_Source` added and the note type's field list frozen from 1.1.0. What
+remains before the release is Jim importing it on Windows to check it (#12) and
+the README and tag (#13).

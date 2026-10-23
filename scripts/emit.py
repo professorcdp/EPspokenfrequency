@@ -49,14 +49,23 @@ def band_label(rank: int, size: int) -> str:
     return f"{lo:04d}-{lo + size - 1:04d}"
 
 
-def build_tags(rank: int, pos: str, cfg: dict[str, Any]) -> str:
-    """Tag string for one Anki note, in the original's field order."""
+def build_tags(rank: int, pos: str, cfg: dict[str, Any],
+               flags: Sequence[str] = (), reviewed: bool = False) -> str:
+    """Tag string for one Anki note, in the original's field order.
+
+    The frequency, POS and source tags are the original's and keep their
+    order. 1.1 appends one `flag::` tag per gloss flag, so a learner can find
+    or suspend the vulgar or the uncertain ones, and `gloss::reviewed` where a
+    native speaker has passed a verdict on the entry.
+    """
     tcfg = cfg["output"]["anki"]["tags"]
     b500 = band_label(rank, tcfg["band500"])
     b1000 = band_label(rank, tcfg["band1000"])
     return " ".join(
         [f"freq::{b500}", f"freq500::{b500}", f"freq1000::{b1000}", f"pos::{pos}"]
         + list(tcfg["static"])
+        + [f"flag::{f}" for f in flags]
+        + (["gloss::reviewed"] if reviewed else [])
     )
 
 
@@ -138,6 +147,17 @@ def write_anki(
     columns = acfg["enrichable_columns"] if enrichable else acfg["minimal_columns"]
     kind = "enrichable" if enrichable else "minimal"
     path = out_dir / f"{spec['anki_stem']}_anki_{kind}.tsv"
+    # The enrichable file now carries the published glosses; the minimal one
+    # stays bare, so it needs none of this.
+    glosses: dict[tuple[str, str], dict] = {}
+    reviewed: set[tuple[str, str]] = set()
+    labels: dict[str, str] = {}
+    if enrichable:
+        from scripts.build_apkg import published_glosses, reviewed_entries
+
+        glosses = published_glosses(cfg, out_dir)
+        reviewed = reviewed_entries(cfg)
+        labels = cfg["gloss"].get("source_labels", {})
 
     with path.open("w", encoding="utf-8", newline="") as fh:
         fh.write(f"#separator:{acfg['separator']}\n")
@@ -148,17 +168,27 @@ def write_anki(
         fh.write(f"#tags column:{len(columns)}\n")
         writer = csv.writer(fh, delimiter="\t", lineterminator="\n")
         for e in entries:
-            tags = build_tags(e.rank, e.pos, cfg)
             if enrichable:
+                g = glosses.get((e.lemma, e.pos))
+                if g is None:
+                    raise SystemExit(
+                        f"{e.lemma} ({e.pos}) has no gloss, so {path.name} was not "
+                        "written -- run python -m scripts.gloss --report")
+                flags = g["flags"].split() if g["flags"] else []
                 writer.writerow(
-                    [e.rank, e.lemma, e.pos, "", "", "",
+                    [e.rank, e.lemma, e.pos,
+                     g["gloss"], g["example_pt"], g["example_en"],
                      "1" if e.is_mwe else "0", e.raw_freq,
-                     f"{e.freq_per_million:.3f}", tags]
+                     f"{e.freq_per_million:.3f}", "",
+                     labels.get(g["source"], g["source"]),
+                     build_tags(e.rank, e.pos, cfg, flags=flags,
+                                reviewed=(e.lemma, e.pos) in reviewed)]
                 )
             else:
                 writer.writerow(
                     [e.rank, e.lemma, e.pos, "1" if e.is_mwe else "0",
-                     e.raw_freq, f"{e.freq_per_million:.3f}", tags]
+                     e.raw_freq, f"{e.freq_per_million:.3f}",
+                     build_tags(e.rank, e.pos, cfg)]
                 )
 
 

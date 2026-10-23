@@ -3,6 +3,23 @@
 Newest first. One entry per working session: what changed, which issues it touched,
 and what comes next. The CHANGELOG records what shipped; this records what happened.
 
+## 2026-10-23 — The glossed deck (#11)
+
+All 10,000 notes carry their gloss, so every one now has a reverse card: 20,000
+cards against 1.0.0's 10,000, and 5.9 MB against 3.5 MB. `My_Notes` and
+`Gloss_Source` are added at the end of the note type, which is frozen from here
+— Anki matches fields by position, so another change would break re-import.
+
+Snapshotted `out/` and `reports/` first and diffed after: the only files that
+moved are the `.apkg`, the two *enrichable* TSVs and the deck's byte count in
+`build_stats.json`. Every list, count and rank is byte-identical, and the
+*minimal* TSVs are untouched.
+
+Tags: everything 1.0.0 set is still set, plus `flag::` per gloss flag and
+`gloss::reviewed` on the 500 reviewed notes. Four new tests read the shipped
+`.apkg` itself rather than a fixture, so the artifact is pinned and not just the
+code that writes it. 302 tests pass.
+
 ## 2026-10-23 — Two corrections to the round-two write-up
 
 Documentation only. The CHANGELOG had said she went back over the rest of the top

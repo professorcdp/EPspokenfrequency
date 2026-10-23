@@ -573,7 +573,10 @@ output:
     html: false
     separator: tab
     minimal_columns: [Rank, Lemma_PT, POS, Is_MWE, Raw_Freq, Freq_per_million, Tags]
-    enrichable_columns: [Rank, Lemma_PT, POS, Gloss_EN, Example_PT, Example_EN, Is_MWE, Raw_Freq, Freq_per_million, Tags]
+    # 1.1: the enrichable file ships with the glosses filled in and carries the
+    # note type's two new fields. The minimal file is unchanged, for anyone who
+    # would rather write their own glosses.
+    enrichable_columns: [Rank, Lemma_PT, POS, Gloss_EN, Example_PT, Example_EN, Is_MWE, Raw_Freq, Freq_per_million, My_Notes, Gloss_Source, Tags]
     # The .apkg (scripts/build_apkg.py). The ids were generated once, on
     # 2026-09-22, and must NEVER be regenerated: Anki recognises the note
     # type and decks by these numbers, and notes by a GUID derived from

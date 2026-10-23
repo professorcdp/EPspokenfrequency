@@ -115,6 +115,46 @@ when the glosses have been reviewed.
   `efeitos colaterais` took its place; the other 51 replacements are new
   entries at the bottom of the list, ranks 9,904–10,000.
 
+- **The Anki deck ships with the glosses.** All 10,000 notes carry
+  `Gloss_EN`, and `Example_PT` / `Example_EN` where there is an example
+  (9,808 of them; the other 192 are entries no sampled sentence illustrated).
+  Every note therefore has an English → Portuguese card as well as a
+  Portuguese → English one: 20,000 cards, where 1.0.0 had 10,000. The package
+  is 5.9 MB, up from 3.5 MB.
+
+  Two fields are added at the end of the note type. **`My_Notes`** ships empty
+  and is the learner's own space; it shows on the back of both cards when
+  filled. **`Gloss_Source`** says where the row came from, in small print
+  beside the rank and frequency — "Claude; example taken verbatim from the
+  corpus" for 9,971 of them, and for the other 29 the wording that says a
+  native speaker chose the sentence, edited it, corrected the English, or that
+  the gloss was written by hand.
+
+  **The note type's field list is frozen from 1.1.0.** Anki matches fields by
+  position, so adding, removing or reordering one breaks a re-import for
+  anyone already studying the deck. Anything further goes in a new note type.
+  The note type id, the twenty deck ids and names, and the GUID rule (lemma
+  plus part of speech) are unchanged, as they have been since 1.0.0.
+
+- **New tags.** Every tag 1.0.0 set is still set. Added: one `flag::` tag per
+  gloss flag — `flag::vulgar` (89 notes), `flag::bp-leaning` (115),
+  `flag::name-like` (148), `flag::uncertain` (318), `flag::archaic` (13) — so
+  a learner can find or suspend them; and `gloss::reviewed` on the 500 notes a
+  native speaker has passed a verdict on.
+
+- **Importing 1.1 over 1.0 will not work cleanly: delete the twenty 1.0 decks
+  first, or import into a fresh Anki profile.** The note type has two new
+  fields and 70 notes changed their part of speech earlier in this release,
+  which changes their identity. A plain re-import leaves the old notes behind
+  beside the new ones. Nothing is lost by deleting first, because 1.0 shipped
+  with the gloss fields empty and no review history worth keeping was possible
+  on a deck that had no English side.
+
+- **`ep_spoken_anki_enrichable.tsv` and its 5001–10000 twin now ship filled
+  in**, with the glosses, the examples, the two new columns and the new tags.
+  The *minimal* files are unchanged, for anyone who would rather write their
+  own glosses from the bare list.
+
 - **A native speaker has reviewed the top 500 glosses, over two rounds**
   (`eval/gloss_review.tsv`). **500 of 500 reviewed: 478 good, 21 fix, 1 wrong,
   none junk.** Round two's answers are kept exactly as she sent them in
