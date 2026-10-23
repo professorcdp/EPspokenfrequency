@@ -3,6 +3,16 @@
 Newest first. One entry per working session: what changed, which issues it touched,
 and what comes next. The CHANGELOG records what shipped; this records what happened.
 
+## 2026-10-23 — Two corrections to the round-two write-up
+
+Documentation only. The CHANGELOG had said she went back over the rest of the top
+500 in round two; she did not. Of the 498 lines, 245 were round-one answers her
+browser still held and copied out again, and only 253 were new. The override
+paragraph described two kinds and thirteen rows, which the merge left behind: it
+now describes the 29 rows in four kinds and says where each row's English came
+from. `eval/README.md` had no account of the override kinds at all, so it gained
+a short one, including `override-english`.
+
 ## 2026-10-18 — Round two merged; the top 500 is reviewed (#7, #8, #9, #10)
 
 Her round-two answers arrived and are saved verbatim in

@@ -123,26 +123,34 @@ when the glosses have been reviewed.
 
   Round one covered 257 rows, of which seven had been judged against gloss text
   that changed afterwards and so did not count. Round two covered the 243 rows a
-  paging bug had hidden, plus the ten whose text had changed, and she went back
-  over the rest as well — 498 lines in all, every one parsing, none in the
-  optional band below rank 500. The two rows with no round-two line already
-  carried a round-one verdict and correctly showed as done.
+  paging bug had hidden and the ten whose text had changed. Its paste runs to 498
+  lines, but only those 253 are new judgements: the other 245 are round-one
+  answers her browser still held and copied out again. Every line parsed, and
+  none fell in the optional band below rank 500. Two rows that carry a round-one
+  verdict produced no line at all, because their part of speech — and with it
+  their row id — changed between the rounds; both already counted as done.
 
   The 200 sampled rows below rank 500 are still unreviewed and the README says
   so.
 
-  Her example changes are accepted as overrides, in two kinds. Six are
-  sentences she edited, and those are published with `source =
-  override-edited`; seven are different corpus lines she chose from the ones
-  the model was shown, published as `override-chosen`. An eighth chose the
-  line already there, so there was nothing to apply. The English for all
-  thirteen was written here to match her Portuguese — she supplied the
-  Portuguese only — and every row says so in its `note`.
+  Her corrections are published as overrides: **29 rows in four kinds**, named
+  in the new `source` column of `out/glosses.tsv`. `override-chosen` (11) is a
+  corpus line she picked from the ones she was shown. `override-edited` (11) is
+  a sentence she corrected, so no longer verbatim — *trás*, where she put back
+  an accent the subtitle had dropped, and *dever*, which had no example until
+  she wrote one. `override-english` (4) leaves the corpus line untouched and
+  takes only her correction to the translation. `override` (3) is a gloss
+  written by hand with no sentence: *caseiro*, which the model refuses to gloss,
+  *largo*, and *de*, whose senses she extended.
 
-  `out/glosses.tsv` gains a `source` column and `config.yaml` a
-  `gloss.source_labels` table, so the deck's `Gloss_Source` field can read
-  "corpus line, edited by a native speaker" for those six. The field itself
-  arrives with the glossed deck; the column is there now.
+  The English on those rows comes from four places: 5 are hers, given with the
+  sentence; 12 were written here and she confirmed them; 5 she corrected, one
+  through the confirm list (*um*) and four through her notes (*este*, *cidade*,
+  *tornar*, *rápido*); and 4 were written here to match sentences she supplied
+  in round two and she has not seen them yet. Each row says which in its `note`.
+  `gloss.source_labels` in `config.yaml` turns each `source` into the wording the
+  deck's `Gloss_Source` field will show; that field arrives with the glossed
+  deck, the column is there now.
 
 - **Regenerating the review file no longer destroys the review.**
   `write_tsv` overwrote `eval/gloss_review.tsv` with the columns it knows
