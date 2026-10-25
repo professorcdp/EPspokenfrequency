@@ -162,12 +162,17 @@ when the glosses have been reviewed.
   native speaker has passed a verdict on.
 
 - **Importing 1.1 over 1.0 will not work cleanly: delete the twenty 1.0 decks
-  first, or import into a fresh Anki profile.** The note type has two new
-  fields and 70 notes changed their part of speech earlier in this release,
-  which changes their identity. A plain re-import leaves the old notes behind
-  beside the new ones. Nothing is lost by deleting first, because 1.0 shipped
-  with the gloss fields empty and no review history worth keeping was possible
-  on a deck that had no English side.
+  first, or import into a fresh Anki profile.** The note type has a new field
+  (`Gloss_Source`) and 70 notes changed their part of speech earlier in this
+  release, which changes their identity. A plain re-import leaves the old
+  notes behind beside the new ones.
+
+  Deleting the 1.0 decks does lose whatever review history you have built on
+  them — the scheduling, the intervals, the lapses. There is no way to carry
+  it across, because the note type has changed. 1.0 was never announced, so
+  this should affect few people if any; if you are one of them, the choice is
+  between keeping your history on a deck with no English side, and starting
+  again on one that has glosses throughout.
 
 - **`ep_spoken_anki_enrichable.tsv` and its 5001–10000 twin now ship filled
   in**, with the glosses, the examples, the `Gloss_Source` column and the new

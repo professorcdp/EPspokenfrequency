@@ -3,6 +3,18 @@
 Newest first. One entry per working session: what changed, which issues it touched,
 and what comes next. The CHANGELOG records what shipped; this records what happened.
 
+## 2026-10-24 — Three decision records, and an honest line about losing history
+
+Documentation only. The CHANGELOG's import entry said the note type had two new
+fields; it has one. Its claim that nothing is lost by deleting the 1.0 decks was
+wrong — the review history on them goes, and there is no way to carry it across
+a changed note type. It now says so, and says that 1.0 was never announced, so
+few people if any are affected.
+
+Decision records 0012 (the field list is frozen), 0013 (no field for the
+learner's own notes) and 0014 (a package timestamp per release) record what the
+review settled, each with what it costs.
+
 ## 2026-10-23 (review)
 
 **Reviewed:** 9257dff..464adf0
