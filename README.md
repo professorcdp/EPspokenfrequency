@@ -311,6 +311,34 @@ The build reports are in [`reports/`](reports/): `COMPARISON.md` (this
 list against the unpublished April 2026 version), `QUALITY.md` (the quality gate and every
 accent fold), and `backend_scores.md` (how the lemmatizers compared).
 
+### Release assets
+
+Everything above is in the repository, so cloning gets you all of it. A
+[tagged release](https://github.com/professorcdp/EPspokenfrequency/releases)
+also attaches four files on their own, for anyone who wants the data
+without the repository:
+
+| Asset | What it is |
+|---|---|
+| `EP_Spoken_Frequency.apkg` | The Anki package. |
+| `ep_spoken_top5000.tsv` | Ranks 1–5000. |
+| `ep_spoken_5001_10000.tsv` | Ranks 5001–10000. |
+| `glosses.tsv` | The glosses and example sentences, all 10,000 rows. |
+
+A fifth file, `SHA256SUMS.txt`, carries their SHA-256 digests. Download the
+assets and that file into one directory and check them with:
+
+```bash
+sha256sum -c SHA256SUMS.txt      # macOS: shasum -a 256 -c SHA256SUMS.txt
+```
+
+Each line should read `OK`. The sums are written by the build rather than
+by hand, so they describe the files the pipeline actually produced; they
+are in `out/SHA256SUMS.txt` in the repository too, and a rebuild that moves
+any asset moves its line with it. If you are pinning this data in another
+project, pin the digest and not the tag — a tag can be moved, a digest
+cannot.
+
 ---
 
 ## How the list is built

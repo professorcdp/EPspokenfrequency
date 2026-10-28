@@ -3,6 +3,39 @@
 Newest first. One entry per working session: what changed, which issues it touched,
 and what comes next. The CHANGELOG records what shipped; this records what happened.
 
+## 2026-10-28 — `dever` diagnosed, pairs checked, glosses added to the release assets
+
+Three things for the downstream project that wants to pin our glosses, and one
+bug found doing it.
+
+`dever` publishes at rank 68 as a noun with the verb's frequency. The cause is
+`verb_lemmas` in `scripts/pos.py`, which decides verb-ness from the bare
+infinitive alone: `dever` as a surface is tagged NOUN 43 times to VERB 7,
+because *o dever* is what a bare `dever` usually is, so the lemma is marked
+nominal and all **857 VERB votes across 36 inflected surfaces** are vetoed.
+Nothing survives but 48 noun votes, so the entry cannot even split. Same family
+as the `são` bug: a correct tag thrown out by a consistency rule. 24 siblings
+exist; sorted by how many distinct surfaces lost votes, only five have a real
+paradigm behind them and thirteen are genuine nouns where the rule works. A
+second mechanism turned up alongside — `jurar` (618), where the dominant surface
+`juro` keeps two stray votes that carry 65,701 occurrences. Issue #22 has the
+cause, the sibling counts and the cost; **not fixed, Jim decides before the tag.**
+A fix in `pos.py` does not re-key the ser/ir digest, so no rescore, but it can
+still move the fingerprint if it touches `verb_lemmas`.
+
+Checked 81 lemma+POS pairs the other project needs: 80 exactly as asked, the one
+exception being `dever`. Between v1.0.0 and now, 240 pairs differ — 120 gone, 120
+new, which is precisely the 120 notes Jim's Windows import added over 1.0. They
+are 62 contraction retags, 51 glued-enclitic rows dropped, 4 other drops, and 58
+new tail lemmas.
+
+`out/glosses.tsv` joins the release assets, and `out/SHA256SUMS.txt` now covers
+all four. The build writes the sums after the assets exist, so they describe what
+the pipeline produced rather than what someone pasted in; `output.release_assets`
+in `config.yaml` says which files count. Five tests, 311 passing.
+
+Nothing tagged, nothing released, nothing pushed.
+
 ## 2026-10-24 — Three decision records, and an honest line about losing history
 
 Documentation only. The CHANGELOG's import entry said the note type had two new

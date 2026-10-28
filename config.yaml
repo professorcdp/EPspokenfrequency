@@ -568,6 +568,16 @@ output:
   dropped_proper_nouns: dropped_proper_nouns.txt
   dropped_proper_nouns_full: dropped_proper_nouns_full.txt
   dropped_min_count: 100
+  # The files attached to a GitHub release, and the checksum file that
+  # covers them. Another project pins these by SHA-256, so the list is here
+  # rather than in the release instructions: the build writes the sums, and
+  # a rebuild that moves any asset moves its line too.
+  release_assets:
+    - EP_Spoken_Frequency.apkg
+    - ep_spoken_top5000.tsv
+    - ep_spoken_5001_10000.tsv
+    - glosses.tsv
+  checksums: SHA256SUMS.txt
   anki:
     notetype: "Portuguese (EP) – Spoken Frequency"
     html: false

@@ -41,6 +41,16 @@ occurrences of *ser*, and every contraction labelled by what it contracts.
   lines the model was shown, character for character, and must contain the
   entry. A run failing any fatal gate is not published. Per-flag counts and
   the cost of the run are in the same report.
+- **`out/glosses.tsv` is a release asset**, attached to the tagged release
+  alongside the `.apkg` and the two list TSVs, so the glosses can be used
+  without cloning the repository.
+- **`out/SHA256SUMS.txt`**, the SHA-256 of all four release assets in
+  `sha256sum -c` format. The build writes it after the assets exist, so the
+  digests describe what the pipeline produced rather than what someone
+  pasted into the release notes, and a rebuild that moves an asset moves its
+  line. Which files count as assets is `output.release_assets` in
+  `config.yaml`. Anyone pinning this data in another project should pin the
+  digest rather than the tag.
 - **`eval/gloss_overrides.tsv`**, a reviewer's answer beating the model's,
   in the same shape as the other human-decision files in `eval/`: match on
   lemma + pos, and only the fields a row fills in are taken, so a row can

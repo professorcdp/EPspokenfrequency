@@ -228,6 +228,36 @@ def write_all(entries: Sequence[Entry], cfg: dict[str, Any], out_dir: Path) -> l
     return written
 
 
+def write_checksums(cfg: dict[str, Any], out_dir: Path) -> Path:
+    """SHA-256 of every release asset, in `sha256sum -c` format.
+
+    The assets are what a release attaches, and another project pins them by
+    digest, so the sums are built rather than pasted into the release notes.
+    `glosses.tsv` is an input to this build rather than an output of it, so it
+    is hashed as it stands on disk; every other asset has just been written.
+    """
+    import hashlib
+
+    ocfg = cfg["output"]
+    lines = []
+    for name in ocfg["release_assets"]:
+        path = out_dir / name
+        if not path.is_file():
+            raise FileNotFoundError(
+                f"release asset {path} is missing -- cannot write checksums"
+            )
+        h = hashlib.sha256()
+        with path.open("rb") as fh:
+            for chunk in iter(lambda: fh.read(1 << 20), b""):
+                h.update(chunk)
+        # Two spaces and a bare filename: the format `sha256sum -c` reads,
+        # and the assets arrive beside it in the same download directory.
+        lines.append(f"{h.hexdigest()}  {name}")
+    path = out_dir / ocfg["checksums"]
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")
+    return path
+
+
 def _write_dropped_file(
     path: Path, rows, bp_excluded, min_count: int, total: int, foreign=(), short=()
 ) -> None:

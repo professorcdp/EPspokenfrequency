@@ -491,6 +491,11 @@ def run(cfg: dict[str, Any]) -> dict[str, Any]:
     _log(f"  wrote {Path(apkg['path']).name}: {apkg['bytes']:,} bytes, "
          f"{sum(apkg['notes'].values()):,} notes in {len(apkg['notes'])} decks")
 
+    # Last, once every asset exists: the digests a release is verified by.
+    sums = emit_mod.write_checksums(cfg, out_dir)
+    stats["release_assets"] = cfg["output"]["release_assets"]
+    _log(f"  wrote {sums.name}: {len(cfg['output']['release_assets'])} assets")
+
     # -- quality report ----------------------------------------------------
     _log("quality report")
     # Use the lemma map itself as the oracle, so the check asks "is this
