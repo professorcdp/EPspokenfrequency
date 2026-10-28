@@ -334,17 +334,6 @@ def scan_corpus(cfg: dict[str, Any], singles: Iterable[str],
     return out
 
 
-class _CacheOnlyBackend:
-    """Stands in for the lemmatizer so the cached map can be reused without
-    loading Stanza. Glossing must never lemmatize anything itself."""
-
-    def lemmatize_types(self, types, contexts=None):  # pragma: no cover
-        raise SystemExit(
-            "no cached lemma map for this config in .cache/: run "
-            "python -m scripts.build first (the glosses reuse its caches)"
-        )
-
-
 class Sentences:
     """Corpus lines that may be offered as an example, per published row."""
 
@@ -380,11 +369,25 @@ class Sentences:
         # convention, the closure or an accent fold.
         lemma_map = build_mod.load_published_map(build_cfg)
         if lemma_map is None:
-            _log("  warning: no published map in .cache/ (build predates it); "
-                 "falling back to the lemma map, which misses merged entries")
-            lemma_map = lemmas_mod.build_lemma_map(
-                build_cfg, sorted(uni.counts), bg.contexts, backend=_CacheOnlyBackend()
-            )
+            # Never fall back here. The fallback map misses every surface
+            # that reached its entry through a convention, the closure or an
+            # accent fold, so it offers almost every row a different set of
+            # sentences -- and the sentences are part of the cache stamp. A
+            # single missing file would therefore invalidate all 10,000
+            # cached responses and re-ask them at full price. That happened
+            # once: adding one key to cfg["fixes"] re-keyed
+            # published_map_path, the build that would have written the new
+            # map had aborted, and --retry began re-asking the entire list.
+            raise SystemExit(
+                f"no published map at {build_mod.published_map_path(build_cfg)}.\n"
+                "That file is keyed on the settings that shape the lemma map "
+                "(tokenizer, lemmatizer, conventions, fixes, filters, serir), "
+                "so a change to any of them needs a completed build before "
+                "the glosses can be touched:\n"
+                "    python -m scripts.build\n"
+                "Refusing rather than falling back: the fallback map misses "
+                "merged entries, which changes the sentences offered to "
+                "nearly every row, which re-keys the whole response cache.")
         self.build_cfg = build_cfg
         joint = frozenset(serir_mod.FORMS) if self.scfg.get("exclude_joint_serir") else frozenset()
         self.by_lemma: dict[str, list[str]] = {}
@@ -1011,6 +1014,66 @@ def collect(cfg: dict[str, Any], rows: Sequence[dict[str, Any]], sents: Sentence
     return from_cache(cfg, rows, sents, usage)
 
 
+def retry_plan(cfg: dict[str, Any], rows: Sequence[dict[str, Any]],
+               sents: "Sentences") -> tuple[list[dict], list[dict], list[dict]]:
+    """Split the published rows three ways, without calling the API:
+    (ask, reuse, cached).
+
+    A cache miss has two quite different causes and they must not be
+    treated alike:
+
+      * the stamp still matches but the reply was refused, truncated or
+        unparseable -- `cache_read_any` finds it. That is what --retry is
+        for, so it is asked again;
+      * the stamp does not match at all. The entry may be genuinely new, or
+        the stamp may simply have moved under it -- a rebuilt lemma map
+        changes the sentences offered, and those are part of the stamp. If
+        the entry already has a published gloss, that gloss is reused and
+        nothing is spent.
+
+    Only an entry with no usable cached reply *and* no published gloss is
+    actually asked.
+    """
+    pdig = digest(system_prompt(cfg))
+    previous = published_previously(cfg) if cfg["gloss"].get("reuse_published") else {}
+    ask: list[dict] = []
+    reuse: list[dict] = []
+    cached: list[dict] = []
+    for row in rows:
+        stamp = stamp_for(cfg, pdig, row, sents.choose(row))
+        if cache_read(cfg, row, stamp) is not None:
+            cached.append(row)
+            continue
+        if cache_read_any(cfg, row, stamp) is not None:
+            ask.append(row)          # same stamp, bad reply: a real retry
+            continue
+        prev = previous.get((row["lemma"], row["pos"]))
+        if prev is not None and (prev.get("gloss") or "").strip():
+            reuse.append(row)        # stamp moved under a published row
+            continue
+        ask.append(row)              # never glossed
+    return ask, reuse, cached
+
+
+def published_previously(cfg: dict[str, Any]) -> dict[tuple[str, str], dict]:
+    """The out/glosses.tsv already on disk, keyed on lemma + pos.
+
+    The safety net under a cache stamp that has moved. A stamp covers the
+    model, the prompt and the sentences offered, so anything that changes
+    the sentences -- including a rebuilt lemma map -- invalidates a cached
+    reply that was perfectly good, and re-asking it costs money and can
+    return a different answer for a row a native speaker has already signed
+    off. Reusing what was published keeps the reviewed rows stable.
+    """
+    from scripts import config as config_mod
+
+    path = Path(config_mod.out_dir(cfg)) / cfg["gloss"]["out_file"]
+    if not path.is_file():
+        return {}
+    with path.open(encoding="utf-8", newline="") as fh:
+        return {(r["lemma"], r["pos"]): r for r in csv.DictReader(fh, delimiter="\t")}
+
+
 def from_cache(cfg: dict[str, Any], rows: Sequence[dict[str, Any]], sents: Sentences,
                usage: "Usage | None" = None) -> tuple[list[dict], Usage]:
     """Build the finished rows from cache/gloss/ alone -- no API call.
@@ -1022,7 +1085,8 @@ def from_cache(cfg: dict[str, Any], rows: Sequence[dict[str, Any]], sents: Sente
     pdig = digest(system_prompt(cfg))
     usage = usage or Usage(cfg["gloss"]["model"])
     overrides = load_overrides(cfg, rows)
-    results, missing = [], []
+    previous = published_previously(cfg) if cfg["gloss"].get("reuse_published") else {}
+    results, missing, reused = [], [], []
     for row in rows:
         sentences = sents.choose(row)
         stamp = stamp_for(cfg, pdig, row, sentences)
@@ -1030,6 +1094,23 @@ def from_cache(cfg: dict[str, Any], rows: Sequence[dict[str, Any]], sents: Sente
         if blob is None:
             blob = cache_read_any(cfg, row, stamp)   # an errored reply still counts
         if blob is None:
+            # The stamp has moved but this entry was published before. Keep
+            # what was published rather than paying to ask again and risking
+            # a different answer under a reviewed row. Counted in the gate
+            # report, never silent.
+            prev = previous.get((row["lemma"], row["pos"]))
+            if prev is not None:
+                results.append({**row,
+                                "gloss": prev["gloss"],
+                                "example_pt": prev["example_pt"],
+                                "example_en": prev["example_en"],
+                                "flags": [f for f in (prev["flags"] or "").split()
+                                          if f],
+                                "sentences": [], "repaired": "", "attempts": 0,
+                                "source": prev["source"], "override_note": "",
+                                "reused": True, "problem": ""})
+                reused.append((row["lemma"], row["pos"]))
+                continue
             missing.append(row)
             continue
         usage.add(blob.get("response", {}).get("usage", {}), live=False)
@@ -1043,6 +1124,12 @@ def from_cache(cfg: dict[str, Any], rows: Sequence[dict[str, Any]], sents: Sente
                         "override_note": over["note"] if over else "",
                         "problem": verify(parsed, blob["sentences"],
                                           overridden=bool(over))})
+    if reused:
+        _log(f"  {len(reused):,} rows reused the gloss already published: their "
+             "cache stamp moved (the prompt, the model or the sentences offered "
+             "changed) but the entry itself is unchanged. "
+             + ", ".join(f"{l} ({p})" for l, p in reused[:6])
+             + (" ..." if len(reused) > 6 else ""))
     if missing:
         _log(f"  {len(missing):,} rows have no response: rerun --submit, then --collect")
     return results, usage
@@ -1206,6 +1293,9 @@ def main() -> None:
     mode.add_argument("--retry", action="store_true",
                       help="re-ask, one request each, the rows whose cached "
                            "reply was refused, truncated or unparseable")
+    mode.add_argument("--plan", action="store_true",
+                      help="list what --retry would send to the API, and what "
+                           "it would reuse, without calling the API")
     mode.add_argument("--report", action="store_true",
                       help="rebuild the outputs and the gates from the cache; "
                            "no API call")
@@ -1259,14 +1349,27 @@ def main() -> None:
         print("submitted; run --collect when the batch has ended")
         return
 
+    if args.plan:
+        todo, reuse, cached = retry_plan(cfg, rows, sents)
+        print(f"{len(rows):,} published rows")
+        print(f"  {len(cached):,} already cached for this exact stamp")
+        print(f"  {len(reuse):,} would reuse the gloss already published "
+              "(stamp moved, entry unchanged)")
+        print(f"  {len(todo):,} would be SENT TO THE API:")
+        for r in todo:
+            print(f"      rank {r['rank']:>5}  {r['lemma']} ({r['pos']})")
+        if reuse:
+            print(f"\n  reused, first 20 of {len(reuse):,}:")
+            for r in reuse[:20]:
+                print(f"      rank {r['rank']:>5}  {r['lemma']} ({r['pos']})")
+        print("\nNo API call was made.")
+        return
+
     if args.retry:
-        pdig = digest(system_prompt(cfg))
-        todo = []
-        for row in rows:
-            sentences = sents.choose(row)
-            stamp = stamp_for(cfg, pdig, row, sentences)
-            if cache_read(cfg, row, stamp) is None:
-                todo.append(row)
+        todo, reuse, _ = retry_plan(cfg, rows, sents)
+        if reuse:
+            _log(f"{len(reuse):,} rows keep the gloss already published "
+                 "(their stamp moved but the entry is unchanged)")
         if not todo:
             print("nothing to retry")
             return

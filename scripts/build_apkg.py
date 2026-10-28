@@ -146,6 +146,7 @@ def build(cfg: dict[str, Any], out_dir: Path) -> dict[str, Any]:
     """Write the .apkg from the band TSVs in out_dir. Returns note counts."""
     import genanki
 
+    from scripts import emit as emit_mod
     from scripts.emit import build_tags
 
     acfg = cfg["output"]["anki"]
@@ -197,14 +198,15 @@ def build(cfg: dict[str, Any], out_dir: Path) -> dict[str, Any]:
                     sort_field=row["rank"],
                 ))
 
-    if missing:
-        raise SystemExit(
-            f"{len(missing)} published row(s) have no gloss, so the deck was not "
-            f"written: " + ", ".join(f"{l} ({p})" for l, p in missing[:8]) + ".\n"
-            "An entry that has never been glossed needs python -m scripts.gloss "
-            "--retry, which calls the API and costs money. If these were glossed "
-            "before and a rebuild moved their lemma or part of speech, "
-            "--report alone may be enough.")
+    # A missing gloss is recorded rather than raised on, exactly as
+    # emit.MISSING_GLOSSES is. Raising here left the deck, every report, the
+    # published map and SHA256SUMS.txt unwritten -- and a missing published
+    # map is what silently re-keys the whole gloss cache, because
+    # scripts/gloss.py then falls back to a lemma map that misses merged
+    # entries and offers every row different sentences. build.py fails on
+    # this at the end, beside the quality gate, once the evidence is written.
+    emit_mod.MISSING_GLOSSES.extend(
+        k for k in missing if k not in emit_mod.MISSING_GLOSSES)
 
     path = out_dir / pcfg["file"]
     genanki.Package(decks).write_to_file(str(path), timestamp=pcfg["timestamp"])

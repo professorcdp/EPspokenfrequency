@@ -28,7 +28,10 @@ only counted when it is consistent with its lemma:
     (a nominalised infinitive: *o poder*, *o jantar*);
   * a function word (the closed-class table) cannot be a noun or a verb.
 A verb lemma is infinitive-shaped and not tagged mainly as a noun or
-adjective in its own sentences, so `lugar` and `mulher` are not verbs.
+adjective in its own sentences, so `lugar` and `mulher` are not verbs --
+except that for the POS column the rest of the paradigm is asked too, or a
+nominalised infinitive takes the whole verb with it (`dever`; see
+`paradigm_verb_lemmas`).
 """
 
 from __future__ import annotations
@@ -73,6 +76,71 @@ def verb_lemmas(tags: Mapping[str, Sequence[tuple[str, str, str]]]):
     return is_verb
 
 
+def paradigm_verb_lemmas(
+    tags: Mapping[str, Sequence[tuple[str, str, str]]],
+    is_verb,
+    min_surfaces: int,
+):
+    """A verb test for the POS column that reads the whole paradigm.
+
+    `verb_lemmas` asks one question of one surface: is the bare infinitive
+    tagged as a noun or adjective? For *dever* the answer is yes -- in
+    subtitles a bare `dever` is usually *o dever*, "the duty", 43 of 50
+    sampled sentences -- so the lemma was ruled out as a verb and all 857
+    VERB tags on `devo`, `deve`, `devia`, `deveria` ... were thrown away by
+    `consistent`. Nothing survived but the noun, and the commonest modal
+    verb in the language was published as a noun at rank 68 carrying the
+    verb's whole count.
+
+    A nominalised infinitive is a real thing, so the answer is not to drop
+    the test but to ask the rest of the paradigm as well. A lemma is a verb
+    here when it is infinitive-shaped and its VERB/AUX tags come from at
+    least `min_surfaces` distinct *inflected* surfaces -- a conjugated form
+    is evidence of a verb in a way the infinitive alone is not, because the
+    infinitive is the one form that is also a noun.
+
+    Two conditions keep a mistag from passing as a paradigm:
+
+      * only a surface whose own majority lemma is this lemma counts. A
+        stray minority reading would never reach `aggregate` anyway, since
+        it drops occurrences whose lemma is neither the majority nor the
+        surface itself. Without this, `mar` collects `mando`, `marque` and
+        `mudasses` and reads as a verb.
+      * the surface must begin with the infinitive's stem, and the stem
+        must be at least three characters. This is what separates `tremer`
+        (`tremem`, `tremeu`, `tremia`, `tremiam`) from `mar`, whose stem is
+        the single letter `m`.
+
+    The result is only ever *more* permissive than `is_verb`: a lemma that
+    already passes still passes, so no lemma can lose its verb reading, and
+    the only entries that can move are ones the veto was suppressing. The
+    cost of the stem rule is that a suppressed irregular verb is not
+    rescued (`disse` does not begin `diz`), which leaves today's answer
+    rather than risking a new wrong one.
+
+    This is for the POS column alone. `verb_lemmas` still decides lemma
+    resolution and `consistent_shape`, so neither the lemma map nor the
+    ser/ir split moves.
+    """
+    paradigm: dict[str, set[str]] = {}
+    for surface, occs in tags.items():
+        agreed = majority(Counter(lemma for lemma, _, _ in occs))
+        if agreed is None or agreed == surface:
+            continue
+        stem = agreed[:-2] if agreed.endswith(("ar", "er", "ir", "ôr")) else agreed
+        if len(stem) < 3 or not surface.startswith(stem):
+            continue
+        if any(u in _VERB_TAGS for lemma, u, _ in occs if lemma == agreed):
+            paradigm.setdefault(agreed, set()).add(surface)
+
+    def is_verb_for_pos(lemma: str) -> bool:
+        if is_verb(lemma):
+            return True
+        return (lemma.endswith(("ar", "er", "ir", "ôr"))
+                and len(paradigm.get(lemma, ())) >= min_surfaces)
+    return is_verb_for_pos
+
+
 def consistent(surface: str, lemma: str, upos: str, is_verb, closed) -> bool:
     if upos in _VERB_TAGS:
         return is_verb(lemma) and lemma not in closed
@@ -114,6 +182,7 @@ def aggregate(
     cfg: dict[str, Any],
     closed: frozenset[str] = frozenset(),
     stats: dict[str, int] | None = None,
+    is_verb: Callable[[str], bool] | None = None,
 ) -> tuple[dict[str, Counter], dict[str, Counter]]:
     """Count-weighted POS shares and raw tag votes, per final lemma.
 
@@ -125,7 +194,8 @@ def aggregate(
     """
     weighted: dict[str, Counter] = {}
     raw: dict[str, Counter] = {}
-    is_verb = verb_lemmas(tags)
+    if is_verb is None:
+        is_verb = verb_lemmas(tags)
 
     def add(lemma: str, pos_votes: Counter, count: int) -> None:
         w = weighted.setdefault(lemma, Counter())

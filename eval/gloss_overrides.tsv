@@ -30,7 +30,14 @@ colocar	verb		Coloque o dedo ali.	Place your finger there.	override-chosen	corpu
 conseguir	verb		Acho que o consigo ler.	I think I can read it.	override-edited	native-speaker edit of the corpus line (first-pass review, rank 83); English written to match, not hers; English confirmed by the reviewer
 da	det		Era o efeito da cerveja, ok?	It was the effect of the beer, okay?	override-edited	native-speaker edit of the corpus line (first-pass review, rank 33); English written to match, not hers; English confirmed by the reviewer
 de	prep	of; from; by; for			override	gloss corrected by the reviewer (round-two review)
-dever	noun		Tens o dever de respeitar as regras da estrada.	You have a duty to obey the rules of the road.	override-edited	native-speaker edit of the corpus line (round-two review); English written to match, not hers
+# dever: the reviewer wrote "Tens o dever de respeitar as regras da estrada."
+# ("You have a duty to obey the rules of the road.") for dever as a noun,
+# in the round-two review. The #22 fix found that dever is a verb in 98.1%
+# of its 1,413,142 occurrences, so the noun reading -- about 26,600 of them,
+# 1.9%, below pos.split_min_share -- no longer has a published row for her
+# sentence to attach to. The row is kept here as a comment rather than
+# deleted: if dever ever publishes a noun row again, restore it verbatim.
+# dever	noun		Tens o dever de respeitar as regras da estrada.	You have a duty to obey the rules of the road.	override-edited	native-speaker edit of the corpus line (round-two review); English written to match, not hers
 dizer	verb		E não vais dizer nada?	And you're not going to say anything?	override-edited	native-speaker edit of the corpus line (first-pass review, rank 23); English written to match, not hers; English confirmed by the reviewer
 dólar	noun		É só 1 dolar!	It's only 1 dollar!	override-chosen	corpus line chosen by a native speaker (first-pass review, rank 415); English written to match, not hers; English confirmed by the reviewer
 ela	pron		Ela é de Connecticut.	She's from Connecticut.	override-edited	native-speaker edit of the corpus line (round-two review); English written to match, not hers

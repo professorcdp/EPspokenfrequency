@@ -47,6 +47,26 @@ every output is still written first.
 - **The gloss response cache in `cache/gloss/` is ignored and cost $24.95 to
   produce.** Changing a row's lemma, part of speech or prompt re-keys it and bills
   it again.
+- **What re-keys that cache is not what you would guess.** `rank` and
+  `freq_per_million` go into the *request* (`user_block`), so a row's prompt
+  changes whenever ranks shift — but they are deliberately *not* in
+  `stamp_for`, so a rank shift alone costs nothing. What is in the stamp is
+  the **sentences offered**, and those come from the published lemma map.
+  `published_map_path()` is digested over `tokenizer`, `lemmatizer`,
+  `conventions`, `fixes`, `filters` and `serir`, so **adding a single key
+  under `fixes:` re-keys the map**; if no build has written the map for the
+  new digest, glossing used to fall back to a lemma map that misses merged
+  entries, offer every row different sentences, and re-ask all 10,000. That
+  cost $1.69 before it was caught on 2026-10-28.
+
+  Three things now stop it, all tested: a missing published map is a fatal
+  error in `scripts/gloss.py` instead of a silent fallback; `build_apkg.py`
+  records a missing gloss rather than raising, so a build always writes the
+  map; and `gloss.reuse_published` republishes the existing
+  `out/glosses.tsv` row when a stamp moves under an unchanged entry,
+  counted in `reports/gloss_gates.md`. **Run `python -m scripts.gloss
+  --plan` before `--retry`** — it lists what would be sent and costs
+  nothing.
 - **Anki note identity comes from lemma plus part of speech.** Changing a
   published part of speech makes a re-import create a second note rather than
   update the first.

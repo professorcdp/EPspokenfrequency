@@ -88,6 +88,8 @@ def run(results: Sequence[dict[str, Any]], rows: Sequence[dict[str, Any]],
         "override_off_corpus": Gate("override_off_corpus",
                                     "overridden examples that are not one of the "
                                     "corpus lines the model was shown", limit=""),
+        "reused": Gate("reused", "rows republished from the previous "
+                       "out/glosses.tsv because their cache stamp moved", limit=""),
     }
 
     by_key = {}
@@ -101,11 +103,19 @@ def run(results: Sequence[dict[str, Any]], rows: Sequence[dict[str, Any]],
             gates["coverage"].hit(row, "no gloss")
 
     for r in results:
+        if r.get("reused"):
+            # Published before and unchanged since, so it was gated then.
+            # Its `sentences` list is empty here -- the row was taken from
+            # the output file, not from a cached reply -- so the gates that
+            # compare an example against the sentences offered have nothing
+            # to compare and would fail every one of these rows.
+            gates["reused"].hit(r, "stamp moved; republished as last written")
         if r.get("override_mismatch"):
             gates["override_pair"].hit(r, r["override_mismatch"])
         if r.get("source", "model") != "model":
             gates["override"].hit(r, r.get("override_note", "") or "overridden")
-            if r["example_pt"] and r["example_pt"] not in r["sentences"]:
+            if (r["example_pt"] and r["example_pt"] not in r["sentences"]
+                    and not r.get("reused")):
                 gates["override_off_corpus"].hit(r, r["example_pt"])
         if r.get("repaired") in gates:
             gates[r["repaired"]].hit(r, r.get("example_pt") or "example dropped")
@@ -133,7 +143,8 @@ def run(results: Sequence[dict[str, Any]], rows: Sequence[dict[str, Any]],
             gates["no_example"].hit(r, "no sentence fitted"
                                     if r["sentences"] else "no sentence available")
             continue
-        if ex not in r["sentences"] and r.get("source", "model") == "model":
+        if (ex not in r["sentences"] and r.get("source", "model") == "model"
+                and not r.get("reused")):
             gates["verbatim"].hit(r, ex)
         if not r["example_en"].strip():
             gates["translated"].hit(r, ex)
@@ -144,7 +155,7 @@ def run(results: Sequence[dict[str, Any]], rows: Sequence[dict[str, Any]],
                      for i in range(len(toks) - len(parts) + 1))
         else:
             ok = bool(set(toks) & surfaces_of(r))
-        if not ok and r.get("source", "model") == "model":
+        if not ok and r.get("source", "model") == "model" and not r.get("reused"):
             gates["contains_entry"].hit(r, ex)
 
     # An entry with nothing to illustrate it is allowed, up to a share.
@@ -162,6 +173,7 @@ def run(results: Sequence[dict[str, Any]], rows: Sequence[dict[str, Any]],
             "entries": len({r["lemma"] for r in results}),
             "with_example": sum(1 for r in results if r["example_pt"]),
             "overridden": sum(1 for r in results if r.get("source", "model") != "model"),
+            "reused": sum(1 for r in results if r.get("reused")),
             "sources": Counter(r.get("source", "model") for r in results),
             "no_example_share": share,
             "senses": Counter(len([s for s in r["gloss"].split(";") if s.strip()])

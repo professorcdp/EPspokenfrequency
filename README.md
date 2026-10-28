@@ -13,7 +13,7 @@ example sentence on every card.
 | Corpus | OPUS OpenSubtitles v2018, `pt` (Portugal-tagged) |
 | Corpus size | 118,469,705 lines · 636,582,535 tokens · 827,895 unique surface types |
 | Lemmatization accuracy | 98.5% on a 332-word human-reviewed sample |
-| Glosses | All 10,000 have an English gloss; 9,808 also have an example sentence from the corpus. The top 500 were checked by a native-speaker teacher: 478 good, 21 fix, 1 wrong |
+| Glosses | All 10,000 have an English gloss; 9,808 also have an example sentence from the corpus. A native-speaker teacher checked 499 of the top 500: 478 good, 20 fix, 1 wrong |
 | Part of speech | From a neural tagger (Stanza), by majority vote over up to 50 sentences per word |
 | Licence | Data and docs (`out/`, `eval/`, `reports/`, `archive/`, README, CHANGELOG, DATA_SOURCES): CC BY-SA 4.0 — see [LICENSE-DATA](LICENSE-DATA). Code (`scripts/`, `tests/`, `config.yaml`, `requirements.txt`): MIT — see [LICENSE](LICENSE) |
 
@@ -48,7 +48,7 @@ model in a single pass — a snapshot of what that model said on one day,
 not a lexicographer's definition.
 
 **The first 500 have been checked by a native-speaker Portuguese teacher**,
-over two rounds covering all 500: she passed 478, asked for a fix on 21 and
+over two rounds covering 499 of the 500: she passed 478, asked for a fix on 20 and
 called one wrong, and her corrections are in the published glosses. Those are
 the words a learner meets first, which is where the checking went.
 
@@ -113,7 +113,7 @@ professionally edited, and comes with the things this list lacks.
 | Lemmatization | Automatic: a neural tagger (Stanza) reading each word in up to 50 real sentences, checked against a dictionary. 98.5% correct on a 332-word hand-checked sample | Curated |
 | POS tags | Automatic, from the same tagger: majority vote over each word's sample sentences, and a word used as two parts of speech is listed once for each. Not hand-checked | Professionally tagged |
 | Contractions (*do*, *ao*, *pela*) | Kept as their own entries | Split into preposition + article |
-| Review | Automatic output, with about 1,360 decisions made by hand: the gold set, gender pairs and proper-noun drops, plus a native speaker's verdict on each of the top 500 glosses. Below rank 500 it is not edited entry by entry | Edited and peer-reviewed |
+| Review | Automatic output, with about 1,360 decisions made by hand: the gold set, gender pairs and proper-noun drops, plus a native speaker's verdict on 499 of the top 500 glosses. Below rank 500 it is not edited entry by entry | Edited and peer-reviewed |
 | Cost | Free | A book you buy |
 
 What this list offers that Davies does not is scale on a single register
@@ -156,7 +156,7 @@ These are specific and worth knowing before you study from the list.
   sentences are the one part that is verifiable — each is a corpus line,
   copied unaltered but for a leading dialogue dash and surrounding quotation
   marks, and the build rejects any the model did not copy exactly. Where the
-  model edited a sentence rather than quoting it (23 entries), the example
+  model edited a sentence rather than quoting it (22 entries), the example
   was dropped and the entry keeps its gloss alone; 192 entries have no
   example because none of the sampled lines showed the entry in the sense
   being glossed.
@@ -273,30 +273,32 @@ Slang and vulgarities are glossed plainly: this is a record of how people
 speak, not a teaching aid. See [the caveat below](#the-glosses-are-a-model-snapshot).
 
 `source` says where the row came from, and the deck publishes it as
-`Gloss_Source`. It reads `model` for 9,971 rows. The other 29 are in
+`Gloss_Source`. It reads `model` for 9,972 rows. The other 28 are in
 [eval/gloss_overrides.tsv](eval/gloss_overrides.tsv), where a reviewer
 overruled the model:
 
 | `source` | Rows | What a card shows |
 |---|---:|---|
-| `model` | 9,971 | Claude; example taken verbatim from the corpus |
+| `model` | 9,972 | Claude; example taken verbatim from the corpus |
 | `override-chosen` | 11 | corpus line chosen by a native speaker |
-| `override-edited` | 11 | corpus line, edited by a native speaker |
+| `override-edited` | 10 | corpus line, edited by a native speaker |
 | `override-english` | 4 | corpus line; English corrected by a native speaker |
 | `override` | 3 | gloss settled by hand |
 
 The three kinds differ in what the reviewer touched. `override-chosen` is a
 different corpus line she picked from the ones the model was shown, so it is
 still verbatim. `override-edited` is a sentence she corrected and therefore no
-longer verbatim — *trás*, where she restored an accent the subtitle had
-dropped, and *dever*, which had no example at all until she wrote one.
+longer verbatim — *trás*, for instance, where she restored an accent the
+subtitle had dropped. Her eleventh such sentence was for *dever*, which had no
+example at all until she wrote one; it is held back rather than published,
+because the entry is now a verb and her sentence is the noun.
 `override-english` leaves the Portuguese alone and takes only her correction
 to the translation. `override` covers the three glosses settled by hand:
 *caseiro*, which the model refuses to gloss, *largo*, and *de*, whose senses
 she extended.
 
 Of the English translations on those rows, 5 are hers, 12 were written here
-and she confirmed them, 5 she corrected, and 4 were written here to match
+and she confirmed them, 5 she corrected, and 3 were written here to match
 sentences she supplied in the second round and she has not seen them yet.
 Each row records which in its `note`.
 
@@ -509,7 +511,7 @@ decks come with it.
   Every note has one, because every note is glossed. (Its front is still
   wrapped in a condition on `Gloss_EN`, which is what let the 1.0 deck ship
   with no reverse cards at all.)
-- **`Gloss_Source` says where each card's gloss came from** — for 9,971 of
+- **`Gloss_Source` says where each card's gloss came from** — for 9,972 of
   them that the example is a corpus line the model quoted, and for 29 that a
   native speaker chose the sentence, edited it, corrected the English, or
   that the gloss was settled by hand.
@@ -627,7 +629,7 @@ the verbs in the first thousand, say — from the Anki browser:
 | `source::opensubtitles_ep_v2018` | Provenance |
 | `variety::EP`, `register::spoken` | Variety and register |
 | `flag::vulgar` (89), `flag::bp-leaning` (115), `flag::name-like` (148), `flag::uncertain` (318), `flag::archaic` (13) | What the gloss was flagged as. Suspend `flag::vulgar` if you would rather not meet those, or search `flag::uncertain` for the glosses to check first |
-| `gloss::reviewed` (500) | A native-speaker teacher passed a verdict on this entry's gloss |
+| `gloss::reviewed` (499) | A native-speaker teacher passed a verdict on this entry's gloss |
 
 The tags are on the TSV notes too, and are the only way to study those in
 order, since each TSV file imports into a single 5,000-note deck.

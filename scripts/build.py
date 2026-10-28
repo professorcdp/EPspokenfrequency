@@ -450,9 +450,18 @@ def run(cfg: dict[str, Any]) -> dict[str, Any]:
     raw_votes: dict = {}
     if cfg["pos"]["source"] == "tagger" and tags is not None and cfg["run"]["stage"] >= 2:
         pos_stats: dict[str, int] = {}
+        # The POS column reads the whole paradigm; lemma resolution and the
+        # ser/ir split keep the bare-infinitive test, so neither moves.
+        pos_is_verb = is_verb
+        if cfg["fixes"].get("paradigm_verb_pos"):
+            pos_is_verb = pos_mod.paradigm_verb_lemmas(
+                tags, is_verb, cfg["pos"]["verb_paradigm_min_surfaces"])
+            stats["pos_paradigm_verbs"] = sorted(
+                l for l in {headword_of_surface(s) for s in tags}
+                if pos_is_verb(l) and not is_verb(l))
         weighted, raw_votes = pos_mod.aggregate(
             uni.counts, tags, joint_splits, headword_of_surface, headword_of_lemma, cfg,
-            closed=frozenset(tagger.closed), stats=pos_stats)
+            closed=frozenset(tagger.closed), stats=pos_stats, is_verb=pos_is_verb)
         stats["pos_votes_counted"] = pos_stats.get("counted", 0)
         stats["pos_votes_inconsistent"] = pos_stats.get("inconsistent", 0)
     rows: list[tuple[str, str, int, bool]] = []

@@ -224,16 +224,27 @@
   "short_dropped": 717,
   "bp_excluded": 16,
   "proper_nouns_dropped": 251300,
-  "pos_votes_counted": 444913,
-  "pos_votes_inconsistent": 13861,
+  "pos_paradigm_verbs": [
+    "accionar",
+    "colar",
+    "colher",
+    "dever",
+    "dormer",
+    "dotar",
+    "jantar",
+    "pesar",
+    "tremer"
+  ],
+  "pos_votes_counted": 446050,
+  "pos_votes_inconsistent": 12724,
   "contraction_pos": {
     "det": 58,
     "pron": 19,
     "adv": 3
   },
   "pos_source": "tagger",
-  "pos_split_lemmas_all": 655,
-  "pos_split_in_list": 309,
+  "pos_split_lemmas_all": 659,
+  "pos_split_in_list": 312,
   "pos_heuristic_in_list": 97,
   "entries": 10000,
   "apkg": {
@@ -261,9 +272,15 @@
       "Portuguese::European Portuguese - Spoken::20 · 9501–10000": 500
     }
   },
+  "release_assets": [
+    "EP_Spoken_Frequency.apkg",
+    "ep_spoken_top5000.tsv",
+    "ep_spoken_5001_10000.tsv",
+    "glosses.tsv"
+  ],
   "suspects": 0,
   "gold": {
     "pipeline, stage 2 (gated)": 0.9849397590361446
   },
-  "elapsed_s": 66.6
+  "elapsed_s": 53.9
 }

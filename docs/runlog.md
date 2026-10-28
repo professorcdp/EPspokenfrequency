@@ -3,6 +3,65 @@
 Newest first. One entry per working session: what changed, which issues it touched,
 and what comes next. The CHANGELOG records what shipped; this records what happened.
 
+## 2026-10-28 (later) — `dever` fixed, and a cache re-key that cost $1.69
+
+**Fixes #22.** The POS column now reads the whole paradigm
+(`fixes.paradigm_verb_pos`): a lemma the bare-infinitive test rejects still
+counts as a verb when its VERB/AUX tags come from at least four distinct
+inflected surfaces sharing its stem. The stem rule is what keeps `mar`, whose
+stem is the single letter `m`, from collecting `mando` and `marque`. The test
+can only add a verb reading, and it is used for the POS column alone, so
+lemma resolution and the ser/ir split do not move — the rebuilt published map
+came out **byte-identical** to the old one and the ser/ir fingerprint is
+unchanged.
+
+Six rows moved and nothing else: `dever` noun 68 → verb 68, `jantar` and
+`colar` and `tremer` each split into noun + verb, `dorme` intj → verb,
+`dormias` noun → verb. Exactly three counts changed, each losing precisely
+what its new verb row gained. `presunção`, `bipolar` and `cicatrizar` were
+pushed off the foot of the list by the three new rows; the other 7,083
+differences are pure rank displacement. `dever` does **not** split — the noun
+is 1.9% of its occurrences, far under `pos.split_min_share` — so the ~26,600
+uses of *o dever* sit inside the verb row, and `colher` keeps one noun row for
+the same reason at 24.5%. Jim chose to drop the reviewer's `dever` noun
+override rather than force a split; it is commented out in
+`eval/gloss_overrides.tsv`, to be restored verbatim if a noun row returns. The
+top 500 is now **499 reviewed: 478 good, 20 fix, 1 wrong**, with `dever` (verb)
+the one unchecked entry. `dever` (verb) glossed "must; should; to owe".
+
+**The expensive part.** Adding one key under `fixes:` re-keyed
+`published_map_path()`, whose digest covers `cfg["fixes"]`. The build that
+would have written the map for the new digest had aborted inside
+`build_apkg.py` on a missing gloss, so no map existed, and `Sentences` quietly
+fell back to a lemma map that misses merged entries. That changed the
+sentences offered to **every** row, and the sentences are part of the cache
+stamp — so `--retry` set off to re-ask all 10,000. Jim stopped it at 379
+completed calls, **$1.69**. The diagnosis that rank and frequency re-key the
+cache is wrong: they are in the request but deliberately not in `stamp_for`,
+which is now pinned by tests.
+
+Those 379 responses **overwrote** their originals — the cache filename is
+keyed on lemma + pos with the stamp inside — and 223 of them held a different
+answer from what was published, 86 on rows carrying a native-speaker verdict.
+Nothing published actually changed: `out/glosses.tsv` never moved, and after
+the repair a full regeneration altered **zero** rows, reviewed or otherwise.
+The 379 stay in `cache/gloss/`, unused: the published row wins over them.
+
+Three defences, all tested. A missing published map is now a fatal error in
+`scripts/gloss.py` instead of a silent fallback. `build_apkg.py` records a
+missing gloss in `emit.MISSING_GLOSSES` rather than raising, as `emit.py`
+already did, so a build always writes the deck, the reports, the published map
+and `SHA256SUMS.txt` before failing — the same mid-build abort the 2026-10-23
+review caught in one file and missed in the other. And `gloss.reuse_published`
+republishes the existing row when a stamp moves under an unchanged entry,
+counted as a `reused` gate (377 rows this run) and never silent. A new
+`--plan` lists what `--retry` would send, without calling the API; the final
+retry was 4 rows and $0.03.
+
+Issue #23 opened for `jurar` (rank 618, published as a noun because two stray
+votes on `juro` carry 65,701 occurrences). Left for a later release: every fix
+for it reaches into lemma resolution. 358 tests pass.
+
 ## 2026-10-28 — `dever` diagnosed, pairs checked, glosses added to the release assets
 
 Three things for the downstream project that wants to pin our glosses, and one

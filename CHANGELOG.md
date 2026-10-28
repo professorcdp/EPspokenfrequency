@@ -91,6 +91,37 @@ occurrences of *ser*, and every contraction labelled by what it contracts.
 
 ### Fixed
 
+- **`dever` was published as a noun at rank 68, carrying the verb's whole
+  2,220 per million.** The commonest modal verb in the language — *devo*,
+  *deve*, *devia*, *deveria* — had no row of its own, and 1.0.0 had the
+  same error. The POS column decided verb-ness from the bare infinitive
+  alone, and a bare `dever` in subtitles is usually *o dever*, "the duty":
+  43 of its 50 sampled sentences are tagged NOUN, so the lemma was ruled
+  out as a verb and all **857 VERB tags across 36 inflected forms** were
+  thrown away. Nothing survived but the noun.
+
+  The POS column now reads the whole paradigm (`fixes.paradigm_verb_pos`):
+  a lemma the infinitive test rejects still counts as a verb when its
+  VERB/AUX tags come from at least `pos.verb_paradigm_min_surfaces` (4)
+  distinct inflected forms that share its stem. The stem rule is what keeps
+  `mar` — whose stem is the single letter `m` — from collecting `mando` and
+  `marque` and reading as a verb. The test can only ever *add* a verb
+  reading, so nothing loses one, and it is used for the POS column alone:
+  lemma resolution and the ser/ir split keep the old test and do not move.
+
+  Four other entries gained a verb reading the same veto was hiding:
+  `jantar` (noun 651, verb 1372), `colar` (noun 3070, verb 3924), `tremer`
+  (noun 4027, verb 5626), and `dorme`, which was `intj` and is now `verb`.
+  `dever` itself does **not** split: the noun is 1.9% of its occurrences,
+  far below `pos.split_min_share`, so the ~26,600 uses of *o dever* are
+  counted inside the verb row. `colher` keeps one noun row for the same
+  reason, its verb reading missing the threshold at 24.5%. Three entries at
+  the foot of the list — `presunção`, `bipolar`, `cicatrizar` — were pushed
+  out of the 10,000 by the three new rows. No other count moved.
+
+  Because the published part of speech is half of an Anki note's identity,
+  `dever` is a different note in 1.1.0 than in 1.0.0. `jurar` has a related
+  but different fault and is left for a later release (#23).
 - **51 rows were not words at all: `conheçoa`, `deixaa`, `levaa` and 48 more.**
   `conheçoa` sat at rank 5,290 in 1.0.0, glossed "I know her". They were
   `conheço-a`, `deixa-a`, `leva-a` — properly hyphenated in the corpus — and
@@ -142,7 +173,7 @@ occurrences of *ser*, and every contraction labelled by what it contracts.
 
   One field is added at the end of the note type. **`Gloss_Source`** says
   where the row came from, in small print beside the rank and frequency —
-  "Claude; example taken verbatim from the corpus" for 9,971 of them, and for
+  "Claude; example taken verbatim from the corpus" for 9,972 of them, and for
   the other 29 the wording that says a native speaker chose the sentence,
   edited it, corrected the English, or that the gloss was settled by hand.
 
@@ -176,7 +207,7 @@ occurrences of *ser*, and every contraction labelled by what it contracts.
 - **New tags.** Every tag 1.0.0 set is still set. Added: one `flag::` tag per
   gloss flag — `flag::vulgar` (89 notes), `flag::bp-leaning` (115),
   `flag::name-like` (148), `flag::uncertain` (318), `flag::archaic` (13) — so
-  a learner can find or suspend them; and `gloss::reviewed` on the 500 notes a
+  a learner can find or suspend them; and `gloss::reviewed` on the 499 notes a
   native speaker has passed a verdict on.
 
 - **Importing 1.1 over 1.0 will not work cleanly: delete the twenty 1.0 decks
@@ -199,8 +230,14 @@ occurrences of *ser*, and every contraction labelled by what it contracts.
   own glosses from the bare list.
 
 - **A native speaker has reviewed the top 500 glosses, over two rounds**
-  (`eval/gloss_review.tsv`). **500 of 500 reviewed: 478 good, 21 fix, 1 wrong,
-  none junk.** Round two's answers are kept exactly as she sent them in
+  (`eval/gloss_review.tsv`). **499 of 500 reviewed: 478 good, 20 fix, 1 wrong,
+  none junk.** She reviewed all 500; the `dever` fix below republished that
+  entry as a verb, and her verdict was given on `dever` as a noun, which no
+  longer has a row. Her answer is kept verbatim in
+  `eval/gloss_review_round2_raw.txt` and as a comment in
+  `eval/gloss_overrides.tsv`, to be restored if a noun row ever returns.
+  `dever` (verb) is the one entry in the top 500 nobody has checked.
+  Round two's answers are kept exactly as she sent them in
   `eval/gloss_review_round2_raw.txt`; round one's raw text was not kept, which
   is why round two's was committed before anything parsed it.
 
@@ -216,12 +253,14 @@ occurrences of *ser*, and every contraction labelled by what it contracts.
   The 200 sampled rows below rank 500 are still unreviewed and the README says
   so.
 
-  Her corrections are published as overrides: **29 rows in four kinds**, named
+  Her corrections are published as overrides: **28 rows in four kinds**, named
   in the new `source` column of `out/glosses.tsv`. `override-chosen` (11) is a
-  corpus line she picked from the ones she was shown. `override-edited` (11) is
-  a sentence she corrected, so no longer verbatim — *trás*, where she put back
-  an accent the subtitle had dropped, and *dever*, which had no example until
-  she wrote one. `override-english` (4) leaves the corpus line untouched and
+  corpus line she picked from the ones she was shown. `override-edited` (10) is
+  a sentence she corrected, so no longer verbatim — *trás*, for instance, where
+  she put back an accent the subtitle had dropped. Her eleventh was *dever*,
+  which had no example until she wrote one; it is held back rather than
+  published, because the entry is now a verb and her sentence is the noun.
+  `override-english` (4) leaves the corpus line untouched and
   takes only her correction to the translation. `override` (3) is a gloss
   written by hand with no sentence: *caseiro*, which the model refuses to gloss,
   *largo*, and *de*, whose senses she extended.
@@ -229,7 +268,7 @@ occurrences of *ser*, and every contraction labelled by what it contracts.
   The English on those rows comes from four places: 5 are hers, given with the
   sentence; 12 were written here and she confirmed them; 5 she corrected, one
   through the confirm list (*um*) and four through her notes (*este*, *cidade*,
-  *tornar*, *rápido*); and 4 were written here to match sentences she supplied
+  *tornar*, *rápido*); and 3 were written here to match sentences she supplied
   in round two and she has not seen them yet. Each row says which in its `note`.
   `gloss.source_labels` in `config.yaml` turns each `source` into the wording the
   deck's `Gloss_Source` field will show; that field arrives with the glossed

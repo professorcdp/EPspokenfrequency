@@ -166,16 +166,30 @@ def test_flag_and_reviewed_tags(tmp_path):
     assert "flag::" not in tags["o/det"]
 
 
-def test_a_published_row_without_a_gloss_stops_the_build(tmp_path):
-    """Better no deck than notes with an empty front on card 2."""
-    import pytest
+def test_a_published_row_without_a_gloss_fails_the_build_at_the_end(tmp_path):
+    """Better no deck than notes with an empty front on card 2 -- but the
+    build must still write everything before it fails.
+
+    This used to raise from inside build_apkg, which left the deck, every
+    report, SHA256SUMS.txt *and* the published lemma map unwritten. A
+    missing published map is what silently re-keys the whole gloss cache,
+    so the abort was far more expensive than the missing gloss. The row is
+    recorded in emit.MISSING_GLOSSES and scripts/build.py fails on it at
+    the end, beside the quality gate.
+    """
+    from scripts import emit
 
     cfg = _tiny_corpus(tmp_path)
     (tmp_path / "glosses.tsv").write_text(
         GLOSS_HEADER + "1\to\tdet\t0\t1.0\t\tthe\t\t\t\tmodel\n", encoding="utf-8")
-    with pytest.raises(SystemExit) as exc:
-        build_apkg.build(cfg, tmp_path)
-    assert "no gloss" in str(exc.value)
+    before = list(emit.MISSING_GLOSSES)
+    try:
+        emit.MISSING_GLOSSES.clear()
+        result = build_apkg.build(cfg, tmp_path)
+        assert emit.MISSING_GLOSSES, "the ungloss't row was not recorded"
+        assert Path(result["path"]).is_file(), "the deck must still be written"
+    finally:
+        emit.MISSING_GLOSSES[:] = before
 
 
 # -- the deck that actually ships --------------------------------------------
@@ -232,7 +246,12 @@ def test_shipped_tags_match_the_glosses_and_the_review(tmp_path):
         reviewed = sum(1 for r in _csv.DictReader(fh, delimiter="\t")
                        if (r.get("tutor_verdict") or "").strip())
     assert {k: v for k, v in tags.items() if k.startswith("flag::")} == dict(want)
-    assert tags["gloss::reviewed"] == reviewed == 500
+    # 499, not 500: the #22 fix republished `dever` as a verb, and the
+    # reviewer's verdict was given on `dever` as a noun, which no longer has
+    # a row. Her answer is kept in eval/gloss_review_round2_raw.txt and as a
+    # comment in eval/gloss_overrides.tsv. dever (verb) is the one entry in
+    # the top 500 nobody has checked.
+    assert tags["gloss::reviewed"] == reviewed == 499
 
 
 def test_shipped_notes_keep_the_original_tags(tmp_path):
