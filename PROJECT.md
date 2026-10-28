@@ -84,10 +84,9 @@ section: English glosses and corpus example sentences for all 10,000 entries
 found along the way — glued enclitic clusters, contraction parts of speech, `são`
 wrongly counted as a noun instead of a form of *ser*.
 
-The native-speaker review of the top 500 is complete across both rounds, and
-**499 of the 500 published rows carry her verdict: 478 good, 20 fix, 1 wrong.**
-The exception is `dever`, which the #22 fix republished as a verb after she had
-judged it as a noun; her answer is kept but not published. Her corrections are applied, and the
+The native-speaker review of the top 500 is **complete: 500 of 500 reviewed,
+479 good, 20 fix, 1 wrong.** `dever` was signed off separately, after the #22
+fix republished it as a verb with a new gloss. Her corrections are applied, and the
 28 rows she or we settled by hand are marked in `out/glosses.tsv` with a `source`
 other than `model`. The 200 sampled rows below rank 500 remain unreviewed, which is
 open question 2.

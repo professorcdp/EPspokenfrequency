@@ -120,7 +120,11 @@ occurrences of *ser*, and every contraction labelled by what it contracts.
   out of the 10,000 by the three new rows. No other count moved.
 
   Because the published part of speech is half of an Anki note's identity,
-  `dever` is a different note in 1.1.0 than in 1.0.0. `jurar` has a related
+  `dever` is a different note in 1.1.0 than in 1.0.0 — and a different entry
+  for the reviewer, whose verdict had been given on the noun. She signed the
+  new verb row off separately, so the top 500 is still reviewed in full; the
+  noun example she had written is held in `eval/gloss_overrides.tsv` as a
+  comment, to be restored if a noun row ever returns. `jurar` has a related
   but different fault and is left for a later release (#23).
 - **51 rows were not words at all: `conheçoa`, `deixaa`, `levaa` and 48 more.**
   `conheçoa` sat at rank 5,290 in 1.0.0, glossed "I know her". They were
@@ -207,7 +211,7 @@ occurrences of *ser*, and every contraction labelled by what it contracts.
 - **New tags.** Every tag 1.0.0 set is still set. Added: one `flag::` tag per
   gloss flag — `flag::vulgar` (89 notes), `flag::bp-leaning` (115),
   `flag::name-like` (148), `flag::uncertain` (318), `flag::archaic` (13) — so
-  a learner can find or suspend them; and `gloss::reviewed` on the 499 notes a
+  a learner can find or suspend them; and `gloss::reviewed` on the 500 notes a
   native speaker has passed a verdict on.
 
 - **Importing 1.1 over 1.0 will not work cleanly: delete the twenty 1.0 decks
@@ -230,14 +234,8 @@ occurrences of *ser*, and every contraction labelled by what it contracts.
   own glosses from the bare list.
 
 - **A native speaker has reviewed the top 500 glosses, over two rounds**
-  (`eval/gloss_review.tsv`). **499 of 500 reviewed: 478 good, 20 fix, 1 wrong,
-  none junk.** She reviewed all 500; the `dever` fix below republished that
-  entry as a verb, and her verdict was given on `dever` as a noun, which no
-  longer has a row. Her answer is kept verbatim in
-  `eval/gloss_review_round2_raw.txt` and as a comment in
-  `eval/gloss_overrides.tsv`, to be restored if a noun row ever returns.
-  `dever` (verb) is the one entry in the top 500 nobody has checked.
-  Round two's answers are kept exactly as she sent them in
+  (`eval/gloss_review.tsv`). **500 of 500 reviewed: 479 good, 20 fix, 1 wrong,
+  none junk.** Round two's answers are kept exactly as she sent them in
   `eval/gloss_review_round2_raw.txt`; round one's raw text was not kept, which
   is why round two's was committed before anything parsed it.
 

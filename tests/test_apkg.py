@@ -246,12 +246,11 @@ def test_shipped_tags_match_the_glosses_and_the_review(tmp_path):
         reviewed = sum(1 for r in _csv.DictReader(fh, delimiter="\t")
                        if (r.get("tutor_verdict") or "").strip())
     assert {k: v for k, v in tags.items() if k.startswith("flag::")} == dict(want)
-    # 499, not 500: the #22 fix republished `dever` as a verb, and the
-    # reviewer's verdict was given on `dever` as a noun, which no longer has
-    # a row. Her answer is kept in eval/gloss_review_round2_raw.txt and as a
-    # comment in eval/gloss_overrides.tsv. dever (verb) is the one entry in
-    # the top 500 nobody has checked.
-    assert tags["gloss::reviewed"] == reviewed == 499
+    # All 500 again. The #22 fix republished `dever` as a verb with a new
+    # gloss, which briefly left this at 499; the reviewer signed that one row
+    # off separately on 2026-10-28. eval/README.md records that it is the one
+    # verdict with no raw paste behind it.
+    assert tags["gloss::reviewed"] == reviewed == 500
 
 
 def test_shipped_notes_keep_the_original_tags(tmp_path):

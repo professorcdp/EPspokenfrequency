@@ -3,6 +3,24 @@
 Newest first. One entry per working session: what changed, which issues it touched,
 and what comes next. The CHANGELOG records what shipped; this records what happened.
 
+## 2026-10-28 (evening) — the reviewer signed off `dever` as a verb
+
+The one gap the #22 fix left is closed. `dever` (verb) — "must; should; to
+owe", *Deve estar tudo escondido.* — was sent to the native-speaker teacher
+and came back approved, so `eval/gloss_review.tsv` records `good` for it and
+the top 500 is **500 of 500 again: 479 good, 20 fix, 1 wrong**. The deck's
+`gloss::reviewed` tag is back to 500, verified by reading the shipped `.apkg`.
+
+This is the only verdict in the file with no raw paste behind it: rounds one
+and two have `gloss_review_round2_raw.txt`, this one arrived on its own and was
+entered by hand. `eval/README.md` says so, rather than letting it pass as part
+of round two. Her original verdict, given on `dever` as a *noun*, stays in the
+round-two raw text, and the noun example she wrote stays commented out in
+`gloss_overrides.tsv`.
+
+Nothing else moved: ser/ir fingerprint unchanged, gold 98.49%, every fatal
+gloss gate passing, 358 tests.
+
 ## 2026-10-28 (later) — `dever` fixed, and a cache re-key that cost $1.69
 
 **Fixes #22.** The POS column now reads the whole paradigm

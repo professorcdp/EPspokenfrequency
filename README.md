@@ -13,7 +13,7 @@ example sentence on every card.
 | Corpus | OPUS OpenSubtitles v2018, `pt` (Portugal-tagged) |
 | Corpus size | 118,469,705 lines · 636,582,535 tokens · 827,895 unique surface types |
 | Lemmatization accuracy | 98.5% on a 332-word human-reviewed sample |
-| Glosses | All 10,000 have an English gloss; 9,808 also have an example sentence from the corpus. A native-speaker teacher checked 499 of the top 500: 478 good, 20 fix, 1 wrong |
+| Glosses | All 10,000 have an English gloss; 9,808 also have an example sentence from the corpus. A native-speaker teacher checked all of the top 500: 479 good, 20 fix, 1 wrong |
 | Part of speech | From a neural tagger (Stanza), by majority vote over up to 50 sentences per word |
 | Licence | Data and docs (`out/`, `eval/`, `reports/`, `archive/`, README, CHANGELOG, DATA_SOURCES): CC BY-SA 4.0 — see [LICENSE-DATA](LICENSE-DATA). Code (`scripts/`, `tests/`, `config.yaml`, `requirements.txt`): MIT — see [LICENSE](LICENSE) |
 
@@ -48,7 +48,7 @@ model in a single pass — a snapshot of what that model said on one day,
 not a lexicographer's definition.
 
 **The first 500 have been checked by a native-speaker Portuguese teacher**,
-over two rounds covering 499 of the 500: she passed 478, asked for a fix on 20 and
+over two rounds covering all 500: she passed 479, asked for a fix on 20 and
 called one wrong, and her corrections are in the published glosses. Those are
 the words a learner meets first, which is where the checking went.
 
@@ -113,7 +113,7 @@ professionally edited, and comes with the things this list lacks.
 | Lemmatization | Automatic: a neural tagger (Stanza) reading each word in up to 50 real sentences, checked against a dictionary. 98.5% correct on a 332-word hand-checked sample | Curated |
 | POS tags | Automatic, from the same tagger: majority vote over each word's sample sentences, and a word used as two parts of speech is listed once for each. Not hand-checked | Professionally tagged |
 | Contractions (*do*, *ao*, *pela*) | Kept as their own entries | Split into preposition + article |
-| Review | Automatic output, with about 1,360 decisions made by hand: the gold set, gender pairs and proper-noun drops, plus a native speaker's verdict on 499 of the top 500 glosses. Below rank 500 it is not edited entry by entry | Edited and peer-reviewed |
+| Review | Automatic output, with about 1,360 decisions made by hand: the gold set, gender pairs and proper-noun drops, plus a native speaker's verdict on every one of the top 500 glosses. Below rank 500 it is not edited entry by entry | Edited and peer-reviewed |
 | Cost | Free | A book you buy |
 
 What this list offers that Davies does not is scale on a single register
@@ -629,7 +629,7 @@ the verbs in the first thousand, say — from the Anki browser:
 | `source::opensubtitles_ep_v2018` | Provenance |
 | `variety::EP`, `register::spoken` | Variety and register |
 | `flag::vulgar` (89), `flag::bp-leaning` (115), `flag::name-like` (148), `flag::uncertain` (318), `flag::archaic` (13) | What the gloss was flagged as. Suspend `flag::vulgar` if you would rather not meet those, or search `flag::uncertain` for the glosses to check first |
-| `gloss::reviewed` (499) | A native-speaker teacher passed a verdict on this entry's gloss |
+| `gloss::reviewed` (500) | A native-speaker teacher passed a verdict on this entry's gloss |
 
 The tags are on the TSV notes too, and are the only way to study those in
 order, since each TSV file imports into a single 5,000-note deck.
