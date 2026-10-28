@@ -1,9 +1,17 @@
 # Changelog
 
-## Unreleased
+## 1.1.0 — (unreleased; date filled in at the tag)
 
-Work towards 1.1.0. Not tagged or released; the version number is fixed
-when the glosses have been reviewed.
+Glosses. Every one of the 10,000 entries now carries an English meaning, and
+9,808 of them a real sentence from the corpus with its translation, so the
+Anki deck works in both directions from the first import instead of shipping
+blank for you to fill in. A native-speaker Portuguese teacher checked the top
+500 over two rounds and her corrections are in the published glosses; the
+9,500 below that are the model's work alone, and the README says so.
+
+Along the way the pipeline gave up several errors the glosses made visible: 51
+rows that were never words, `são` counted as a noun rather than a million
+occurrences of *ser*, and every contraction labelled by what it contracts.
 
 ### Added
 

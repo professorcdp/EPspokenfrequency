@@ -4,14 +4,16 @@ A frequency list of the **10,000 most common lemmas in European Portuguese
 film and TV dialogue**, built from the Portugal-tagged portion of the
 OpenSubtitles 2018 corpus — 636 million tokens of subtitle text.
 
-Ready-to-import Anki decks are included.
+Ready-to-import Anki decks are included, with an English gloss and a real
+example sentence on every card.
 
 | | |
 |---|---|
-| Entries | 10,000 rows (two files of 5,000): 9,390 distinct words, 311 of them listed once per part of speech, plus 295 multi-word expressions |
+| Entries | 10,000 rows (two files of 5,000): 9,392 distinct words, 309 of them listed once per part of speech, plus 296 multi-word expressions |
 | Corpus | OPUS OpenSubtitles v2018, `pt` (Portugal-tagged) |
-| Corpus size | 118,469,705 lines · 636,214,452 tokens · 838,358 unique surface types |
+| Corpus size | 118,469,705 lines · 636,582,535 tokens · 827,895 unique surface types |
 | Lemmatization accuracy | 98.5% on a 332-word human-reviewed sample |
+| Glosses | All 10,000 have an English gloss; 9,808 also have an example sentence from the corpus. The top 500 were checked by a native-speaker teacher: 478 good, 21 fix, 1 wrong |
 | Part of speech | From a neural tagger (Stanza), by majority vote over up to 50 sentences per word |
 | Licence | Data and docs (`out/`, `eval/`, `reports/`, `archive/`, README, CHANGELOG, DATA_SOURCES): CC BY-SA 4.0 — see [LICENSE-DATA](LICENSE-DATA). Code (`scripts/`, `tests/`, `config.yaml`, `requirements.txt`): MIT — see [LICENSE](LICENSE) |
 
@@ -43,10 +45,16 @@ the numbers accordingly.
 glosses in [`out/glosses.tsv`](out/glosses.tsv) are a one-to-three-word
 English hint per entry and one real corpus sentence, written by a language
 model in a single pass — a snapshot of what that model said on one day,
-not a lexicographer's definition. They have not been checked entry by
-entry. Treat a gloss as a starting point and a dictionary as the
-authority. (The "enrichable" Anki files leave the gloss columns empty if
-you would rather write your own.)
+not a lexicographer's definition.
+
+**The first 500 have been checked by a native-speaker Portuguese teacher**,
+over two rounds covering all 500: she passed 478, asked for a fix on 21 and
+called one wrong, and her corrections are in the published glosses. Those are
+the words a learner meets first, which is where the checking went.
+
+**The other 9,500 have not been checked by anyone.** A sample of 200 of them
+is set aside for review and is still unreviewed. Below rank 500, treat a gloss
+as a starting point and a dictionary as the authority.
 
 ---
 
@@ -101,11 +109,11 @@ professionally edited, and comes with the things this list lacks.
 | Corpus | ~636M tokens, subtitles only | ~20M tokens, balanced across registers |
 | Registers | Film/TV dialogue | Spoken, fiction, newspaper, academic |
 | Variety | Portugal-tagged, BP markers excluded post hoc; headwords in post-1990 spelling | Both varieties, with BP/EP marked per entry |
-| Glosses & examples | One to three English senses per entry and one example sentence taken verbatim from the corpus — written by a language model in one pass, unchecked entry by entry | English glosses and example sentences throughout, written and edited by lexicographers |
+| Glosses & examples | One to three English senses per entry and one example sentence taken verbatim from the corpus, written by a language model in one pass. The top 500 checked by a native-speaker teacher; the other 9,500 unchecked | English glosses and example sentences throughout, written and edited by lexicographers |
 | Lemmatization | Automatic: a neural tagger (Stanza) reading each word in up to 50 real sentences, checked against a dictionary. 98.5% correct on a 332-word hand-checked sample | Curated |
 | POS tags | Automatic, from the same tagger: majority vote over each word's sample sentences, and a word used as two parts of speech is listed once for each. Not hand-checked | Professionally tagged |
 | Contractions (*do*, *ao*, *pela*) | Kept as their own entries | Split into preposition + article |
-| Review | Automatic output. Spot-checked against a hand-reviewed sample, with about 830 individual decisions made by hand (gold set, gender pairs, proper-noun drops); not edited entry by entry | Edited and peer-reviewed |
+| Review | Automatic output, with about 1,360 decisions made by hand: the gold set, gender pairs and proper-noun drops, plus a native speaker's verdict on each of the top 500 glosses. Below rank 500 it is not edited entry by entry | Edited and peer-reviewed |
 | Cost | Free | A book you buy |
 
 What this list offers that Davies does not is scale on a single register
@@ -120,7 +128,7 @@ These are specific and worth knowing before you study from the list.
 
 - **Part of speech is tagger output, not hand-checked.** The `pos`
   column is Stanza's tag, by majority vote over each word's sample
-  sentences (50 for the 4,347 most frequent word forms, 5 for the rest).
+  sentences (50 for the 4,350 most frequent word forms, 5 for the rest).
   The tagger is not always consistent with itself: 3% of its tags
   contradicted the lemma it gave in the same sentence (a VERB tag on the
   noun *pergunta*) and were discarded. A word the tagger regularly uses two
@@ -139,18 +147,19 @@ These are specific and worth knowing before you study from the list.
   frequency and up to twenty real corpus sentences containing it. The
   prompt is in the repository
   ([scripts/gloss_prompt.md](scripts/gloss_prompt.md)) because the glosses
-  cannot be read as evidence without it. Nobody checked all 10,000 by
-  hand. Two consequences worth knowing: the model chose which sense to put
-  first, so the order reflects its judgement of spoken frequency rather
-  than a count; and re-running the same prompt on a newer model would not
-  give the same answers, so unlike the lists themselves the glosses are not
-  reproducible byte for byte. The example sentences are the one part that
-  is verifiable — each is a corpus line, copied unaltered but for a leading
-  dialogue dash and surrounding quotation marks, and the build rejects any
-  the model did not copy exactly. Where the model edited a sentence rather
-  than quoting it (24 entries), the example was dropped and the entry keeps
-  its gloss alone; 200 entries have no example because none of the sampled
-  lines showed the entry in the sense being glossed.
+  cannot be read as evidence without it. A native speaker checked the top
+  500; nobody checked the other 9,500. Two consequences worth knowing: the
+  model chose which sense to put first, so the order reflects its judgement
+  of spoken frequency rather than a count; and re-running the same prompt on
+  a newer model would not give the same answers, so unlike the lists
+  themselves the glosses are not reproducible byte for byte. The example
+  sentences are the one part that is verifiable — each is a corpus line,
+  copied unaltered but for a leading dialogue dash and surrounding quotation
+  marks, and the build rejects any the model did not copy exactly. Where the
+  model edited a sentence rather than quoting it (23 entries), the example
+  was dropped and the entry keeps its gloss alone; 192 entries have no
+  example because none of the sampled lines showed the entry in the sense
+  being glossed.
 - **Contractions are labelled by what they contract, not by the tagger.**
   Stanza expands *do*, *nas*, *pelo* and the rest into two words before
   tagging, so the surface token collects almost no usable evidence: before
@@ -179,7 +188,7 @@ These are specific and worth knowing before you study from the list.
   todos?*), so *ir* is still undercounted a little. The split is estimated from 1,000 random
   lines per form, so each form's share is good to about ±3 percentage
   points. It misses idioms (*ele não foi nessa*) and elliptical questions (*sempre
-  foram?*). *Ser* counts 21.3M tokens and *ir* 9.0M.
+  foram?*). *Ser* counts 22.3M tokens and *ir* 9.0M.
 - **Lemmatization is not perfect.** 98.5% on the hand-checked sample means
   something like 150 of the 10,000 entries may carry a lemma error. The
   known pattern: Stanza sometimes reads a verb form as a noun (`procura`,
@@ -239,15 +248,15 @@ TSV and CSV hold identical data; pick whichever your tools prefer. Columns:
 | `is_mwe` | `1` for a multi-word expression, `0` otherwise. |
 | `pos` | Part of speech from the tagger. One of `det`, `prep`, `conj`, `pron`, `adv`, `intj`, `num`, `noun`, `adj`, `verb`, `mwe`, `unk`. A word used as two parts of speech has one row for each. See caveats. |
 | `raw_freq` | Lemma occurrence count across the full corpus. |
-| `freq_per_million` | Occurrences per million tokens (of 636,214,452). |
+| `freq_per_million` | Occurrences per million tokens (of 636,582,535). |
 
 ### The Anki decks
 
 | File | What it is |
 |---|---|
-| `EP_Spoken_Frequency.apkg` | **Ready to import**: twenty decks of 500 words, the note type and the card templates in one package. See [Importing the Anki decks](#importing-the-anki-decks). |
+| `EP_Spoken_Frequency.apkg` | **Ready to import**: twenty decks of 500 words, glossed throughout, with the note type and the card templates in one package. See [Importing the Anki decks](#importing-the-anki-decks). |
 | `ep_spoken_anki_minimal.tsv` | Rank, Lemma_PT, POS, Is_MWE, Raw_Freq, Freq_per_million, Tags |
-| `ep_spoken_anki_enrichable.tsv` | The same, plus empty `Gloss_EN`, `Example_PT`, `Example_EN` for you to fill in |
+| `ep_spoken_anki_enrichable.tsv` | The same, plus `Gloss_EN`, `Example_PT`, `Example_EN` and `Gloss_Source`, all filled in |
 | `ep_spoken_5001_10000_anki_minimal.tsv` | Ranks 5001–10000, minimal fields |
 | `ep_spoken_5001_10000_anki_enrichable.tsv` | Ranks 5001–10000, enrichable fields |
 
@@ -264,12 +273,32 @@ Slang and vulgarities are glossed plainly: this is a record of how people
 speak, not a teaching aid. See [the caveat below](#the-glosses-are-a-model-snapshot).
 
 `source` says where the row came from, and the deck publishes it as
-`Gloss_Source`. It is `model` for 9,985 rows. The other 15 are in
+`Gloss_Source`. It reads `model` for 9,971 rows. The other 29 are in
 [eval/gloss_overrides.tsv](eval/gloss_overrides.tsv), where a reviewer
-overruled the model: `override-edited` (6) for a corpus line a native speaker
-edited, `override-chosen` (7) for a different corpus line she chose, and
-`override` (2) for a gloss written by hand — *caseiro*, which the model
-declines to gloss at all, and *largo*.
+overruled the model:
+
+| `source` | Rows | What a card shows |
+|---|---:|---|
+| `model` | 9,971 | Claude; example taken verbatim from the corpus |
+| `override-chosen` | 11 | corpus line chosen by a native speaker |
+| `override-edited` | 11 | corpus line, edited by a native speaker |
+| `override-english` | 4 | corpus line; English corrected by a native speaker |
+| `override` | 3 | gloss settled by hand |
+
+The three kinds differ in what the reviewer touched. `override-chosen` is a
+different corpus line she picked from the ones the model was shown, so it is
+still verbatim. `override-edited` is a sentence she corrected and therefore no
+longer verbatim — *trás*, where she restored an accent the subtitle had
+dropped, and *dever*, which had no example at all until she wrote one.
+`override-english` leaves the Portuguese alone and takes only her correction
+to the translation. `override` covers the three glosses settled by hand:
+*caseiro*, which the model refuses to gloss, *largo*, and *de*, whose senses
+she extended.
+
+Of the English translations on those rows, 5 are hers, 12 were written here
+and she confirmed them, 5 she corrected, and 4 were written here to match
+sentences she supplied in the second round and she has not seen them yet.
+Each row records which in its `note`.
 
 ### Quality-control files
 
@@ -293,12 +322,12 @@ From `pt.txt.gz` to `out/`, in one command (`python -m scripts.build`):
    restored: `fazê-lo` counts as *fazer* + *lo*, and `dar-lhe-ia` as
    *daria* + *lhe*.
 2. **Second pass.** Bigram counts for multi-word expressions, sample
-   sentences for every frequent word (50 for the 4,347 word forms with
+   sentences for every frequent word (50 for the 4,350 word forms with
    10,000+ occurrences, 5 for the rest), and capitalization statistics for
    the proper-noun filter.
 3. **Tag and lemmatize.** [Stanza](https://stanfordnlp.github.io/stanza/)
-   reads the 63,253 word forms frequent enough to reach the list inside
-   their sample sentences — about 500,000 sentences, covering 62,494 of
+   reads the 62,916 word forms frequent enough to reach the list inside
+   their sample sentences — about 499,000 sentences, covering 62,523 of
    those forms — and gives each occurrence a lemma and a part of speech.
    The majority lemma wins, after discarding votes where the lemma and the
    tag contradict each other. When
@@ -349,8 +378,8 @@ From `pt.txt.gz` to `out/`, in one command (`python -m scripts.build`):
    sentences; otherwise it joins the majority.
 9. **Rank and emit** the top 10,000 rows by count, with multi-word
    expressions — kept by log-likelihood (Dunning G² ≥ 2500) and a
-   collocation share of at least 5% — ranked alongside them. 295 of them
-   make the top 10,000: 191 in the first band and 104 in the second.
+   collocation share of at least 5% — ranked alongside them. 296 of them
+   make the top 10,000: 191 in the first band and 105 in the second.
 
 ### How it is checked
 
@@ -441,24 +470,72 @@ decks come with it.
    sort in rank order: `Portuguese::European Portuguese - Spoken::01 ·
    1–500`, `::02 · 501–1000`, and so on to `::20 · 9501–10000`. Study them
    in order and you meet the commonest words first.
-- One note type, `Portuguese (EP) – Spoken Frequency`, with the fields
+- One note type, `Portuguese (EP) – Spoken Frequency`, with ten fields:
   `Rank`, `Lemma_PT`, `POS`, `Gloss_EN`, `Example_PT`, `Example_EN`,
-  `Is_MWE`, `Raw_Freq` and `Freq_per_million`.
+  `Is_MWE`, `Raw_Freq`, `Freq_per_million` and `Gloss_Source`.
 - **Card 1 (Portuguese → English)** shows the word large, with its part of
-  speech beneath it. The back adds your gloss and example sentences if you
-  have filled them in, with the rank and frequency in small print.
-- **Card 2 (English → Portuguese)** exists only for notes whose `Gloss_EN`
-  is filled in. The list ships without glosses, so at first you only have
-  Card 1. Type a gloss into a note and its reverse card appears.
+  speech beneath it. The back gives the English gloss, the example sentence
+  and its translation, then the rank, the frequency and `Gloss_Source` in
+  small print.
+- **Card 2 (English → Portuguese)** shows the gloss and asks for the word.
+  Every note has one, because every note is glossed. (Its front is still
+  wrapped in a condition on `Gloss_EN`, which is what let the 1.0 deck ship
+  with no reverse cards at all.)
+- **`Gloss_Source` says where each card's gloss came from** — for 9,971 of
+  them that the example is a corpus line the model quoted, and for 29 that a
+  native speaker chose the sentence, edited it, corrected the English, or
+  that the gloss was settled by hand.
 - Every note carries the tags below, the same as in the TSV files.
 
-**Importing a later release.** Notes are identified by their word and part
-of speech, so a new release matches the notes you already have instead of
-adding duplicates, and your review history is kept. Anki's import screen
-asks whether to **Update notes**. *If newer* or *Always* brings in the new
-ranks and counts, but it replaces **every** field, including glosses and
-examples you have typed in. To keep your own glosses, choose **Never**;
-your ranks then stay as they were.
+**There is no field for your own notes, and that is deliberate.** Anki
+cannot merge fields when it imports: *Always* overwrites every field of
+every note it matches, and *If newer* overwrites every field of each note it
+updates. So any field this package shipped could be wiped by a later release,
+along with whatever you had written in it. A place to write that we would
+overwrite is worse than no place.
+
+**To keep your own notes**, add a field yourself: **Tools → Manage Note
+Types → Fields → Add**. Know the trade before you do. Once the note type
+differs from the one in the package, Anki stops updating these notes
+altogether — a later release will add words that are new, but your existing
+notes keep the glosses and ranks they already have.
+
+**The ten fields are frozen from 1.1.0.** Anki matches fields by position, so
+adding, removing or reordering one would break re-import for everyone already
+studying. Anything the deck needs later will go in a separate note type.
+
+### Importing a later release
+
+**If you have the 1.0 deck, delete it first** — all twenty decks — or import
+1.1 into a fresh Anki profile. The note type has changed (1.0 had no
+`Gloss_Source`) and 70 entries changed their part of speech, which changes
+how Anki identifies them. Importing 1.1 over 1.0 does not fail; it quietly
+does almost nothing. On a test import it refused 9,880 notes and added 120,
+which is Anki declining to update notes across a changed note type.
+
+Deleting the 1.0 decks loses whatever review history you have on them — the
+scheduling, the intervals, the lapses. There is no way to carry it across,
+and 1.0 shipped with no glosses, so what you would be keeping is history on
+a deck with no English side.
+
+**From 1.1.0 onward, re-importing works as you would expect.** Notes are
+identified by their word and part of speech, so a new release matches the
+notes you have instead of adding duplicates, and your review history is
+kept. Anki's import screen asks whether to **Update notes**:
+
+| Option | What happens |
+|---|---|
+| **If newer** | Brings in the new release's glosses, ranks and counts. This is the one to use. |
+| **Always** | The same, unconditionally. |
+| **Never** | Nothing is updated; new words are still added. |
+
+*If newer* actually works now: each release carries its own timestamp, where
+1.0.0's was frozen, so Anki could never see a newer copy and *If newer* did
+nothing at all.
+
+Updating replaces **every** field of each note it touches. Nothing in the
+shipped fields is yours to lose — but if you have added a field of your own,
+see the warning above: Anki will not update those notes at all.
 
 ### Advanced: the TSV files, for your own note type
 
@@ -474,7 +551,8 @@ mapping and tags column are all declared in the file.
    - *minimal*: `Rank`, `Lemma_PT`, `POS`, `Is_MWE`, `Raw_Freq`,
      `Freq_per_million`
    - *enrichable*: `Rank`, `Lemma_PT`, `POS`, `Gloss_EN`, `Example_PT`,
-     `Example_EN`, `Is_MWE`, `Raw_Freq`, `Freq_per_million`
+     `Example_EN`, `Is_MWE`, `Raw_Freq`, `Freq_per_million`,
+     `Gloss_Source`
 
    (The `Tags` column is not a field; Anki maps it to note tags
    automatically.) Then design your own card templates.
@@ -492,13 +570,13 @@ twice.
 
 ### Which file should I import?
 
-**The `.apkg`**, unless you have a reason not to. It has room for your own
-translations and example sentences, which is the approach that actually
-builds retention, and adding a gloss gives you the reverse card for free.
+**The `.apkg`**, unless you have a reason not to. It arrives glossed, with
+both cards working from the first import and nothing to fill in.
 
-On the advanced path, take **`ep_spoken_anki_enrichable.tsv`** if you will
-add glosses and examples, or the *minimal* file if you only want the ranked
-word list and will look things up elsewhere. The TSV files hold 5,000 words
+On the advanced path, take **`ep_spoken_anki_enrichable.tsv`**, which ships
+with the same glosses, examples and `Gloss_Source` filled in, or the
+*minimal* file if you would rather write your own glosses from the bare
+ranked list. The TSV files hold 5,000 words
 each, so you will want to slice them by tag (below) as you go.
 
 ### Studying in frequency order
@@ -520,6 +598,8 @@ the verbs in the first thousand, say — from the Anki browser:
 | `pos::det`, `pos::verb`, … | Part of speech |
 | `source::opensubtitles_ep_v2018` | Provenance |
 | `variety::EP`, `register::spoken` | Variety and register |
+| `flag::vulgar` (89), `flag::bp-leaning` (115), `flag::name-like` (148), `flag::uncertain` (318), `flag::archaic` (13) | What the gloss was flagged as. Suspend `flag::vulgar` if you would rather not meet those, or search `flag::uncertain` for the glosses to check first |
+| `gloss::reviewed` (500) | A native-speaker teacher passed a verdict on this entry's gloss |
 
 The tags are on the TSV notes too, and are the only way to study those in
 order, since each TSV file imports into a single 5,000-note deck.
