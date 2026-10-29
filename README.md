@@ -106,8 +106,9 @@ professionally edited, and comes with the things this list lacks.
 
 |  | This list | Davies |
 |---|---|---|
-| Corpus | ~636M tokens, subtitles only | ~20M tokens, balanced across registers |
-| Registers | Film/TV dialogue | Spoken, fiction, newspaper, academic |
+| Corpus | ~636M tokens, subtitles only | ~20M tokens across four registers, unevenly weighted: 18M written and 2M spoken |
+| Registers | Film/TV dialogue | Fiction, newspaper and academic at 6M words each, and spoken at 2M — 10% of the corpus. Each register is half Portugal, half Brazil. Nearly all of it is 1970–2000, mostly the 1990s |
+| Ordering | Raw frequency: occurrences counted, ranked, published | A composite score, not raw frequency. Every register counts equally whatever its size, and within a register the score is half log frequency and half *range* — how many of 100 blocks of 200,000 words the word turns up in. An evenly spread word can outrank a commoner one that clusters |
 | Variety | Portugal-tagged, BP markers excluded post hoc; headwords in post-1990 spelling | Both varieties, with BP/EP marked per entry |
 | Glosses & examples | One to three English senses per entry and one example sentence taken verbatim from the corpus, written by a language model in one pass. The top 500 checked by a native-speaker teacher; the other 9,500 unchecked | English glosses and example sentences throughout, written and edited by lexicographers |
 | Lemmatization | Automatic: a neural tagger (Stanza) reading each word in up to 50 real sentences, checked against a dictionary. 98.5% correct on a 332-word hand-checked sample | Curated |
@@ -115,6 +116,18 @@ professionally edited, and comes with the things this list lacks.
 | Contractions (*do*, *ao*, *pela*) | Kept as their own entries | Split into preposition + article |
 | Review | Automatic output, with about 1,360 decisions made by hand: the gold set, gender pairs and proper-noun drops, plus a native speaker's verdict on every one of the top 500 glosses. Below rank 500 it is not edited entry by entry | Edited and peer-reviewed |
 | Cost | Free | A book you buy |
+
+One row is worth spelling out, because it is the easiest way to compare the
+two lists wrongly. **Davies's spoken register is not this list's register.**
+Of his 2.0M spoken words only 1.0M are from Portugal, and that million is
+0.437M of recorded informal conversation (CORDIAL-SIN, CRPC, Português
+Falado) plus 0.563M of **interviews transcribed in newspapers and
+magazines**, screened for colloquial forms like *pra*. No broadcast material
+is described. So most of his Portuguese "spoken" data is interview speech
+that arrived through print, and recorded conversation is about 2% of his
+whole corpus — while this list is dramatic dialogue end to end. Where the two
+disagree about a word, that difference in kind is usually the reason, not an
+error in either. (Introduction, Table 1 and pp. 2, 6–8.)
 
 What this list offers that Davies does not is scale on a single register
 and a strictly European-Portuguese slant: 30× more tokens, all of it

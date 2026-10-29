@@ -3,6 +3,47 @@
 Newest first. One entry per working session: what changed, which issues it touched,
 and what comes next. The CHANGELOG records what shipped; this records what happened.
 
+## 2026-10-28 (night, later) — how Davies actually built his corpus
+
+#14 is settled from the source rather than inferred. Jim checked the
+introduction to Davies & Preto-Bay (2008) — Table 1 and pp. 2, 6–8 — and the
+answer is recorded in the issue. The scan is his privately and **stays out of
+this repository**, page images included; only the facts are written down.
+
+Three things we had wrong or had never established:
+
+- **The spoken register is 10% of the corpus, not a quarter.** 2.0M words of
+  20M, and only 1.0M from Portugal. That million is 0.437M of recorded
+  informal conversation (CORDIAL-SIN, CRPC, Português Falado) and 0.563M of
+  **interviews transcribed in newspapers and magazines**, screened for
+  colloquial forms such as *pra*. Broadcasts are not mentioned anywhere, so
+  the essay must stop implying them.
+- **The registers are not balanced.** Fiction, newspaper and academic are 6M
+  each; spoken is 2M. Each is half Portugal, half Brazil, nearly all of it
+  1970–2000 and mostly the 1990s.
+- **Davies does not rank by frequency.** Each register is weighted equally
+  whatever its size, and within a register the score is half log frequency and
+  half range — the spread across 100 blocks of 200,000 words. An evenly
+  distributed word can outrank a commoner one. The ±s/f/n/a flags are
+  relative too: top or bottom 10% of a register against the others.
+
+`README.md` claimed his corpus was "balanced across registers", which is
+simply false, and said nothing at all about how he orders entries, which left
+a reader free to assume frequency ranks. The comparison table now carries the
+real proportions and a new **Ordering** row, and a paragraph under it spells
+out that his spoken register is mostly interview speech reaching him through
+print while this list is dramatic dialogue end to end — so a disagreement
+between the two lists is usually that difference in kind, not an error.
+
+This strengthens the essay (#18) rather than threatening it. Its thesis — that
+the subtitle list tracks Davies's fiction register (0.73) better than his
+spoken one (0.55) — now has a documented mechanism behind it instead of a
+guess.
+
+Issues touched: #14 (closed).
+
+**Next:** the essay itself, #18.
+
 ## 2026-10-28 (night) — v1.1.0 released
 
 Tagged and published. `v1.1.0` is an annotated tag on commit `3c502e2`, the
