@@ -75,14 +75,23 @@ marked. The Davies extraction stays in a separate private repository permanently
 
 ## Current status
 
-v1.0.0 has been public since 2026-09-24 and is unchanged apart from the clone URL
-after the repository moved to the `professorcdp` organisation.
+**v1.1.0 is released: tagged and published on 2026-10-28**, as
+<https://github.com/professorcdp/EPspokenfrequency/releases/tag/v1.1.0>. The tag
+points at commit `3c502e2`. Five assets ship with it — the `.apkg`, the two list
+TSVs, `glosses.tsv` and a `SHA256SUMS.txt` covering the other four — and the
+published copies were downloaded again and checksum-verified after the release
+went up. v1.0.0 is untouched and stays where it is.
 
-Work since then is v1.1.0 preparation, described in the CHANGELOG's "Unreleased"
-section: English glosses and corpus example sentences for all 10,000 entries
-(generated in one batch run for $24.95), and a run of tokenizer and lemma fixes
-found along the way — glued enclitic clusters, contraction parts of speech, `são`
-wrongly counted as a noun instead of a form of *ser*.
+What 1.1.0 adds, over v1.0.0 of 2026-09-24: English glosses and corpus example
+sentences for all 10,000 entries (generated in one batch run for $24.95), and a
+run of tokenizer and lemma fixes found along the way — glued enclitic clusters,
+contraction parts of speech, `são` wrongly counted as a noun instead of a form of
+*ser*, and `dever` published as a verb rather than a noun (#22).
+
+`glosses.tsv` joined the assets because a second, private project pins it from
+the tagged release and verifies it by SHA-256. That makes the published checksums
+a contract, not a convenience: the four files behind those hashes must not be
+re-uploaded under the same tag.
 
 The native-speaker review of the top 500 is **complete: 500 of 500 reviewed,
 479 good, 20 fix, 1 wrong.** `dever` was signed off separately, after the #22
@@ -91,10 +100,14 @@ fix republished it as a verb with a new gloss. Her corrections are applied, and 
 other than `model`. The 200 sampled rows below rank 500 remain unreviewed, which is
 open question 2.
 
-The deck is built and glossed: 10,000 notes, 20,000 cards, `Gloss_Source`
+The deck shipped glossed: 10,000 notes, 20,000 cards, `Gloss_Source`
 added and the note type's field list frozen from 1.1.0. It ships no field for a
 learner's own notes, because Anki cannot merge fields on import and any field
 the package ships can be erased by a later release; the CHANGELOG says how to
-add one yourself and what that costs. What remains before the release is Jim
-importing it on Windows to check it (#12) and the README and tag (#13) — the
-README needs the import guidance the CHANGELOG now carries.
+add one yourself and what that costs. Jim imported the package on Windows before
+the tag (#12) and saw the 120 added notes the diff predicted.
+
+Nothing has been announced. Whether v1.1.0 is told to anyone, and where, is still
+open question #19, and the Substack essay (#18) is unpublished. The next pieces of
+work are the deferred `jurar` bug (#23), the 200 sampled rows below rank 500
+(#15), and the gloss cache's habit of overwriting a superseded response (#24).

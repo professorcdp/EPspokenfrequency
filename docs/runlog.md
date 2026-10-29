@@ -3,6 +3,47 @@
 Newest first. One entry per working session: what changed, which issues it touched,
 and what comes next. The CHANGELOG records what shipped; this records what happened.
 
+## 2026-10-28 (night) — v1.1.0 released
+
+Tagged and published. `v1.1.0` is an annotated tag on commit `3c502e2`, the
+commit that filled today's date into the CHANGELOG heading where
+"(unreleased; date filled in at the tag)" had stood since the notes were
+drafted. Main and the tag are pushed; the three commits that had been sitting
+unpushed — the release assets, the #22 paradigm fix, the reviewer's sign-off —
+went up with it, and #22 closed on the push as its commit message said it
+would.
+
+The GitHub release carries **five** assets: `EP_Spoken_Frequency.apkg`, the
+two list TSVs, `glosses.tsv` and `SHA256SUMS.txt`. The notes are the
+CHANGELOG's 1.1.0 section with the import warning lifted to the top as a
+quoted block, because anyone holding the 1.0 deck has to delete all twenty of
+its decks before importing and that must not be something they find in
+paragraph forty. v1.0.0 was not touched: still three assets, still its
+original publish time.
+
+Verified rather than assumed. Before the tag: working tree clean, 358 tests
+passing, `out/SHA256SUMS.txt` checking out against the committed `out/` files.
+After the release: all five assets downloaded again from GitHub into an empty
+folder, `shasum -a 256 -c SHA256SUMS.txt` returning OK on all four, and each
+downloaded file compared byte-for-byte against its committed copy. The reason
+for the belt and braces is that a private project now pins `glosses.tsv` from
+this tag and verifies it by SHA-256, so the published hashes are a contract.
+
+Also opened **#24** (chore, priority: later): the gloss cache keeps one
+response per lemma+pos, so a re-ask overwrites the original with no history
+anywhere. That is what let the 2026-10-28 incident destroy 379 original
+responses, 86 of them on rows a native speaker had passed a verdict on.
+Nothing published was lost, because the repair republished from
+`out/glosses.tsv` — but the cache cost $24.95 and should not be destructible
+by a routine re-ask. The issue proposes keeping superseded responses, either
+appended inside the file or moved to a `superseded/` sibling, and explicitly
+does not fix it now.
+
+#13 is closed. Issues touched: #13 (closed), #22 (closed on push), #24 (new).
+
+**Next:** nothing is announced. Whether anyone is told about v1.1.0 is #19,
+and the Substack essay is #18. The deferred `jurar` bug is #23.
+
 ## 2026-10-28 (evening) — the reviewer signed off `dever` as a verb
 
 The one gap the #22 fix left is closed. `dever` (verb) — "must; should; to
