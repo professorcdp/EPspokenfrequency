@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.1.0 — (unreleased; date filled in at the tag)
+## 1.1.0 — 2026-10-28
 
 Glosses. Every one of the 10,000 entries now carries an English meaning, and
 9,808 of them a real sentence from the corpus with its translation, so the
