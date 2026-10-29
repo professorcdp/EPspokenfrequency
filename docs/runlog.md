@@ -35,6 +35,19 @@ out that his spoken register is mostly interview speech reaching him through
 print while this list is dramatic dialogue end to end — so a disagreement
 between the two lists is usually that difference in kind, not an error.
 
+**Two corrections from the advisor's check of `e0786cc`.** The paragraph said
+recorded conversation is about 2% of his whole corpus; that is the *Portugal*
+figure (0.437M of 20M) and the README now says so — with Brazil's 0.338M the
+real total is nearer 4%.
+
+**One claim in the README is still unverified.** The new **Ordering** row says
+Davies's entries are *ordered* by the composite score. The introduction only
+establishes that the score decides which words are *included*; it does not say
+the published list is sorted by it. The private comparison chat is checking
+against the actual entry order. If the check fails, the row gets reworded to
+say the score decides inclusion, not rank. Until then the row overstates what
+the source supports, on a public page.
+
 This strengthens the essay (#18) rather than threatening it. Its thesis — that
 the subtitle list tracks Davies's fiction register (0.73) better than his
 spoken one (0.55) — now has a documented mechanism behind it instead of a

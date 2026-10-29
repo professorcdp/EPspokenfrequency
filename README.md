@@ -124,10 +124,10 @@ Of his 2.0M spoken words only 1.0M are from Portugal, and that million is
 Falado) plus 0.563M of **interviews transcribed in newspapers and
 magazines**, screened for colloquial forms like *pra*. No broadcast material
 is described. So most of his Portuguese "spoken" data is interview speech
-that arrived through print, and recorded conversation is about 2% of his
-whole corpus — while this list is dramatic dialogue end to end. Where the two
-disagree about a word, that difference in kind is usually the reason, not an
-error in either. (Introduction, Table 1 and pp. 2, 6–8.)
+that arrived through print, and recorded conversation from Portugal is
+about 2% of his whole corpus — while this list is dramatic dialogue end to
+end. Where the two disagree about a word, that difference in kind is usually
+the reason, not an error in either. (Introduction, Table 1 and pp. 2, 6–8.)
 
 What this list offers that Davies does not is scale on a single register
 and a strictly European-Portuguese slant: 30× more tokens, all of it
