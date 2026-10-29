@@ -40,13 +40,23 @@ recorded conversation is about 2% of his whole corpus; that is the *Portugal*
 figure (0.437M of 20M) and the README now says so — with Brazil's 0.338M the
 real total is nearer 4%.
 
-**One claim in the README is still unverified.** The new **Ordering** row says
-Davies's entries are *ordered* by the composite score. The introduction only
-establishes that the score decides which words are *included*; it does not say
-the published list is sorted by it. The private comparison chat is checking
-against the actual entry order. If the check fails, the row gets reworded to
-say the score decides inclusion, not rank. Until then the row overstates what
-the source supports, on a public page.
+**The Ordering row was queried and then confirmed.** The introduction only
+establishes that the composite score decides which words are *included* — it
+never says the published list is *sorted* by it, so the row's wording was held
+pending a check of the actual entry order. The private comparison chat ran it:
+
+- **2,456 of 4,999 adjacent pairs are inverted by raw frequency.** Had the
+  list been printed in frequency order, that number would be zero. Roughly
+  every second neighbouring pair is the wrong way round.
+- **Rank tracks range (ρ −0.997) more closely than raw frequency (ρ −0.946).**
+  Negative because rank 1 is the top of the list.
+
+So the entries really are ordered by the score, and the README row stands as
+written. Worth noting for the essay: range correlates with the printed order
+*more* tightly than frequency does, which is a stronger showing than an even
+50/50 blend of the two would predict — the spread term appears to dominate
+the ordering in practice. Not something to assert in public on one
+correlation, but worth a second look if the essay leans on it.
 
 This strengthens the essay (#18) rather than threatening it. Its thesis — that
 the subtitle list tracks Davies's fiction register (0.73) better than his
